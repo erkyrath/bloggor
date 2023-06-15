@@ -1,10 +1,26 @@
 #!/usr/bin/env python3
 
+import sys
+import os
+import re
+import optparse
 import json
 import xml.sax
 from xml.sax.handler import ContentHandler
 
+popt = optparse.OptionParser()
+
+popt.add_option('-o', '--out',
+                action='store', dest='outdir',
+                help='directory to write posts')
+
+(opts, args) = popt.parse_args()
+
 feedatom = 'Takeout/Blogger/Blogs/Zarf Updates/feed.atom'
+
+pat_divpara = re.compile('^<div class="para"(?: style="margin-[a-z]+: 1em; margin-[a-z]+: 1em;")?>(.*)</div>$')
+pat_divparastart = re.compile('^<div class="para"(?: style="margin-[a-z]+: 1em; margin-[a-z]+: 1em;")?>$')
+pat_gameshelf = re.compile('["\'](http[s]?://[a-z0-9_.]*jmac.org/[^"\']*)["\']', flags=re.IGNORECASE)
 
 class Entry:
     def __init__(self, map):
@@ -23,6 +39,41 @@ class Entry:
 
         (_, _, val) = self.id.rpartition('-')
         self.shortid = val
+
+        self.content = self.modernize(self.content)
+        self.content = self.degameshelf(self.content)
+
+    def modernize(self, text):
+        ls = []
+        for ln in text.split('\n'):
+            match = pat_divpara.match(ln)
+            if match:
+                ln = '<p>%s</p>' % (match.group(1),)
+            if ls and pat_divparastart.match(ls[-1]) and ln.endswith('</div>'):
+                ln = ln[ : -6 ]
+                ln = '<p>%s</p>' % (ln,)
+                del ls[-1]
+            ls.append(ln)
+        ls2 = []
+        for ln in ls:
+            ln = ln.replace('</div>', '</div>\n')
+            if ln.endswith('\n'):
+                ln = ln[ : -1 ]
+            ls2.append(ln)
+        return '\n'.join(ls2)
+
+    def degameshelf(self, text):
+        def func(match):
+            url = match.group(1)
+            if url in gameshelf_image_map:
+                newurl = gameshelf_image_map[url]
+                return '"$$GSHELFIMAGE:%s$$"' % (newurl,)
+            if url in gameshelf_post_map:
+                shortid, newurl = gameshelf_post_map[url]
+                return '"$$GSHELFPOST:%s:%s$$"' % (shortid, newurl,)
+            return '"%s"' % (url,)
+        text = pat_gameshelf.sub(func, text)
+        return text
 
     def jsonmap(self):
         map = {}
@@ -68,6 +119,28 @@ class Comment:
         map['updatedraw'] = self.updatedraw
         return map
 
+pat_indent = re.compile('^[ \t]+')
+    
+def read_table(filename, multi=False):
+    map = {}
+    key = None
+    fl = open(filename)
+    for ln in fl.readlines():
+        match = pat_indent.match(ln)
+        if not match:
+            key = ln.strip()
+        else:
+            if not multi:
+                if key in map:
+                    raise Exception('duplicate key: ' + key)
+                map[key] = ln.strip()
+            else:
+                if key not in map:
+                    map[key] = [ ln.strip() ]
+                else:
+                    map[key].append(ln.strip())
+    return map
+    
 class Handler(ContentHandler):
     depth = None
     tagnesting = []
@@ -226,6 +299,10 @@ class Handler(ContentHandler):
         if self.tagnesting[-1] == 'author':
             self.curfields['author/type'] = self.endaccum()
 
+# Go time
+
+gameshelf_image_map = read_table('gameshelf-image-map')
+gameshelf_post_map = read_table('gameshelf-post-table', multi=True)
 
 handler = Handler()
 
@@ -246,23 +323,27 @@ def commentsortkey(com):
     return (ent.publishedraw, com.publishedraw)
 comments.sort(key=commentsortkey)
 
-if True:
+if opts.outdir:
+    print('Writing to %s...' % (opts.outdir,))
+    os.makedirs(opts.outdir+'/entries', exist_ok=True)
+    os.makedirs(opts.outdir+'/comments', exist_ok=True)
+    
     entls = []
     for ent in entries:
         entls.append(ent.jsonmap())
-        fl = open('tmpout/entries/%s.html' % (ent.shortid,), 'w')
+        fl = open('%s/entries/%s.html' % (opts.outdir, ent.shortid,), 'w')
         fl.write(ent.content)
         fl.close()
 
     comls = []
     for com in comments:
         comls.append(com.jsonmap())
-        fl = open('tmpout/comments/%s.html' % (com.shortid,), 'w')
+        fl = open('%s/comments/%s.html' % (opts.outdir, com.shortid,), 'w')
         fl.write(com.content)
         fl.close()
 
     map = { 'entries':entls, 'comments':comls }
-    fl = open('tmpout/all.json', 'w')
+    fl = open(opts.outdir+'/all.json', 'w')
     json.dump(map, fl, indent=2)
     fl.close()
 
