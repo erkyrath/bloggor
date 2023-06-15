@@ -1,0 +1,11 @@
+#!/bin/csh -f
+
+while ( 1 )
+  set url = $<
+  if ( $url == "" ) break
+  echo $url
+  set file = `echo $url | sed s,http://gameshelf.jmac.org/,, | sed s,/,_,g`
+  echo "  $file"
+  curl -s -S -o "image-gshelf/$file" "$url"
+  sleep 1
+end
