@@ -65,11 +65,11 @@ class Entry:
     def degameshelf(self, text):
         def func(match):
             url = match.group(1)
-            if url in gameshelf_image_map:
-                newurl = gameshelf_image_map[url]
+            if url in gameshelf_image_table:
+                newurl = gameshelf_image_table[url]
                 return '"$$GSHELFIMAGE:%s$$"' % (newurl,)
-            if url in gameshelf_post_map:
-                shortid, newurl = gameshelf_post_map[url]
+            if url in gameshelf_post_table:
+                shortid, newurl = gameshelf_post_table[url]
                 return '"$$GSHELFPOST:%s:%s$$"' % (shortid, newurl,)
             return '"%s"' % (url,)
         text = pat_gameshelf.sub(func, text)
@@ -301,8 +301,8 @@ class Handler(ContentHandler):
 
 # Go time
 
-gameshelf_image_map = read_table('gameshelf-image-map')
-gameshelf_post_map = read_table('gameshelf-post-table', multi=True)
+gameshelf_image_table = read_table('gameshelf-image-table')
+gameshelf_post_table = read_table('gameshelf-post-table', multi=True)
 
 handler = Handler()
 
