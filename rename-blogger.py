@@ -101,7 +101,7 @@ class Image:
     def __repr__(self):
         return '<Image %s (%s)>' % (self.final, self.size,)
 
-urltotempmap = read_table('temp-image-urls')
+urltotempmap = read_table('blogger-image-xxmap')
 imagemap = {}
 
 for url, val in urltotempmap.items():
