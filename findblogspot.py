@@ -3,7 +3,7 @@
 import sys
 import re
 
-pat_gameshelf = re.compile('["\'](http[s]?://[a-z0-9_.]*(?:googleusercontent|blogspot).com/[^"\']*)["\']', flags=re.IGNORECASE)
+pat_blogspot = re.compile('["\'](http[s]?://[a-z0-9_.]*(?:googleusercontent|blogspot).com/[^"\']*)["\']', flags=re.IGNORECASE)
 
 allurls = set()
 
@@ -12,7 +12,7 @@ def check(filename):
     dat = fl.read()
     fl.close()
 
-    ls = pat_gameshelf.findall(dat)
+    ls = pat_blogspot.findall(dat)
     for url in ls:
         allurls.add(url)
 
