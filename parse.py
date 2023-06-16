@@ -22,6 +22,7 @@ pat_divpara = re.compile('^<div class="para"(?: style="margin-[a-z]+: 1em; margi
 pat_divparastart = re.compile('^<div class="para"(?: style="margin-[a-z]+: 1em; margin-[a-z]+: 1em;")?>$')
 pat_gameshelf = re.compile('["\'](http[s]?://[a-z0-9_.]*jmac.org/[^"\']*)["\']', flags=re.IGNORECASE)
 pat_blogspot = re.compile('["\'](http[s]?://[a-z0-9_.]*(?:googleusercontent|blogspot).com/[^"\']*)["\']', flags=re.IGNORECASE)
+pat_blogzarf = re.compile('["\'](http[s]?://blog.zarfhome.com/[^"\']*)["\']', flags=re.IGNORECASE)
 
 class Entry:
     def __init__(self, map):
@@ -85,6 +86,13 @@ class Entry:
                 return '"$$BSPOTIMAGE:%s$$"' % (newurl,)
             return '"%s"' % (url,)
         text = pat_blogspot.sub(func, text)
+        def func2(match):
+            url = match.group(1)
+            if url in blogger_post_table:
+                shortid, newurl = blogger_post_table[url]
+                return '"$$BZARFPOST:%s:%s$$"' % (shortid, newurl,)
+            return '"%s"' % (url,)
+        text = pat_blogzarf.sub(func2, text)
         return text
 
     def jsonmap(self):
@@ -314,6 +322,7 @@ class Handler(ContentHandler):
 # Go time
 
 blogger_image_table = read_table('blogger-image-table', multi=True)
+blogger_post_table = read_table('blogger-post-table', multi=True)
 gameshelf_image_table = read_table('gameshelf-image-table')
 gameshelf_post_table = read_table('gameshelf-post-table', multi=True)
 
