@@ -16,7 +16,7 @@ fl = open('blogger-post-urls')
 for ln in fl.readlines():
     ln = ln.strip()
     print(ln)
-    res = '???'
+    res = ('???', '???')
     if ln.startswith('http:'):
         ln = ln[ 5 : ]
     elif ln.startswith('https:'):
@@ -29,5 +29,6 @@ for ln in fl.readlines():
             ln = ln[ : -1 ]
         key = ln + '.html'
         if key in urimap:
-            res = '%s, %s' % (urimap[key], key,)
-    print('  '+res)
+            res = (urimap[key], key)
+    print('  '+res[0])
+    print('  '+res[1])

@@ -16,7 +16,7 @@ fl = open('gameshelf-post-urls')
 for ln in fl.readlines():
     ln = ln.strip()
     print(ln)
-    res = '???'
+    res = ('???', '???')
     if ln.startswith('http://gameshelf.jmac.org'):
         ln = ln[ 25 : ]
         if ln.endswith('.html'):
@@ -25,11 +25,12 @@ for ln in fl.readlines():
             ln = ln[ : -1 ]
         key = ln + '.html'
         if key in urimap:
-            res = '%s, %s' % (urimap[key], key,)
+            res = (urimap[key], key)
         else:
             prefix = ln[ 0 : 30 ]
             for key in urimap:
                 if key.startswith(prefix):
-                    res	= '%s, %s' % (urimap[key], key,)
+                    res	= (urimap[key], key)
                     break
-    print('  '+res)
+    print('  '+res[0])
+    print('  '+res[1])
