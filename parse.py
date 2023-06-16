@@ -21,6 +21,7 @@ feedatom = 'Takeout/Blogger/Blogs/Zarf Updates/feed.atom'
 pat_divpara = re.compile('^<div class="para"(?: style="margin-[a-z]+: 1em; margin-[a-z]+: 1em;")?>(.*)</div>$')
 pat_divparastart = re.compile('^<div class="para"(?: style="margin-[a-z]+: 1em; margin-[a-z]+: 1em;")?>$')
 pat_gameshelf = re.compile('["\'](http[s]?://[a-z0-9_.]*jmac.org/[^"\']*)["\']', flags=re.IGNORECASE)
+pat_blogspot = re.compile('["\'](http[s]?://[a-z0-9_.]*(?:googleusercontent|blogspot).com/[^"\']*)["\']', flags=re.IGNORECASE)
 
 class Entry:
     def __init__(self, map):
@@ -42,6 +43,7 @@ class Entry:
 
         self.content = self.modernize(self.content)
         self.content = self.degameshelf(self.content)
+        self.content = self.deblogger(self.content)
 
     def modernize(self, text):
         ls = []
@@ -73,6 +75,16 @@ class Entry:
                 return '"$$GSHELFPOST:%s:%s$$"' % (shortid, newurl,)
             return '"%s"' % (url,)
         text = pat_gameshelf.sub(func, text)
+        return text
+
+    def deblogger(self, text):
+        def func(match):
+            url = match.group(1)
+            if url in blogger_image_table:
+                newurl, size = blogger_image_table[url]
+                return '"$$BSPOTIMAGE:%s$$"' % (newurl,)
+            return '"%s"' % (url,)
+        text = pat_blogspot.sub(func, text)
         return text
 
     def jsonmap(self):
@@ -301,6 +313,7 @@ class Handler(ContentHandler):
 
 # Go time
 
+blogger_image_table = read_table('blogger-image-table', multi=True)
 gameshelf_image_table = read_table('gameshelf-image-table')
 gameshelf_post_table = read_table('gameshelf-post-table', multi=True)
 
