@@ -2,6 +2,7 @@
 
 import sys
 import re
+import shutil
 
 def read_table(filename, multi=False):
     pat_indent = re.compile('^[ \t]+')
@@ -138,5 +139,5 @@ for url, img in imagemap.items():
     print(url)
     print('  '+img.final)
     print('  %dx%d' % img.size)
-    
+    #shutil.copyfile('image-blogger/'+img.tempfile, 'image-blogger/'+img.final)
     
