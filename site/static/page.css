@@ -116,6 +116,16 @@ body {
     font-size: 0.85em;
 }
 
+.EntryHead h2 {
+    margin-bottom: 6px;
+}
+
+.EntryHead h4 {
+    margin-top: 6px;
+    margin-bottom: 6px;    
+    font-size: 0.85em;
+}
+
 a {
     color: #2020B0;
     text-decoration-color: #DDF;
@@ -140,3 +150,4 @@ blockquote p {
     margin-top: 8px;
     margin-bottom: 8px;
 }
+
