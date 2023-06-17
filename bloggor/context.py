@@ -28,19 +28,21 @@ class Context:
                     continue
                 if filename.endswith('~'):
                     continue
-                print(dirpath, filename)
                 page = EntryPage(self, dirpath, filename)
                 self.pages.append(page)
 
         page = StaticMDPage(self, 'home.md', 'index.html')
         self.pages.append(page)
     
-        print('Building...')
+        print('Building %d pages...' % (len(self.pages),))
         for page in self.pages:
             page.build()
 
-        print('Committing...')
-        for page in self.pages:
-            page.commit()
+        if not self.opts.nocommit:
+            print('Committing %d pages...' % (len(self.pages),))
+            for page in self.pages:
+                page.commit()
+        else:
+             print('Skipping commit')   
 
         print('Done')
