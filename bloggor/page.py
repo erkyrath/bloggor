@@ -132,16 +132,16 @@ class TagListPage(Page):
         self.complete()
 
     def build(self):
-        tagset = set()
+        countmap = {}
         for page in self.ctx.entries:
             for tag in page.tags:
-                tagset.add(tag)
-        tags = list(tagset)
+                countmap[tag] = 1 + countmap.get(tag, 0)
+        tags = list(countmap.keys())
         tags.sort()
                 
         fl = open(os.path.join(self.ctx.opts.destdir, self.tempoutpath), 'w')
         template = self.jenv.get_template('tags.html')
-        fl.write(template.render(title='All Tags', tags=tags))
+        fl.write(template.render(title='All Tags', tags=tags, countmap=countmap))
         fl.close()
 
 
