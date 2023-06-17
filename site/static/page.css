@@ -15,9 +15,10 @@ body {
 .HeadCol {
     margin-left: auto;
     margin-right: auto;
-    max-width: 700px;
+    max-width: 840px;
     padding-top: 30px;
     padding-left: 20px;
+    padding-right: 20px;
 }
 
 @media (max-width: 720px) {
@@ -44,22 +45,42 @@ body {
 .FootCol {
     margin-left: auto;
     margin-right: auto;
-    max-width: 700px;
+    max-width: 840px;
     padding-top: 10px;
     padding-left: 20px;
+    padding-right: 20px;
     padding-bottom: 10px;
 }
 
 .Foot p {
     margin-top: 0px;
     margin-bottom: 0px;
+    text-align: right;
 }
 
-.BodyCol {
+.Body {
+}
+
+.BodySub {
+    position: relative;
     margin-left: auto;
     margin-right: auto;
-    max-width: 700px;
+    max-width: 840px;
     padding-left: 20px;
+    padding-right: 20px;
+}
+
+.BodyMainCol {
+    margin-left: 0px;
+    margin-right: 200px;
+}
+
+.BodySideCol {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    width: 200px;
+    background: yellow;
 }
 
 a {
