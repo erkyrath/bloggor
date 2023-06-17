@@ -32,6 +32,15 @@ body {
     margin-bottom: 0px;
 }
 
+.Head h1 a {
+    color: inherit;
+    text-decoration: none;
+}
+.Head h1 a:hover {
+    text-decoration: underline;
+    text-decoration-color: #66F;
+}
+
 .Head h3 {
     margin-top: 10px;
     margin-bottom: 10px;
