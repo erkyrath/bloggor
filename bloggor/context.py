@@ -18,10 +18,14 @@ class Context:
         self.mdenv = markdown.Markdown(extensions=['meta', 'def_list', 'fenced_code', 'tables'])
 
     def build(self):
+        print('Reading...')
         for dirpath, dirnames, filenames in os.walk(os.path.join(self.opts.srcdir, 'entries')):
             for filename in filenames:
+                if filename.startswith('.'):
+                    continue
                 if filename.endswith('~'):
                     continue
                 print(dirpath, filename)
                 page = EntryPage(self, dirpath, filename)
     
+        print('Building...')

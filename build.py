@@ -1,9 +1,11 @@
 
-import optparse
+import sys
 import os
 import os.path
+import optparse
 
 import bloggor.context
+from bloggor.excepts import RuntimeException
 
 popt = optparse.OptionParser()
 
@@ -18,7 +20,11 @@ popt.add_option('-o', '--out',
 
 ctx = bloggor.context.Context(opts)
 
-ctx.build()
+try:
+    ctx.build()
+except RuntimeException as ex:
+    print('Error: %s' % (ex,))
+    sys.exit()
 
 fl = open('pages/home.md')
 dat = fl.read()
