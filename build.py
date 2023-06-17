@@ -26,13 +26,3 @@ except RuntimeException as ex:
     print('Error: %s' % (ex,))
     sys.exit()
 
-fl = open('pages/home.md')
-dat = fl.read()
-fl.close()
-ctx.mdenv.reset()
-body = ctx.mdenv.convert(dat)
-
-fl = open(os.path.join(opts.destdir, 'index.html'), 'w')
-template = ctx.jenv.get_template('page.html')
-fl.write(template.render(title='Zarf Updates', body=body))
-fl.close()

@@ -3,11 +3,12 @@ import os.path
 import markdown
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
-from bloggor.page import EntryPage
+from bloggor.page import EntryPage, StaticMDPage
 
 class Context:
     def __init__(self, opts):
         self.opts = opts
+        self.pages = []
         
         self.jenv = Environment(
             loader = FileSystemLoader('templates'),
@@ -27,5 +28,13 @@ class Context:
                     continue
                 print(dirpath, filename)
                 page = EntryPage(self, dirpath, filename)
+                self.pages.append(page)
+
+        page = StaticMDPage(self, 'home.md')
+        self.pages.append(page)
     
         print('Building...')
+        for page in self.pages:
+            page.build()
+
+        print('Done')
