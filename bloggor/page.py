@@ -7,6 +7,11 @@ class Page:
         self.mdenv = ctx.mdenv
 
         self.outpath = None
+        self.tempoutpath = None
+
+    def complete(self):
+        self.outdir = os.path.dirname(self.outpath)
+        self.tempoutpath = self.outpath + '_tmp.html'
 
     def commit(self):
         os.replace(os.path.join(self.ctx.opts.destdir, self.tempoutpath), os.path.join(self.ctx.opts.destdir, self.outpath))
@@ -17,10 +22,10 @@ class StaticMDPage(Page):
         self.dirpath = os.path.join(ctx.opts.srcdir, 'pages')
         self.filename = filename
         self.outpath = outpath
-        self.tempoutpath = self.outpath + '_tmp.html'
 
         self.path = os.path.join(self.dirpath, self.filename)
-        self.outdir = os.path.dirname(self.outpath)
+
+        self.complete()
 
     def __repr__(self):
         return '<StaticMDPage "%s">' % (self.filename,)
@@ -64,8 +69,8 @@ class EntryPage(Page):
         self.outpath = os.path.relpath(os.path.join(self.dirpath, outfile), start=ctx.entriesdir)
         if self.outpath.startswith('..') or self.outpath.startswith('/'):
             raise RuntimeException(self.path+': Bad outpath: ' + self.outpath)
-        self.outdir = os.path.dirname(self.outpath)
-        self.tempoutpath = self.outpath + '_tmp.html'
+
+        self.complete()
 
     def __repr__(self):
         return '<EntryPage "%s">' % (self.path,)
