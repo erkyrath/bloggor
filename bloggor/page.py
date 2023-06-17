@@ -8,12 +8,16 @@ class Page:
 
         self.outpath = None
 
-class StaticMDPage:
+    def commit(self):
+        os.replace(os.path.join(self.ctx.opts.destdir, self.tempoutpath), os.path.join(self.ctx.opts.destdir, self.outpath))
+
+class StaticMDPage(Page):
     def __init__(self, ctx, filename, outpath):
         Page.__init__(self, ctx)
         self.dirpath = os.path.join(ctx.opts.srcdir, 'pages')
         self.filename = filename
         self.outpath = outpath
+        self.tempoutpath = self.outpath + '_tmp.html'
 
         self.path = os.path.join(self.dirpath, self.filename)
         self.outdir = os.path.dirname(self.outpath)
@@ -31,7 +35,7 @@ class StaticMDPage:
         if self.outdir:
             os.makedirs(os.path.join(self.ctx.opts.destdir, self.outdir), exist_ok=True)
             
-        fl = open(os.path.join(self.ctx.opts.destdir, self.outpath), 'w')
+        fl = open(os.path.join(self.ctx.opts.destdir, self.tempoutpath), 'w')
         template = self.jenv.get_template('page.html')
         fl.write(template.render(title='Zarf Updates', body=body))
         fl.close()
@@ -61,6 +65,7 @@ class EntryPage(Page):
         if self.outpath.startswith('..') or self.outpath.startswith('/'):
             raise RuntimeException(self.path+': Bad outpath: ' + self.outpath)
         self.outdir = os.path.dirname(self.outpath)
+        self.tempoutpath = self.outpath + '_tmp.html'
 
     def __repr__(self):
         return '<EntryPage "%s">' % (self.path,)
@@ -81,7 +86,7 @@ class EntryPage(Page):
         if self.outdir:
             os.makedirs(os.path.join(self.ctx.opts.destdir, self.outdir), exist_ok=True)
             
-        fl = open(os.path.join(self.ctx.opts.destdir, self.outpath), 'w')
+        fl = open(os.path.join(self.ctx.opts.destdir, self.tempoutpath), 'w')
         template = self.jenv.get_template('page.html')
         fl.write(template.render(title='Zarf Updates', body=body))
         fl.close()

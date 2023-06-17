@@ -39,4 +39,8 @@ class Context:
         for page in self.pages:
             page.build()
 
+        print('Committing...')
+        for page in self.pages:
+            page.commit()
+
         print('Done')
