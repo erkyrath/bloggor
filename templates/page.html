@@ -8,8 +8,6 @@
   <link rel="stylesheet" href="static/page.css" type="text/css">
 </head>
 <body>
-  {% autoescape false %}
-  {{ body }}
-  {% endautoescape %}
+  {% block content %}{% endblock %}
 </body>
 </html>

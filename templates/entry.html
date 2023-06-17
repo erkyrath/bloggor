@@ -1,0 +1,16 @@
+{% extends "page.html" %}
+
+{% block content %}
+  {% autoescape false %}
+  {{ body }}
+  {% endautoescape %}
+  
+  {% if tags %}
+  <p>Tags:
+    {% set comma = joiner(", ") %}
+    {% for tag in tags -%}
+      {{ comma() }}<a href="TAGDIR/{{ tag|urlencode }}">{{ tag }}</a>
+    {%- endfor %}
+  </p>
+  {% endif %}
+{% endblock %}
