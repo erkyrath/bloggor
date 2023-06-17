@@ -47,6 +47,7 @@ body {
 }
 
 .Foot {
+    clear: both;
     background-color: #CCDFF6;
     margin: 0px;
 }
@@ -85,9 +86,7 @@ body {
 }
 
 .BodySideCol {
-    position: absolute;
-    top: 0px;
-    right: 0px;
+    float: right;
     width: 200px;
     background: yellow;
 }
