@@ -125,5 +125,25 @@ class EntryPage(Page):
         fl.close()
 
 
+class TagListPage(Page):
+    def __init__(self, ctx):
+        Page.__init__(self, ctx)
+        self.outpath = 'tags.html'
+        self.complete()
+
+    def build(self):
+        tagset = set()
+        for page in self.ctx.entries:
+            for tag in page.tags:
+                tagset.add(tag)
+        tags = list(tagset)
+        tags.sort()
+                
+        fl = open(os.path.join(self.ctx.opts.destdir, self.tempoutpath), 'w')
+        template = self.jenv.get_template('tags.html')
+        fl.write(template.render(title='All Tags', tags=tags))
+        fl.close()
+
+
 from bloggor.excepts import RuntimeException
 from bloggor.metafile import MetaFile
