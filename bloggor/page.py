@@ -11,9 +11,13 @@ class Page:
 
     def complete(self):
         self.outdir = os.path.dirname(self.outpath)
-        self.tempoutpath = self.outpath + '_tmp.html'
+        if not self.ctx.opts.notemp:
+            self.tempoutpath = self.outpath + '_tmp.html'
+        else:
+            self.tempoutpath = self.outpath
 
     def commit(self):
+        assert self.tempoutpath != self.outpath
         os.replace(os.path.join(self.ctx.opts.destdir, self.tempoutpath), os.path.join(self.ctx.opts.destdir, self.outpath))
 
 class StaticMDPage(Page):

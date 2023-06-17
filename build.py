@@ -18,6 +18,9 @@ popt.add_option('-o', '--out',
 popt.add_option('--nocommit',
                 action='store_true', dest='nocommit',
                 help='do not commit tmp.html files')
+popt.add_option('--notemp',
+                action='store_true', dest='notemp',
+                help='write output files with no tmp.html stage')
 
 (opts, args) = popt.parse_args()
 

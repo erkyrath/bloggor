@@ -38,11 +38,13 @@ class Context:
         for page in self.pages:
             page.build()
 
-        if not self.opts.nocommit:
+        if self.opts.notemp:
+            pass
+        elif self.opts.nocommit:
+            print('Skipping commit')   
+        else:
             print('Committing %d pages...' % (len(self.pages),))
             for page in self.pages:
                 page.commit()
-        else:
-             print('Skipping commit')   
 
         print('Done')
