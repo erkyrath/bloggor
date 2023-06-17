@@ -1,0 +1,54 @@
+
+body {
+    margin: 0px;
+}
+
+.Head {
+    background-color: #CCDFF6;
+    height: 120px;
+    margin: 0px;
+}
+
+.HeadCol {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 700px;
+    padding-top: 20px;
+    padding-left: 20px;
+}
+
+.Head h1 {
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.Head h3 {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.Foot {
+    background-color: #CCDFF6;
+    margin: 0px;
+}
+
+.FootCol {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 700px;
+    padding-top: 10px;
+    padding-left: 20px;
+    padding-bottom: 10px;
+}
+
+.Foot p {
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.BodyCol {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 700px;
+    padding-left: 20px;
+}
