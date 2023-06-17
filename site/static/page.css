@@ -52,3 +52,28 @@ body {
     max-width: 700px;
     padding-left: 20px;
 }
+
+a {
+    color: #2020B0;
+    text-decoration-color: #DDF;
+}
+
+a:hover {
+    text-decoration-color: #2020B0;
+}
+
+blockquote {
+    margin-left: 16px;
+    margin-right: 4px;
+    border-left: 8px solid #E0E0FF;
+    padding-left: 16px;
+    padding-right: 8px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    background: #F4F4FF;
+}
+
+blockquote p {
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
