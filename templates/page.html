@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>
+    {%- if not title %}Zarf Updates{% else %}Zarf Updates: {{ title }}{% endif -%}
+  </title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="static/page.css" type="text/css">
+</head>
+<body>
+  {% autoescape false %}
+  {{ body }}
+  {% endautoescape %}
+</body>
+</html>
