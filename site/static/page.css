@@ -5,7 +5,10 @@ body {
 
 .Head {
     background-color: #CCDFF6;
-    height: 120px;
+    background-image: url("pic/zarfhome-stripe-alpha.png");
+    background-position: top right;
+    background-repeat: no-repeat;
+    min-height: 120px;
     margin: 0px;
 }
 
@@ -13,8 +16,14 @@ body {
     margin-left: auto;
     margin-right: auto;
     max-width: 700px;
-    padding-top: 20px;
+    padding-top: 30px;
     padding-left: 20px;
+}
+
+@media (max-width: 720px) {
+    .Head {
+        background-position: top left;
+    }
 }
 
 .Head h1 {
