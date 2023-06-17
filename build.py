@@ -4,7 +4,6 @@ import os
 import os.path
 
 import bloggor.context
-from bloggor.page import EntryPage
 
 popt = optparse.OptionParser()
 
@@ -17,16 +16,9 @@ popt.add_option('-o', '--out',
 
 (opts, args) = popt.parse_args()
 
-ctx = bloggor.context.Context()
+ctx = bloggor.context.Context(opts)
 
-for dirpath, dirnames, filenames in os.walk(os.path.join(opts.srcdir, 'entries')):
-    for filename in filenames:
-        if filename.endswith('~'):
-            continue
-        print(dirpath, filename)
-        page = EntryPage(ctx, dirpath, filename)
-    
-
+ctx.build()
 
 fl = open('pages/home.md')
 dat = fl.read()

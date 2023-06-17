@@ -1,8 +1,14 @@
+import os
+import os.path
 import markdown
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
+from bloggor.page import EntryPage
+
 class Context:
-    def __init__(self):
+    def __init__(self, opts):
+        self.opts = opts
+        
         self.jenv = Environment(
             loader = FileSystemLoader('templates'),
             autoescape = select_autoescape(),
@@ -11,4 +17,11 @@ class Context:
 
         self.mdenv = markdown.Markdown(extensions=['meta', 'def_list', 'fenced_code', 'tables'])
 
+    def build(self):
+        for dirpath, dirnames, filenames in os.walk(os.path.join(self.opts.srcdir, 'entries')):
+            for filename in filenames:
+                if filename.endswith('~'):
+                    continue
+                print(dirpath, filename)
+                page = EntryPage(self, dirpath, filename)
     
