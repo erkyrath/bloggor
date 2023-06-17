@@ -46,7 +46,7 @@ class StaticMDPage(Page):
             os.makedirs(os.path.join(self.ctx.opts.destdir, self.outdir), exist_ok=True)
             
         fl = open(os.path.join(self.ctx.opts.destdir, self.tempoutpath), 'w')
-        template = self.jenv.get_template('page.html')
+        template = self.jenv.get_template('static.html')
         fl.write(template.render(title=self.title, body=body))
         fl.close()
 
@@ -115,8 +115,8 @@ class EntryPage(Page):
             os.makedirs(os.path.join(self.ctx.opts.destdir, self.outdir), exist_ok=True)
             
         fl = open(os.path.join(self.ctx.opts.destdir, self.tempoutpath), 'w')
-        template = self.jenv.get_template('page.html')
-        fl.write(template.render(title=self.title, body=body))
+        template = self.jenv.get_template('entry.html')
+        fl.write(template.render(title=self.title, body=body, tags=self.tags))
         fl.close()
 
 
