@@ -21,9 +21,8 @@ class Page:
         os.replace(os.path.join(self.ctx.opts.destdir, self.tempoutpath), os.path.join(self.ctx.opts.destdir, self.outpath))
 
 class StaticMDPage(Page):
-    def __init__(self, ctx, title, filename, outpath):
+    def __init__(self, ctx, filename, outpath):
         Page.__init__(self, ctx)
-        self.title = title
         self.dirpath = os.path.join(ctx.opts.srcdir, 'pages')
         self.filename = filename
         self.outpath = outpath
@@ -41,6 +40,12 @@ class StaticMDPage(Page):
         fl.close()
         self.mdenv.reset()
         body = self.mdenv.convert(dat)
+        metadata = self.mdenv.Meta
+
+        self.title = None
+        ls = metadata.get('title', None)
+        if ls:
+            self.title = ' '.join(ls)
 
         if self.outdir:
             os.makedirs(os.path.join(self.ctx.opts.destdir, self.outdir), exist_ok=True)
