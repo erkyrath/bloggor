@@ -8,6 +8,8 @@ from bloggor.page import EntryPage, StaticMDPage
 class Context:
     def __init__(self, opts):
         self.opts = opts
+        self.entriesdir = os.path.join(self.opts.srcdir, 'entries')
+        
         self.pages = []
         
         self.jenv = Environment(
@@ -20,7 +22,7 @@ class Context:
 
     def build(self):
         print('Reading...')
-        for dirpath, dirnames, filenames in os.walk(os.path.join(self.opts.srcdir, 'entries')):
+        for dirpath, dirnames, filenames in os.walk(self.entriesdir):
             for filename in filenames:
                 if filename.startswith('.'):
                     continue
@@ -30,7 +32,7 @@ class Context:
                 page = EntryPage(self, dirpath, filename)
                 self.pages.append(page)
 
-        page = StaticMDPage(self, 'home.md')
+        page = StaticMDPage(self, 'home.md', 'index.html')
         self.pages.append(page)
     
         print('Building...')
