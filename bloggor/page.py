@@ -75,6 +75,8 @@ class EntryPage(Page):
         if self.outpath.startswith('..') or self.outpath.startswith('/'):
             raise RuntimeException(self.path+': Bad outpath: ' + self.outpath)
 
+        self.title = None
+        self.tags = None
         self.complete()
 
     def __repr__(self):
@@ -82,24 +84,41 @@ class EntryPage(Page):
         
     def build(self):
         if self.type == HTML:
-            fl = open(self.path)
-            dat = fl.read()
-            fl.close()
-            body = dat
+            mfl = MetaFile(self.path)
+            body, metadata = mfl.read()
         else:
             fl = open(self.path)
             dat = fl.read()
             fl.close()
             self.mdenv.reset()
             body = self.mdenv.convert(dat)
+            metadata = self.mdenv.Meta
+
+        self.title = None
+        ls = metadata.get('title', None)
+        if ls:
+            self.title = ' '.join(ls)
+
+        self.tags = []
+        ls = metadata.get('tags', None)
+        if ls:
+            for val in ls:
+                for tag in val.split(','):
+                    tag = tag.strip().lower()
+                    if tag:
+                        self.tags.append(tag)
+
+        if not self.title:
+            raise RuntimeException(self.path+': No title')
 
         if self.outdir:
             os.makedirs(os.path.join(self.ctx.opts.destdir, self.outdir), exist_ok=True)
             
         fl = open(os.path.join(self.ctx.opts.destdir, self.tempoutpath), 'w')
         template = self.jenv.get_template('page.html')
-        fl.write(template.render(title='TITLE', body=body))
+        fl.write(template.render(title=self.title, body=body))
         fl.close()
 
 
 from bloggor.excepts import RuntimeException
+from bloggor.metafile import MetaFile
