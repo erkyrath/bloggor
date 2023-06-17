@@ -1,5 +1,7 @@
 import re
 
+# Copied from markdown.extensions.meta.
+
 META_RE = re.compile(r'^[ ]{0,3}(?P<key>[A-Za-z0-9_-]+):\s*(?P<value>.*)')
 META_MORE_RE = re.compile(r'^[ ]{4,}(?P<value>.*)')
 BEGIN_RE = re.compile(r'^-{3}(\s.*)?')
