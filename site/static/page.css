@@ -116,6 +116,19 @@ body {
     font-size: 0.85em;
 }
 
+@media (max-width: 480px) {
+    .SubtitleExtra {
+	display: none;
+    }
+    .BodyMainCol {
+	margin-left: 0px;
+	margin-right: 0px;
+    }
+    .BodySideCol {
+	display: none;
+    }
+}
+
 .EntryHead h2 {
     margin-bottom: 6px;
 }
