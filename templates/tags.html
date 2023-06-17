@@ -1,0 +1,9 @@
+{% extends "page.html" %}
+
+{% block content %}
+  <ul>
+    {% for tag in tags %}
+      <li><a href="TAGDIR/{{ tag|urlencode }}">{{ tag }}</a>
+    {% endfor %}
+  </ul>
+{% endblock %}
