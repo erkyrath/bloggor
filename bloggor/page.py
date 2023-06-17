@@ -21,8 +21,9 @@ class Page:
         os.replace(os.path.join(self.ctx.opts.destdir, self.tempoutpath), os.path.join(self.ctx.opts.destdir, self.outpath))
 
 class StaticMDPage(Page):
-    def __init__(self, ctx, filename, outpath):
+    def __init__(self, ctx, title, filename, outpath):
         Page.__init__(self, ctx)
+        self.title = title
         self.dirpath = os.path.join(ctx.opts.srcdir, 'pages')
         self.filename = filename
         self.outpath = outpath
@@ -46,7 +47,7 @@ class StaticMDPage(Page):
             
         fl = open(os.path.join(self.ctx.opts.destdir, self.tempoutpath), 'w')
         template = self.jenv.get_template('page.html')
-        fl.write(template.render(title='Zarf Updates', body=body))
+        fl.write(template.render(title=self.title, body=body))
         fl.close()
 
         
@@ -97,7 +98,7 @@ class EntryPage(Page):
             
         fl = open(os.path.join(self.ctx.opts.destdir, self.tempoutpath), 'w')
         template = self.jenv.get_template('page.html')
-        fl.write(template.render(title='Zarf Updates', body=body))
+        fl.write(template.render(title='TITLE', body=body))
         fl.close()
 
 

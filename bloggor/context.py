@@ -31,7 +31,7 @@ class Context:
                 page = EntryPage(self, dirpath, filename)
                 self.pages.append(page)
 
-        page = StaticMDPage(self, 'home.md', 'index.html')
+        page = StaticMDPage(self, 'About Me', 'home.md', 'about.html')
         self.pages.append(page)
     
         print('Building %d pages...' % (len(self.pages),))
