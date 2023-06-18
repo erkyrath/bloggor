@@ -4,7 +4,7 @@
   <h1>Tag: {{ tag }} ({{ entries|length }})</h1>
   <ul>
     {% for entry in entries %}
-      <li>{{ entry.title }}
+      <li><a href="/{{ entry.outpath }}">{{ entry.title }}</a>
     {% endfor %}
   </ul>
 {% endblock %}
