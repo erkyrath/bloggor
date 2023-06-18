@@ -35,20 +35,27 @@ body {
     height: 40px;
 }
 
-.MenuButton button {
+.MenuButton a {
+    display: block;
     width: 100%;
     height: 100%;
     border: 2px solid #88C;
     border-radius: 8px;
     background-color: white;
     font-size: 20px;
-    padding: 0px;
     margin: 0px;
     color: #8AF;
     text-align: center;
+    text-decoration: none;
 }
 
-.MenuButton button:active {
+.MenuButton a .Glyph {
+    position: relative;
+    top: 8px;
+    pointer-events: none;
+}
+
+.MenuButton a:active {
     background-color: #CCF;
 }
 
