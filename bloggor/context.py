@@ -4,6 +4,7 @@ import markdown
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 from bloggor.page import EntryPage, GenTemplatePage, StaticMDPage, TagListPage
+import bloggor.jextension
 
 class Context:
     def __init__(self, opts):
@@ -15,6 +16,7 @@ class Context:
         
         self.jenv = Environment(
             loader = FileSystemLoader('templates'),
+            extensions = [ bloggor.jextension.TagFilename ],
             autoescape = select_autoescape(),
             keep_trailing_newline = True,
         )

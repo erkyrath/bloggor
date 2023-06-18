@@ -12,7 +12,7 @@
     <h4 class="Tags">Tagged:
       {% set comma = joiner(", ") %}
       {% for tag in tags -%}
-        {{ comma() }}<a href="TAGDIR/{{ tag|urlencode }}">{{ tag }}</a>
+        {{ comma() }}<a href="/tag/{{ tag|tagfilename|urlencode }}.html">{{ tag }}</a>
       {%- endfor %}
     </h4>
     {% endif %}
