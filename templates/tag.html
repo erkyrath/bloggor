@@ -2,7 +2,7 @@
 
 {% block content %}
   <h1>Tag: {{ tag }} ({{ entries|length }})</h1>
-  <ul>
+  <ul class="PlainList">
     {% for entry in entries %}
       <li><a href="/{{ entry.outpath }}">{{ entry.title }}</a>
     {% endfor %}

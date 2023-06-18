@@ -300,3 +300,12 @@ blockquote p {
     margin-bottom: 8px;
 }
 
+ul.PlainList {
+    list-style: none;
+    padding-left: 0px;
+}
+.PlainList li {
+    margin-left: 1em;
+    text-indent: -1em;
+}
+
