@@ -26,6 +26,32 @@ body {
     padding-right: 20px;
 }
 
+.Head .MenuButton {
+    display: none;
+    position: absolute;
+    top: 40px;
+    right: 20px;
+    width: 44px;
+    height: 40px;
+}
+
+.MenuButton button {
+    width: 100%;
+    height: 100%;
+    border: 2px solid #88C;
+    border-radius: 8px;
+    background-color: white;
+    font-size: 20px;
+    padding: 0px;
+    margin: 0px;
+    color: #8AF;
+    text-align: center;
+}
+
+.MenuButton button:active {
+    background-color: #CCF;
+}
+
 @media (max-width: 720px) {
     .Head {
         background-position: top left;
@@ -127,6 +153,9 @@ body {
 }
 
 @media (max-width: 480px) {
+    .Head .MenuButton {
+	display: block;
+    }
     .Head h1 {
 	font-size: 36px;
     }
