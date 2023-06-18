@@ -3,7 +3,7 @@ import os.path
 import markdown
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
-from bloggor.page import EntryPage, StaticMDPage, TagListPage
+from bloggor.page import EntryPage, GenTemplatePage, StaticMDPage, TagListPage
 
 class Context:
     def __init__(self, opts):
@@ -34,6 +34,9 @@ class Context:
                 self.entries.append(page)
 
         page = StaticMDPage(self, 'about.md', 'about.html')
+        self.pages.append(page)
+
+        page = GenTemplatePage(self, 'menu.html', 'menu.html')
         self.pages.append(page)
 
         page = TagListPage(self)

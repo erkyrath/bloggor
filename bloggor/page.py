@@ -20,6 +20,28 @@ class Page:
         assert self.tempoutpath != self.outpath
         os.replace(os.path.join(self.ctx.opts.destdir, self.tempoutpath), os.path.join(self.ctx.opts.destdir, self.outpath))
 
+
+class GenTemplatePage(Page):
+    def __init__(self, ctx, template, outpath):
+        Page.__init__(self, ctx)
+        self.template = template
+        self.outpath = outpath
+
+        self.complete()
+
+    def __repr__(self):
+        return '<GenTemplatePage "%s">' % (self.template,)
+        
+    def build(self):
+        if self.outdir:
+            os.makedirs(os.path.join(self.ctx.opts.destdir, self.outdir), exist_ok=True)
+            
+        fl = open(os.path.join(self.ctx.opts.destdir, self.tempoutpath), 'w')
+        template = self.jenv.get_template(self.template)
+        fl.write(template.render())
+        fl.close()
+
+        
 class StaticMDPage(Page):
     def __init__(self, ctx, filename, outpath):
         Page.__init__(self, ctx)
