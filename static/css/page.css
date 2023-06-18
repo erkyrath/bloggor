@@ -9,7 +9,7 @@ body {
 
 .Head {
     background-color: #CCDFF6;
-    background-image: url("pic/zarfhome-stripe-alpha.png");
+    background-image: url("../pic/zarfhome-stripe-alpha.png");
     background-position: top right;
     background-repeat: no-repeat;
     min-height: 120px;
