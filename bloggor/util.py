@@ -7,7 +7,7 @@ def escapefancy(match):
     ch = match.group(0)
     if ch == ' ':
         return '_'
-    return '_%X_' % (ord(ch),)
+    return '=%X=' % (ord(ch),)
 
 def tagfilename(val):
     if pat_basictag.match(val):
