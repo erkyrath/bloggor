@@ -135,30 +135,6 @@ body {
     padding-left: 20px;
 }
 
-.BodySideCol h3 {
-    font-size: 0.75em;
-    margin-top: 12px;
-    margin-bottom: 6px;
-}
-
-.BodySideCol p {
-    margin-top: 6px;
-    margin-bottom: 6px;
-    font-size: 0.85em;
-}
-
-.BodySideCol ul {
-    margin-top: 6px;
-    margin-bottom: 6px;
-    list-style: none;
-    padding-left: 0px;
-}
-.BodySideCol li {
-    margin-left: 10px;
-    text-indent: -10px;
-    font-size: 0.85em;
-}
-
 @media (max-width: 480px) {
     .Head .MenuButton {
 	display: block;
@@ -179,6 +155,31 @@ body {
     .BodySideCol {
 	display: none;
     }
+}
+
+
+.Sidebar h3 {
+    font-size: 0.75em;
+    margin-top: 12px;
+    margin-bottom: 6px;
+}
+
+.Sidebar p {
+    margin-top: 6px;
+    margin-bottom: 6px;
+    font-size: 0.85em;
+}
+
+.Sidebar ul {
+    margin-top: 6px;
+    margin-bottom: 6px;
+    list-style: none;
+    padding-left: 0px;
+}
+.Sidebar li {
+    margin-left: 10px;
+    text-indent: -10px;
+    font-size: 0.85em;
 }
 
 .EntryHead h2 {
