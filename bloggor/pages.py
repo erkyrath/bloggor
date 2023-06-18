@@ -20,6 +20,12 @@ class Page:
         assert self.tempoutpath != self.outpath
         os.replace(os.path.join(self.ctx.opts.destdir, self.tempoutpath), os.path.join(self.ctx.opts.destdir, self.outpath))
 
+    def read(self):
+        raise Exception(repr(self)+': read() not implemented')
+
+    def build(self):
+        raise Exception(repr(self)+': build() not implemented')
+
 
 class GenTemplatePage(Page):
     def __init__(self, ctx, template, outpath):
@@ -31,6 +37,9 @@ class GenTemplatePage(Page):
 
     def __repr__(self):
         return '<GenTemplatePage "%s">' % (self.template,)
+
+    def read(self):
+        pass
         
     def build(self):
         if self.outdir:
@@ -56,25 +65,26 @@ class StaticMDPage(Page):
     def __repr__(self):
         return '<StaticMDPage "%s">' % (self.filename,)
         
-    def build(self):
+    def read(self):
         fl = open(self.path)
         dat = fl.read()
         fl.close()
         self.mdenv.reset()
-        body = self.mdenv.convert(dat)
-        metadata = self.mdenv.Meta
+        self.body = self.mdenv.convert(dat)
+        self.metadata = self.mdenv.Meta
 
         self.title = None
-        ls = metadata.get('title', None)
+        ls = self.metadata.get('title', None)
         if ls:
             self.title = ' '.join(ls)
 
+    def build(self):
         if self.outdir:
             os.makedirs(os.path.join(self.ctx.opts.destdir, self.outdir), exist_ok=True)
             
         fl = open(os.path.join(self.ctx.opts.destdir, self.tempoutpath), 'w')
         template = self.jenv.get_template('static.html')
-        fl.write(template.render(title=self.title, body=body))
+        fl.write(template.render(title=self.title, body=self.body))
         fl.close()
 
         
@@ -108,8 +118,8 @@ class EntryPage(Page):
 
     def __repr__(self):
         return '<EntryPage "%s">' % (self.path,)
-        
-    def build(self):
+
+    def read(self):
         if self.type == HTML:
             mfl = MetaFile(self.path)
             body, metadata = mfl.read()
@@ -120,6 +130,9 @@ class EntryPage(Page):
             self.mdenv.reset()
             body = self.mdenv.convert(dat)
             metadata = self.mdenv.Meta
+
+        self.body = body
+        self.metadata = metadata
 
         self.title = None
         ls = metadata.get('title', None)
@@ -137,13 +150,14 @@ class EntryPage(Page):
 
         if not self.title:
             raise RuntimeException(self.path+': No title')
-
+        
+    def build(self):
         if self.outdir:
             os.makedirs(os.path.join(self.ctx.opts.destdir, self.outdir), exist_ok=True)
             
         fl = open(os.path.join(self.ctx.opts.destdir, self.tempoutpath), 'w')
         template = self.jenv.get_template('entry.html')
-        fl.write(template.render(title=self.title, body=body, tags=self.tags))
+        fl.write(template.render(title=self.title, body=self.body, tags=self.tags))
         fl.close()
 
 
@@ -154,11 +168,7 @@ class TagListPage(Page):
         self.complete()
 
     def build(self):
-        countmap = {}
-        for page in self.ctx.entries:
-            for tag in page.tags:
-                countmap[tag] = 1 + countmap.get(tag, 0)
-        tags = list(countmap.items())
+        tags = [ (tag, len(ls)) for tag, ls in self.ctx.alltags.items() ]
         tags.sort()
         
         fl = open(os.path.join(self.ctx.opts.destdir, self.tempoutpath), 'w')

@@ -13,6 +13,7 @@ class Context:
         
         self.pages = []
         self.entries = []
+        self.alltags = {}
         
         self.jenv = Environment(
             loader = FileSystemLoader('templates'),
@@ -40,6 +41,17 @@ class Context:
 
         page = GenTemplatePage(self, 'menu.html', 'menu.html')
         self.pages.append(page)
+
+        print('Reading %d pages...' % (len(self.pages),))
+        for page in self.pages:
+            page.read()
+                    
+        for entry in self.entries:
+            for tag in entry.tags:
+                if tag not in self.alltags:
+                    self.alltags[tag] = [ entry ]
+                else:
+                    self.alltags[tag].append(entry)
 
         page = TagListPage(self)
         self.pages.append(page)

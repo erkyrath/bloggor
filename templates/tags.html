@@ -1,6 +1,7 @@
 {% extends "page.html" %}
 
 {% block content %}
+  <h1>All Tags</h1>
   <ul>
     {% for tag, count in tags %}
       <li><a href="/tag/{{ tag|tagfilename|urlencode }}.html">{{ tag }}</a> ({{ count }})
