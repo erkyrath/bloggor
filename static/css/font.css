@@ -2,52 +2,52 @@
 @font-face {
     font-family: "Alegreya";
     font-style: normal;
-    src: url("font/Alegreya-Regular.ttf") format("truetype");
+    src: url("/font/Alegreya-Regular.ttf") format("truetype");
 }
 
 @font-face {
     font-family: "Alegreya";
     font-style: italic;
-    src: url("font/Alegreya-Italic.ttf") format("truetype");
+    src: url("/font/Alegreya-Italic.ttf") format("truetype");
 }
 
 @font-face {
     font-family: "Alegreya";
     font-style: normal;
     font-weight: bold;
-    src: url("font/Alegreya-Bold.ttf") format("truetype");
+    src: url("/font/Alegreya-Bold.ttf") format("truetype");
 }
 
 @font-face {
     font-family: "Alegreya";
     font-style: italic;
     font-weight: bold;
-    src: url("font/Alegreya-BoldItalic.ttf") format("truetype");
+    src: url("/font/Alegreya-BoldItalic.ttf") format("truetype");
 }
 
 @font-face {
     font-family: "Open Sans";
     font-style: normal;
-    src: url("font/OpenSans-Regular.ttf") format("truetype");
+    src: url("/font/OpenSans-Regular.ttf") format("truetype");
 }
 
 @font-face {
     font-family: "Open Sans";
     font-style: italic;
-    src: url("font/OpenSans-Italic.ttf") format("truetype");
+    src: url("/font/OpenSans-Italic.ttf") format("truetype");
 }
 
 @font-face {
     font-family: "Open Sans";
     font-style: normal;
     font-weight: bold;
-    src: url("font/OpenSans-Bold.ttf") format("truetype");
+    src: url("/font/OpenSans-Bold.ttf") format("truetype");
 }
 
 @font-face {
     font-family: "Open Sans";
     font-style: italic;
     font-weight: bold;
-    src: url("font/OpenSans-BoldItalic.ttf") format("truetype");
+    src: url("/font/OpenSans-BoldItalic.ttf") format("truetype");
 }
 
