@@ -176,6 +176,24 @@ class TagListPage(Page):
         fl.write(template.render(title='All Tags', tags=tags))
         fl.close()
 
+class TagPage(Page):
+    def __init__(self, ctx, tag):
+        Page.__init__(self, ctx)
+        self.tag = tag
+        self.outpath = os.path.join('tag', tagfilename(tag)+'.html')
+        self.complete()
+
+    def build(self):
+        if self.outdir:
+            os.makedirs(os.path.join(self.ctx.opts.destdir, self.outdir), exist_ok=True)
+        
+        entries = self.ctx.alltags[self.tag]
+        
+        fl = open(os.path.join(self.ctx.opts.destdir, self.tempoutpath), 'w')
+        template = self.jenv.get_template('tag.html')
+        fl.write(template.render(title='Tag: '+self.tag, tag=self.tag, entries=entries))
+        fl.close()
 
 from bloggor.excepts import RuntimeException
 from bloggor.metafile import MetaFile
+from bloggor.util import tagfilename

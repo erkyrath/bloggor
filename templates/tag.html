@@ -1,0 +1,10 @@
+{% extends "page.html" %}
+
+{% block content %}
+  <h1>Tag: {{ tag }} ({{ entries|length }})</h1>
+  <ul>
+    {% for entry in entries %}
+      <li>{{ entry.title }}
+    {% endfor %}
+  </ul>
+{% endblock %}

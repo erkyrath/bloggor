@@ -3,7 +3,7 @@ import os.path
 import markdown
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
-from bloggor.pages import EntryPage, GenTemplatePage, StaticMDPage, TagListPage
+from bloggor.pages import EntryPage, GenTemplatePage, StaticMDPage, TagListPage, TagPage
 import bloggor.jextension
 
 class Context:
@@ -55,6 +55,10 @@ class Context:
 
         page = TagListPage(self)
         self.pages.append(page)
+
+        for tag in self.alltags:
+            page = TagPage(self, tag)
+            self.pages.append(page)
     
         print('Building %d pages...' % (len(self.pages),))
         for page in self.pages:
