@@ -135,6 +135,25 @@ body {
     padding-left: 20px;
 }
 
+.MenuCol {
+    display: none;
+    position: absolute;
+    background: white;
+    width: 300px;
+    top: 120px;
+    right: 0px;
+}
+
+.MenuContent {
+    position: relative;
+    width: 265px;
+    left: 10px;
+    right: 0px;
+    border-left: 1px solid #CCF;
+    padding-left: 10px;
+    background-color: #FCFCFC;
+}
+
 @media (max-width: 480px) {
     .Head .MenuButton {
 	display: block;
