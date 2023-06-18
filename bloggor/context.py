@@ -3,7 +3,7 @@ import os.path
 import markdown
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
-from bloggor.page import EntryPage, GenTemplatePage, StaticMDPage, TagListPage
+from bloggor.pages import EntryPage, GenTemplatePage, StaticMDPage, TagListPage
 import bloggor.jextension
 
 class Context:
