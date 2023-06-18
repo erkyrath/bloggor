@@ -2,8 +2,8 @@
 
 {% block content %}
   <ul>
-    {% for tag in tags %}
-      <li><a href="/tag/{{ tag|tagfilename|urlencode }}.html">{{ tag }}</a> ({{ countmap[tag] }})
+    {% for tag, count in tags %}
+      <li><a href="/tag/{{ tag|tagfilename|urlencode }}.html">{{ tag }}</a> ({{ count }})
     {% endfor %}
   </ul>
 {% endblock %}
