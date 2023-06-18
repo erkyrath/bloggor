@@ -1,6 +1,10 @@
 
+
 body {
     margin: 0px;
+    font-family: "Open Sans";
+    font-size: 0.95em;
+    line-height: 1.4em;
 }
 
 .Head {
@@ -10,6 +14,7 @@ body {
     background-repeat: no-repeat;
     min-height: 120px;
     margin: 0px;
+    margin-bottom: 36px;
 }
 
 .HeadCol {
@@ -28,7 +33,9 @@ body {
 }
 
 .Head h1 {
-    margin-top: 0px;
+    font-family: "Alegreya";
+    font-size: 40px;
+    margin-top: 6px;
     margin-bottom: 0px;
 }
 
@@ -42,7 +49,10 @@ body {
 }
 
 .Head h3 {
-    margin-top: 10px;
+    font-family: "Alegreya";
+    font-size: 20px;
+    font-weight: normal;
+    margin-top: 20px;
     margin-bottom: 10px;
 }
 
@@ -117,6 +127,12 @@ body {
 }
 
 @media (max-width: 480px) {
+    .Head h1 {
+	font-size: 36px;
+    }
+    .Head h3 {
+	font-size: 18px;
+    }
     .SubtitleExtra {
 	display: none;
     }
@@ -130,6 +146,8 @@ body {
 }
 
 .EntryHead h2 {
+    font-family: "Alegreya";
+    font-size: 24px;
     margin-bottom: 6px;
 }
 
@@ -137,6 +155,11 @@ body {
     margin-top: 6px;
     margin-bottom: 6px;    
     font-size: 0.85em;
+}
+
+.EntryHead h4.Tags {
+    font-weight: normal;
+    font-style: italic;
 }
 
 a {
