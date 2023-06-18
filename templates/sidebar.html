@@ -14,8 +14,15 @@
 
 <h3><a href="/###">Blog archive</a></h3>
 
+{% set populartags = ['if', 'interactive fiction', 'zarf', 'myst', 'cyan', 'inform'] %}
+
 <h3><a href="/tags.html">Tag archive</a></h3>
-<p>this that the other elephants giraffes (more...)</p>
+<p>
+  {% for tag in populartags %}
+    <a href="/tag/{{ tag|tagfilename|urlencode }}.html">{{ tag }}</a>
+  {% endfor %}
+  (<a href="/tags.html">more...</a>)
+</p>
 
 <h3>Recent posts</h3>
 <ul>
