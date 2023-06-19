@@ -228,6 +228,8 @@ class EntryPage(Page):
         if not self.title:
             raise RuntimeException(self.path+': No title')
 
+        self.draft = False  ###
+
         self.shortdate = self.published[0:10]
         val = datetime.date.fromisoformat(self.shortdate)
         self.published = val.strftime('%A, %B %d, %Y').replace(' 0', ' ')

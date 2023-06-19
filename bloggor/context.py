@@ -38,8 +38,9 @@ class Context:
                 self.pages.append(page)
                 self.entries.append(page)
 
-        ### sort entries by pub-date, draft at end
-
+        # Preliminary, we'll resort when we have all the data
+        self.entries.sort(key=lambda entry:(entry.path))
+        
         page = StaticMDPage(self, 'about.md', 'about.html')
         self.pages.append(page)
 
@@ -50,6 +51,8 @@ class Context:
         for page in self.pages:
             page.read()
                     
+        self.entries.sort(key=lambda entry:(entry.draft, entry.published, entry.title))
+
         for entry in self.entries:
             for tag in entry.tags:
                 if tag not in self.alltags:
