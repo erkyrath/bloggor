@@ -18,11 +18,11 @@
     <h1>{{ title }}</h1>
 
     {% if sortby != 'freq' %}
-      <h3 class="Selector">(<a href="/tags-freq.html">Sort by frequency instead</a>)</h3>
+      <h3 class="Selector">(<a href="/tags-freq">Sort by frequency instead</a>)</h3>
     {% endif %}
 
     {% if sortby != 'alpha' %}
-      <h3 class="Selector">(<a href="/tags.html">Sort alphabetically instead</a>)</h3>
+      <h3 class="Selector">(<a href="/tags">Sort alphabetically instead</a>)</h3>
     {% endif %}
   </div>
   
@@ -30,7 +30,7 @@
   
   <div class="TagTable">
     {% for tag, count in tags %}
-      <div class="Tag"><a href="/tag/{{ tag|tagfilename|urlencode }}.html">{{ tag }}</a> ({{ count }})</div>
+      <div class="Tag"><a href="/tag/{{ tag|tagfilename|urlencode }}">{{ tag }}</a> ({{ count }})</div>
     {% endfor %}
   </div>
 

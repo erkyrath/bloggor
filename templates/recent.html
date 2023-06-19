@@ -22,9 +22,9 @@ li.Entry {
       {% if not year %}
         (See posts from:
       {% else %}
-        (See <a href="/recent.html">recent posts</a> or posts from:
+        (See <a href="/recent">recent posts</a> or posts from:
       {% endif %}
-      {% for yr in years %} <a href="/year-{{ yr }}.html">{{ yr }}</a>{% endfor -%})
+      {% for yr in years %} <a href="/year-{{ yr }}">{{ yr }}</a>{% endfor -%})
     </h3>
   </div>
   
@@ -35,7 +35,7 @@ li.Entry {
         <div class="Tags">
         {% set comma = joiner(", ") %}
         {% for tag in entry.tags -%}
-          {{ comma() }}<a href="/tag/{{ tag|tagfilename|urlencode }}.html">{{ tag }}</a>
+          {{ comma() }}<a href="/tag/{{ tag|tagfilename|urlencode }}">{{ tag }}</a>
         {%- endfor %}
         </div>
       {% endif %}

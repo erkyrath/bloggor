@@ -1,7 +1,8 @@
-<a href="/about.html"><img src="/pic/zarfmask-160.png" alt="An abstract gold mask" width=80 height=80></a>
+
+<a href="/about"><img src="/pic/zarfmask-160.png" alt="An abstract gold mask" width=80 height=80></a>
 
 <h3>Posts by</h3>
-<p><a href="/about.html">Andrew Plotkin</a></p>
+<p><a href="/about">Andrew Plotkin</a></p>
 
 <h3>My links</h3>
 <ul>
@@ -12,20 +13,20 @@
   <li><a href="https://eblong.com/zarf/sitemap.html">Older projects</a>
 </ul>
 
-<h3><a href="/recent.html">Blog archive</a></h3>
+<h3><a href="/recent">Blog archive</a></h3>
 
 {% set populartags = ['if', 'interactive fiction', 'zarf', 'myst', 'cyan', 'inform'] %}
 
-<h3><a href="/tags.html">Tag archive</a></h3>
+<h3><a href="/tags">Tag archive</a></h3>
 <p>
   {% for tag in populartags %}
-    <a href="/tag/{{ tag|tagfilename|urlencode }}.html">{{ tag }}</a>
+    <a href="/tag/{{ tag|tagfilename|urlencode }}">{{ tag }}</a>
   {% endfor %}
-  (<a href="/tags.html">more...</a>)
+  (<a href="/tags">more...</a>)
 </p>
 
 {% if recentfew %}
-<h3><a href="/recent.html">Recent posts</a></h3>
+<h3><a href="/recent">Recent posts</a></h3>
 <ul>
 {% for ent in recentfew %}
   <li><a href="/{{ ent.outpath }}">{{ ent.title }}</a>
