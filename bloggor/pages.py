@@ -139,6 +139,14 @@ class EntryPage(Page):
         if ls:
             self.title = ' '.join(ls)
 
+        ls = metadata.get('published')
+        if not ls:
+            raise RuntimeException(self.path+': No published date')
+        val = ''.join(ls)
+        self.published = parsedate(val)
+        if not self.published:
+            raise RuntimeException(self.path+': Invalid published date: '+val)
+
         self.tags = []
         ls = metadata.get('tags', None)
         if ls:
@@ -150,6 +158,8 @@ class EntryPage(Page):
 
         if not self.title:
             raise RuntimeException(self.path+': No title')
+
+        self.shortdate = self.published[0:10]
         
     def build(self):
         if self.outdir:
@@ -212,6 +222,7 @@ class TagPage(Page):
         fl.write(template.render(title='Tag: '+self.tag, tag=self.tag, entries=entries, oneentry=oneentry))
         fl.close()
 
+
 from bloggor.excepts import RuntimeException
 from bloggor.metafile import MetaFile
-from bloggor.util import tagfilename
+from bloggor.util import tagfilename, parsedate
