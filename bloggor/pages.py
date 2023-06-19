@@ -232,8 +232,14 @@ class EntryPage(Page):
         self.draft = False  ###
 
         self.shortdate = self.published[0:10]
+        self.year = int(self.shortdate[0:4])
         val = datetime.date.fromisoformat(self.shortdate)
         self.published = val.strftime('%A, %B %d, %Y').replace(' 0', ' ')
+
+        val = self.shortdate[0:7].replace('-', '/')
+        if val != self.outdir:
+            raise RuntimeException(self.path+': Published date does not match directory: ' + self.shortdate)
+
         
     def build(self):
         if self.outdir:
