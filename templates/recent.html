@@ -15,19 +15,21 @@ li.Entry {
 {% endblock %}
 
 {% block content %}
-  <h1>{{ title }}</h1>
+  <div class="UtilHead">
+    <h1>{{ title }}</h1>
 
-  <h3 class="Selector">
-    {% if not year %}
-      (See posts from:
-    {% else %}
-      (See <a href="/recent.html">recent posts</a> or posts from:
-    {% endif %}
-    {% for yr in years %}
-      <a href="/year-{{ yr }}.html">{{ yr }}</a>
-    {% endfor -%})
-  </h3>
-
+    <h3 class="Selector">
+      {% if not year %}
+        (See posts from:
+      {% else %}
+        (See <a href="/recent.html">recent posts</a> or posts from:
+      {% endif %}
+      {% for yr in years %}
+        <a href="/year-{{ yr }}.html">{{ yr }}</a>
+      {% endfor -%})
+    </h3>
+  </div>
+  
   <ul class="PlainList">
     {% for entry in entries %}
       <li class="Entry">({{ entry.shortdate }}) <a href="/{{ entry.outpath }}">{{ entry.title }}</a>

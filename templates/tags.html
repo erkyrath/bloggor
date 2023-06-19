@@ -14,16 +14,18 @@
 {% endblock %}
 
 {% block content %}
-  <h1>{{ title }}</h1>
+  <div class="UtilHead">
+    <h1>{{ title }}</h1>
 
-  {% if sortby != 'freq' %}
-  <h3 class="Selector">(<a href="/tags-freq.html">Sort by frequency instead</a>)</h3>
-  {% endif %}
+    {% if sortby != 'freq' %}
+      <h3 class="Selector">(<a href="/tags-freq.html">Sort by frequency instead</a>)</h3>
+    {% endif %}
 
-  {% if sortby != 'alpha' %}
-  <h3 class="Selector">(<a href="/tags.html">Sort alphabetically instead</a>)</h3>
-  {% endif %}
-
+    {% if sortby != 'alpha' %}
+      <h3 class="Selector">(<a href="/tags.html">Sort alphabetically instead</a>)</h3>
+    {% endif %}
+  </div>
+  
   <hr>
   
   <div class="TagTable">

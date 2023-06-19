@@ -1,10 +1,12 @@
 {% extends "page.html" %}
 
 {% block content %}
-  <h1>Tag: {{ tag }} {% if not oneentry %}({{ entries|length }}){% endif %}</h1>
-  {% if oneentry %}
-  <h3 class="Selector">Only one post contains this tag.</h3>
-  {% endif %}
+  <div class="UtilHead">
+    <h1>Tag: {{ tag }} {% if not oneentry %}({{ entries|length }}){% endif %}</h1>
+    {% if oneentry %}
+      <h3 class="Selector">Only one post contains this tag.</h3>
+    {% endif %}
+  </div>
 
   <ul class="PlainList">
     {% for entry in entries %}
