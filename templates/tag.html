@@ -3,7 +3,7 @@
 {% block content %}
   <h1>Tag: {{ tag }} {% if not oneentry %}({{ entries|length }}){% endif %}</h1>
   {% if oneentry %}
-  <p><i>Only one post contains this tag.</i></p>
+  <h3 class="Selector">Only one post contains this tag.</h3>
   {% endif %}
 
   <ul class="PlainList">

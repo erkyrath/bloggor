@@ -244,6 +244,11 @@ body {
     font-style: italic;
 }
 
+h3.Selector {
+    font-size: 1em;
+    font-style: italic;
+}
+
 h1 {
     font-size: 1.50em;
     margin-top: 0.85em;
