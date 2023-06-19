@@ -1,4 +1,39 @@
 import re
+from collections.abc import MutableMapping
+
+class MultiDict(MutableMapping):
+    def __init__(self):
+        self.map = {}
+
+    def __repr__(self):
+        return '<MultDict %r>' % (self.map,)
+
+    def keys(self):
+        return self.map.keys()
+
+    def __getitem__(self, key):
+        return self.map[key]
+
+    def __setitem__(self, key, val):
+        self.map[key] = val
+
+    def __delitem__(self, key):
+        del self.map[key]
+
+    def __len__(self):
+        return len(self.map)
+
+    def __iter__(self):
+        return self.map.__iter__()
+
+    def add(self, key, val):
+        if key not in self.map:
+            self.map[key] = [ val ]
+        else:
+            self.map[key].append(val)
+
+    def totallen(self):
+        return sum([ len(ls) for ls in self.map.values() ])
 
 pat_basictag = re.compile('^[a-z0-9 -]*$')
 pat_fancychar = re.compile('[^a-z0-9-]')
@@ -27,4 +62,5 @@ def parsedate(val):
         else:
             return val
     return None
+
 
