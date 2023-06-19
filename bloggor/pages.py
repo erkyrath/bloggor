@@ -173,7 +173,7 @@ class TagListPage(Page):
         
         fl = open(os.path.join(self.ctx.opts.destdir, self.tempoutpath), 'w')
         template = self.jenv.get_template('tags.html')
-        fl.write(template.render(title='All Tags', tags=tags))
+        fl.write(template.render(title='All Tags', tags=tags, sortby='alpha'))
         fl.close()
 
 
@@ -189,7 +189,7 @@ class TagListFreqPage(Page):
         
         fl = open(os.path.join(self.ctx.opts.destdir, self.tempoutpath), 'w')
         template = self.jenv.get_template('tags.html')
-        fl.write(template.render(title='All Tags (by Frequency)', tags=tags))
+        fl.write(template.render(title='All Tags (by Frequency)', tags=tags, sortby='freq'))
         fl.close()
 
 

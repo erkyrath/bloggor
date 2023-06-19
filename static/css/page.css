@@ -274,6 +274,12 @@ h5 {
     margin-bottom: 0.85em;
 }
 
+hr {
+    border: none;
+    height: 1px;
+    background-color: #CCF;
+}
+
 a {
     color: #2020B0;
     text-decoration-color: #DDF;
