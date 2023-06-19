@@ -1,10 +1,22 @@
 {% extends "page.html" %}
 
+{% block exthead %}
+<style type="text/css">
+.Tag {
+  display: inline-block;
+  min-width: 150px;
+  line-height: 1.7em;
+}
+</style>
+{% endblock %}
+
 {% block content %}
   <h1>All Tags</h1>
-  <ul>
+
+  <div class="TagTable">
     {% for tag, count in tags %}
-      <li><a href="/tag/{{ tag|tagfilename|urlencode }}.html">{{ tag }}</a> ({{ count }})
+      <div class="Tag"><a href="/tag/{{ tag|tagfilename|urlencode }}.html">{{ tag }}</a> ({{ count }})</div>
     {% endfor %}
-  </ul>
+  </div>
+
 {% endblock %}
