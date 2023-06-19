@@ -106,6 +106,22 @@ class RecentEntriesPage(Page):
         fl.close()
         
     
+class YearEntriesPage(Page):
+    def __init__(self, ctx, year):
+        Page.__init__(self, ctx)
+        self.year = year
+        self.outpath = 'year-%d.html' % (self.year,)
+        self.complete()
+
+    def build(self):
+        entries = self.ctx.entriesbyyear[self.year]
+
+        fl = open(os.path.join(self.opts.destdir, self.tempoutpath), 'w')
+        template = self.jenv.get_template('recent.html')
+        fl.write(template.render(title='Posts From %d' % (self.year,), entries=entries))
+        fl.close()
+        
+    
 class TagListPage(Page):
     def __init__(self, ctx):
         Page.__init__(self, ctx)
@@ -230,6 +246,7 @@ class EntryPage(Page):
             raise RuntimeException(self.path+': No title')
 
         self.draft = False  ###
+        ### What is the following for drafts? Current date? End of the given month?
 
         self.shortdate = self.published[0:10]
         self.year = int(self.shortdate[0:4])

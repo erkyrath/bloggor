@@ -3,9 +3,10 @@ import os.path
 import markdown
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
+from bloggor.util import MultiDict
 from bloggor.pages import EntryPage, GenTemplatePage, StaticMDPage
 from bloggor.pages import TagListPage, TagListFreqPage, TagPage
-from bloggor.pages import RecentEntriesPage
+from bloggor.pages import RecentEntriesPage, YearEntriesPage
 import bloggor.jextension
 
 class Context:
@@ -16,6 +17,7 @@ class Context:
         self.pages = []
         self.entries = []
         self.entriesbytag = {}
+        self.entriesbyyear = MultiDict()
         
         self.jenv = Environment(
             loader = FileSystemLoader('templates'),
@@ -54,6 +56,7 @@ class Context:
         self.entries.sort(key=lambda entry:(entry.draft, entry.published, entry.title))
 
         for entry in self.entries:
+            self.entriesbyyear.add(entry.year, entry)
             for tag in entry.tags:
                 if tag not in self.entriesbytag:
                     self.entriesbytag[tag] = [ entry ]
@@ -62,6 +65,10 @@ class Context:
 
         page = RecentEntriesPage(self)
         self.pages.append(page)
+
+        for year in self.entriesbyyear:
+            page = YearEntriesPage(self, year)
+            self.pages.append(page)
         
         page = TagListPage(self)
         self.pages.append(page)
