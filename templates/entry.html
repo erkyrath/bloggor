@@ -8,7 +8,7 @@
       <h4 class="Date">Updated: {{ entry.updated }}</h4>
     {% endif %}
   
-    {% if tags %}
+    {% if entry.tags %}
     <h4 class="Tags">Tagged:
       {% set comma = joiner(", ") %}
       {% for tag in entry.tags -%}

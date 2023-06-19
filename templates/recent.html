@@ -1,11 +1,33 @@
 {% extends "page.html" %}
 
+{% block exthead %}
+<style type="text/css">
+li.Entry {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+.Tags {
+  font-size: 0.8em;
+  font-style: italic;
+  margin-left: 3em;
+}
+</style>
+{% endblock %}
+
 {% block content %}
   <h1>{{ title }}</h1>
 
   <ul class="PlainList">
     {% for entry in entries %}
-      <li>({{ entry.shortdate }}) <a href="/{{ entry.outpath }}">{{ entry.title }}</a>
+      <li class="Entry">({{ entry.shortdate }}) <a href="/{{ entry.outpath }}">{{ entry.title }}</a>
+      {% if entry.tags %}
+        <div class="Tags">
+        {% set comma = joiner(", ") %}
+        {% for tag in entry.tags -%}
+          {{ comma() }}<a href="/tag/{{ tag|tagfilename|urlencode }}.html">{{ tag }}</a>
+        {%- endfor %}
+	</div>
+      {% endif %}
     {% endfor %}
   </ul>
 
