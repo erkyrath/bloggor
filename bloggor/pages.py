@@ -10,13 +10,24 @@ class Page:
 
         self.outpath = None
         self.tempoutpath = None
+        self.outuri = None
+        self.outdir = None
 
     def complete(self):
+        if not self.outpath.endswith('.html'):
+            raise RuntimeException(self.outpath+': not html')
+        self.outuri = self.outpath[ 0 : -5 ]
+        if '.' in self.outuri:
+            raise RuntimeException(self.outuri+': uri contains dot')
+            
         self.outdir = os.path.dirname(self.outpath)
         if not self.opts.notemp:
             self.tempoutpath = self.outpath + '_tmp.html'
         else:
             self.tempoutpath = self.outpath
+
+    def __repr__(self):
+        return '<%s "%s">' % (self.__class__.__name__, self.outuri)
 
     def commit(self):
         assert self.tempoutpath != self.outpath
@@ -36,9 +47,6 @@ class GenTemplatePage(Page):
         self.outpath = outpath
 
         self.complete()
-
-    def __repr__(self):
-        return '<GenTemplatePage "%s">' % (self.template,)
 
     def read(self):
         pass
@@ -64,9 +72,6 @@ class StaticMDPage(Page):
 
         self.complete()
 
-    def __repr__(self):
-        return '<StaticMDPage "%s">' % (self.filename,)
-        
     def read(self):
         fl = open(self.path)
         dat = fl.read()
@@ -241,15 +246,11 @@ class EntryPage(Page):
         self.outpath = os.path.relpath(os.path.join(self.dirpath, outfile), start=ctx.entriesdir)
         if self.outpath.startswith('..') or self.outpath.startswith('/'):
             raise RuntimeException(self.path+': Bad outpath: ' + self.outpath)
-        ### verify outpath has no dots except .html
 
         self.title = None
         self.tags = None
         self.index = None
         self.complete()
-
-    def __repr__(self):
-        return '<EntryPage "%s">' % (self.path,)
 
     def read(self):
         if self.type == HTML:
