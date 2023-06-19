@@ -300,7 +300,7 @@ a:hover {
 }
 
 blockquote {
-    margin-left: 16px;
+    margin-left: 4px;
     margin-right: 4px;
     border-left: 8px solid #E0E0FF;
     padding-left: 16px;
@@ -323,5 +323,23 @@ ul.PlainList {
 .PlainList li {
     margin-left: 1em;
     text-indent: -1em;
+}
+
+pre {
+    white-space: pre-wrap;
+    margin-left: 4px;
+    margin-right: 4px;
+    border-left: 8px solid #FFE2D2;
+    padding-left: 16px;
+    padding-right: 8px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    background: #FFF4E0;
+}
+
+code {
+    white-space: pre-wrap;
+    font-family: "Source Code Pro", monospace;
+    font-size: 0.9em;
 }
 
