@@ -205,10 +205,11 @@ class TagPage(Page):
             os.makedirs(os.path.join(self.ctx.opts.destdir, self.outdir), exist_ok=True)
         
         entries = self.ctx.alltags[self.tag]
+        oneentry = (len(entries) == 1)
         
         fl = open(os.path.join(self.ctx.opts.destdir, self.tempoutpath), 'w')
         template = self.jenv.get_template('tag.html')
-        fl.write(template.render(title='Tag: '+self.tag, tag=self.tag, entries=entries))
+        fl.write(template.render(title='Tag: '+self.tag, tag=self.tag, entries=entries, oneentry=oneentry))
         fl.close()
 
 from bloggor.excepts import RuntimeException

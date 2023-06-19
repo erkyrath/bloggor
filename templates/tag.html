@@ -1,10 +1,14 @@
 {% extends "page.html" %}
 
 {% block content %}
-  <h1>Tag: {{ tag }} ({{ entries|length }})</h1>
+  <h1>Tag: {{ tag }} {% if not oneentry %}({{ entries|length }}){% endif %}</h1>
+  {% if oneentry %}
+  <p><i>Only one entry contains this tag.</i></p>
+  {% endif %}
+
   <ul class="PlainList">
     {% for entry in entries %}
-      <li><a href="/{{ entry.outpath }}">{{ entry.title }}</a>
+      <li>({{ entry.shortdate }}) <a href="/{{ entry.outpath }}">{{ entry.title }}</a>
     {% endfor %}
   </ul>
 {% endblock %}

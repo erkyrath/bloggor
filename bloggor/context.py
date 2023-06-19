@@ -37,6 +37,8 @@ class Context:
                 self.pages.append(page)
                 self.entries.append(page)
 
+        ### sort entries by pub-date, draft at end
+
         page = StaticMDPage(self, 'about.md', 'about.html')
         self.pages.append(page)
 
