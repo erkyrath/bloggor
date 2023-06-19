@@ -329,12 +329,12 @@ pre {
     white-space: pre-wrap;
     margin-left: 4px;
     margin-right: 4px;
-    border-left: 8px solid #FFE2D2;
+    border-left: 8px solid #E0F0D2;
     padding-left: 16px;
     padding-right: 8px;
     padding-top: 1px;
     padding-bottom: 1px;
-    background: #FFF4E0;
+    background: #E8FFE0;
 }
 
 code {
