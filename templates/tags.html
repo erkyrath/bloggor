@@ -2,10 +2,13 @@
 
 {% block exthead %}
 <style type="text/css">
+.TagTable {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 150px);
+}
 .Tag {
-  display: inline-block;
-  min-width: 150px;
-  line-height: 1.7em;
+  padding-top: 4px;
+  padding-bottom: 4px;
 }
 </style>
 {% endblock %}
