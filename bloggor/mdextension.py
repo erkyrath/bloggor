@@ -31,7 +31,7 @@ class MorePostProcessor(Postprocessor):
     pattern = re.compile('<morebreak></morebreak>')
     
     def run(self, text):
-        return MorePostProcessor.pattern.sub('<!--more-->\n', text)
+        return MorePostProcessor.pattern.sub('<!--more-->\n<a name="more"></a>\n', text)
     
 class MoreBreakExtension(Extension):
     def extendMarkdown(self, md):
