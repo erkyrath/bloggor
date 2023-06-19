@@ -24,9 +24,7 @@ li.Entry {
       {% else %}
         (See <a href="/recent.html">recent posts</a> or posts from:
       {% endif %}
-      {% for yr in years %}
-        <a href="/year-{{ yr }}.html">{{ yr }}</a>
-      {% endfor -%})
+      {% for yr in years %} <a href="/year-{{ yr }}.html">{{ yr }}</a>{% endfor -%})
     </h3>
   </div>
   
