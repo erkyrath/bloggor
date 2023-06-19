@@ -30,7 +30,7 @@ li.Entry {
   
   <ul class="PlainList">
     {% for entry in entries %}
-      <li class="Entry">({{ entry.shortdate }}) <a href="/{{ entry.outpath }}">{{ entry.title }}</a>
+      <li class="Entry">({{ entry.shortdate }}) <a href="/{{ entry.outuri }}">{{ entry.title }}</a>
       {% if entry.tags %}
         <div class="Tags">
         {% set comma = joiner(", ") %}

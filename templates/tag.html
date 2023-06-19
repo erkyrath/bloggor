@@ -10,7 +10,7 @@
 
   <ul class="PlainList">
     {% for entry in entries %}
-      <li>({{ entry.shortdate }}) <a href="/{{ entry.outpath }}">{{ entry.title }}</a>
+      <li>({{ entry.shortdate }}) <a href="/{{ entry.outuri }}">{{ entry.title }}</a>
     {% endfor %}
   </ul>
 {% endblock %}

@@ -5,7 +5,7 @@
 {% for entry in entries %}
 
   <div class="EntryHead">
-    <h2><a href="{{ entry.outpath }}">{{ entry.title }}</a></h2>
+    <h2><a href="{{ entry.outuri }}">{{ entry.title }}</a></h2>
     <h4 class="Date">{{ entry.longpublished }}</h4>
     {% if entry.updated %}
       <h4 class="Date">Updated: {{ entry.updated }}</h4>
@@ -36,7 +36,7 @@
 
   {% if partbody %}
     <div class="UtilHead">
-      <h3 class="Selector"><a href="{{ entry.outpath }}#more">Read the rest...</a></h3>
+      <h3 class="Selector"><a href="{{ entry.outuri }}#more">Read the rest...</a></h3>
     </div>
   {% endif %}
 

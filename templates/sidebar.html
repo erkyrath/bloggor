@@ -29,7 +29,7 @@
 <h3><a href="/recent">Recent posts</a></h3>
 <ul>
 {% for ent in recentfew %}
-  <li><a href="/{{ ent.outpath }}">{{ ent.title }}</a>
+  <li><a href="/{{ ent.outuri }}">{{ ent.title }}</a>
 {% endfor %}
 </ul>
 {% endif %}
@@ -37,14 +37,14 @@
 {% if preventry %}
 <h3>Previous post</h3>
 <ul>
-  <li><a href="/{{ preventry.outpath }}">{{ preventry.title }}</a>
+  <li><a href="/{{ preventry.outuri }}">{{ preventry.title }}</a>
 </ul>
 {% endif %}
 
 {% if nextentry %}
 <h3>Next post</h3>
 <ul>
-  <li><a href="/{{ nextentry.outpath }}">{{ nextentry.title }}</a>
+  <li><a href="/{{ nextentry.outuri }}">{{ nextentry.title }}</a>
 </ul>
 {% endif %}
 
