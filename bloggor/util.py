@@ -49,6 +49,7 @@ def tagfilename(val):
         return val.replace(' ', '_')
     return pat_fancychar.sub(escapefancy, val)
 
+
 pat_simpledate = re.compile('^[0-9]{4}-[0-9]{2}-[0-9]{2}$')
 pat_fulldate = re.compile('^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}([.][0-9]+)?Z$')
 
@@ -64,3 +65,9 @@ def parsedate(val):
     return None
 
 
+def splitatmore(val):
+    pos = val.find('<!--more-->')
+    if pos < 0:
+        return val
+    else:
+        return val[ : pos ]

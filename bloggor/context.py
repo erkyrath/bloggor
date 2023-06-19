@@ -23,7 +23,7 @@ class Context:
         
         self.jenv = Environment(
             loader = FileSystemLoader('templates'),
-            extensions = [ bloggor.jextension.TagFilename ],
+            extensions = [ bloggor.jextension.TagFilename, bloggor.jextension.SplitAtMore ],
             autoescape = select_autoescape(),
             keep_trailing_newline = True,
         )

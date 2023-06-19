@@ -23,7 +23,7 @@
 
   <div class="EntryBody">
     {% autoescape false %}
-    {{ entry.body }}
+    {{ entry.body|splitatmore }}
     {% endautoescape %}
   </div>
 
