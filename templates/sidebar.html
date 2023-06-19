@@ -24,12 +24,14 @@
   (<a href="/tags.html">more...</a>)
 </p>
 
-<h3>Recent posts</h3>
+{% if recentfew %}
+<h3><a href="/recent.html">Recent posts</a></h3>
 <ul>
-  <li><a href="/###">Firmament: design and business ruminations</a>
-  <li><a href="/###">A few notes on notes on Disco Elysium</a>
-  <li><a href="/###">Narrative games that I wrote about but forgot to post</a>
+{% for ent in recentfew %}
+  <li><a href="/{{ ent.outpath }}">{{ ent.title }}</a>
+{% endfor %}
 </ul>
+{% endif %}
 
 {% if preventry %}
 <h3>Previous post</h3>

@@ -110,7 +110,8 @@ class RecentEntriesPage(Page):
         fl.write(template.render(
             title='Recent Posts',
             entries=entries,
-            years=yearls))
+            years=yearls,
+            recentfew=self.ctx.recentfew))
         fl.close()
         
     
@@ -152,7 +153,8 @@ class TagListPage(Page):
         fl.write(template.render(
             title='All Tags (Alphabetical)',
             tags=tags,
-            sortby='alpha'))
+            sortby='alpha',
+            recentfew=self.ctx.recentfew))
         fl.close()
 
 
@@ -171,7 +173,8 @@ class TagListFreqPage(Page):
         fl.write(template.render(
             title='All Tags (by Frequency)',
             tags=tags,
-            sortby='freq'))
+            sortby='freq',
+            recentfew=self.ctx.recentfew))
         fl.close()
 
 
