@@ -37,7 +37,7 @@ li.Entry {
         {% for tag in entry.tags -%}
           {{ comma() }}<a href="/tag/{{ tag|tagfilename|urlencode }}.html">{{ tag }}</a>
         {%- endfor %}
-	</div>
+        </div>
       {% endif %}
     {% endfor %}
   </ul>
