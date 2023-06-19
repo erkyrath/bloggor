@@ -173,7 +173,7 @@ class TagListPage(Page):
         
         fl = open(os.path.join(self.ctx.opts.destdir, self.tempoutpath), 'w')
         template = self.jenv.get_template('tags.html')
-        fl.write(template.render(title='All Tags', tags=tags, sortby='alpha'))
+        fl.write(template.render(title='All Tags (Alphabetical)', tags=tags, sortby='alpha'))
         fl.close()
 
 
