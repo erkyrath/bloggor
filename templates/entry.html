@@ -18,8 +18,10 @@
     {% endif %}
   </div>
 
-  {% autoescape false %}
-  {{ entry.body }}
-  {% endautoescape %}
+  <div class="EntryBody">
+    {% autoescape false %}
+    {{ entry.body }}
+    {% endautoescape %}
+  </div>
 
 {% endblock %}
