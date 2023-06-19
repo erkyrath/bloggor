@@ -99,10 +99,13 @@ class RecentEntriesPage(Page):
     def build(self):
         entries = self.ctx.entries[ -20 : ]
         entries.reverse()
+        
+        yearls = list(self.ctx.entriesbyyear.keys())
+        yearls.sort(reverse=True)
 
         fl = open(os.path.join(self.opts.destdir, self.tempoutpath), 'w')
         template = self.jenv.get_template('recent.html')
-        fl.write(template.render(title='Recent Posts', entries=entries))
+        fl.write(template.render(title='Recent Posts', entries=entries, years=yearls))
         fl.close()
         
     
@@ -116,9 +119,12 @@ class YearEntriesPage(Page):
     def build(self):
         entries = self.ctx.entriesbyyear[self.year]
 
+        yearls = list(self.ctx.entriesbyyear.keys())
+        yearls.sort(reverse=True)
+
         fl = open(os.path.join(self.opts.destdir, self.tempoutpath), 'w')
         template = self.jenv.get_template('recent.html')
-        fl.write(template.render(title='Posts From %d' % (self.year,), entries=entries))
+        fl.write(template.render(title='Posts From %d' % (self.year,), year=self.year, entries=entries, years=yearls))
         fl.close()
         
     
