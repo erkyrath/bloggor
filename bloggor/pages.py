@@ -206,6 +206,9 @@ class TagPage(Page):
         self.outpath = os.path.join('tag', tagfilename(tag)+'.html')
         self.complete()
 
+    def __repr__(self):
+        return '<%s "%s">' % (self.__class__.__name__, self.tag)
+
     def build(self):
         if self.outdir:
             os.makedirs(os.path.join(self.opts.destdir, self.outdir), exist_ok=True)
