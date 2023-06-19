@@ -86,7 +86,9 @@ class StaticMDPage(Page):
             
         fl = open(os.path.join(self.opts.destdir, self.tempoutpath), 'w')
         template = self.jenv.get_template('static.html')
-        fl.write(template.render(title=self.title, body=self.body))
+        fl.write(template.render(
+            title=self.title,
+            body=self.body))
         fl.close()
 
 
@@ -105,7 +107,10 @@ class RecentEntriesPage(Page):
 
         fl = open(os.path.join(self.opts.destdir, self.tempoutpath), 'w')
         template = self.jenv.get_template('recent.html')
-        fl.write(template.render(title='Recent Posts', entries=entries, years=yearls))
+        fl.write(template.render(
+            title='Recent Posts',
+            entries=entries,
+            years=yearls))
         fl.close()
         
     
@@ -124,7 +129,11 @@ class YearEntriesPage(Page):
 
         fl = open(os.path.join(self.opts.destdir, self.tempoutpath), 'w')
         template = self.jenv.get_template('recent.html')
-        fl.write(template.render(title='Posts From %d' % (self.year,), year=self.year, entries=entries, years=yearls))
+        fl.write(template.render(
+            title='Posts From %d' % (self.year,),
+            year=self.year,
+            entries=entries,
+            years=yearls))
         fl.close()
         
     
@@ -140,7 +149,10 @@ class TagListPage(Page):
         
         fl = open(os.path.join(self.opts.destdir, self.tempoutpath), 'w')
         template = self.jenv.get_template('tags.html')
-        fl.write(template.render(title='All Tags (Alphabetical)', tags=tags, sortby='alpha'))
+        fl.write(template.render(
+            title='All Tags (Alphabetical)',
+            tags=tags,
+            sortby='alpha'))
         fl.close()
 
 
@@ -156,7 +168,10 @@ class TagListFreqPage(Page):
         
         fl = open(os.path.join(self.opts.destdir, self.tempoutpath), 'w')
         template = self.jenv.get_template('tags.html')
-        fl.write(template.render(title='All Tags (by Frequency)', tags=tags, sortby='freq'))
+        fl.write(template.render(
+            title='All Tags (by Frequency)',
+            tags=tags,
+            sortby='freq'))
         fl.close()
 
 
@@ -176,7 +191,11 @@ class TagPage(Page):
         
         fl = open(os.path.join(self.opts.destdir, self.tempoutpath), 'w')
         template = self.jenv.get_template('tag.html')
-        fl.write(template.render(title='Tag: '+self.tag, tag=self.tag, entries=entries, oneentry=oneentry))
+        fl.write(template.render(
+            title='Tag: '+self.tag,
+            tag=self.tag,
+            entries=entries,
+            oneentry=oneentry))
         fl.close()
 
 
@@ -270,7 +289,9 @@ class EntryPage(Page):
             
         fl = open(os.path.join(self.opts.destdir, self.tempoutpath), 'w')
         template = self.jenv.get_template('entry.html')
-        fl.write(template.render(entry=self, title=self.title))
+        fl.write(template.render(
+            entry=self,
+            title=self.title))
         fl.close()
 
 
