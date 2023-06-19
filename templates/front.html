@@ -5,7 +5,7 @@
 {% for entry in entries %}
 
   <div class="EntryHead">
-    <h2>{{ entry.title }}</h2>
+    <h2><a href="{{ entry.outpath }}">{{ entry.title }}</a></h2>
     <h4 class="Date">{{ entry.longpublished }}</h4>
     {% if entry.updated %}
       <h4 class="Date">Updated: {{ entry.updated }}</h4>
@@ -21,11 +21,24 @@
     {% endif %}
   </div>
 
+  {% set partbody = entry.body|splitatmore %}
   <div class="EntryBody">
-    {% autoescape false %}
-    {{ entry.body|splitatmore }}
-    {% endautoescape %}
+    {% if partbody %}
+      {% autoescape false %}
+      {{ partbody }}
+      {% endautoescape %}
+    {% else %}
+      {% autoescape false %}
+      {{ entry.body }}
+      {% endautoescape %}
+    {% endif %}
   </div>
+
+  {% if partbody %}
+    <div class="UtilHead">
+      <h3 class="Selector"><a href="{{ entry.outpath }}">Read the rest...</a></h3>
+    </div>
+  {% endif %}
 
   <hr>
 

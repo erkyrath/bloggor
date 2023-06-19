@@ -68,6 +68,6 @@ def parsedate(val):
 def splitatmore(val):
     pos = val.find('<!--more-->')
     if pos < 0:
-        return val
+        return None
     else:
         return val[ : pos ]
