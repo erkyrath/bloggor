@@ -39,9 +39,9 @@ class MoreBreakExtension(Extension):
         md.postprocessors.register(MorePostProcessor(md.parser), 'morepost', 0)
 
 
-class BoxBlockProcessor(BlockProcessor):
-    RE_FENCE_START = r'^ *!{3,} *\n' # start line, e.g., `   !!!! `
-    RE_FENCE_END = r'\n *!{3,}\s*$'  # last non-blank line, e.g, '!!!\n  \n\n'
+class UnwrapBlockProcessor(BlockProcessor):
+    RE_FENCE_START = r'^ *[{]{3,} *\n'
+    RE_FENCE_END = r'\n *[}]{3,}\s*$'
 
     def test(self, parent, block):
         return re.match(self.RE_FENCE_START, block)
@@ -67,6 +67,6 @@ class BoxBlockProcessor(BlockProcessor):
         blocks[0] = original_block
         return False  # equivalent to our test() routine returning False
 
-class BoxExtension(Extension):
+class UnwrapExtension(Extension):
     def extendMarkdown(self, md):
-        md.parser.blockprocessors.register(BoxBlockProcessor(md.parser), 'box', 175)
+        md.parser.blockprocessors.register(UnwrapBlockProcessor(md.parser), 'unwrap', 175)
