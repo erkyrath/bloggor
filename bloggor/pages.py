@@ -241,6 +241,7 @@ class EntryPage(Page):
         self.outpath = os.path.relpath(os.path.join(self.dirpath, outfile), start=ctx.entriesdir)
         if self.outpath.startswith('..') or self.outpath.startswith('/'):
             raise RuntimeException(self.path+': Bad outpath: ' + self.outpath)
+        ### verify outpath has no dots except .html
 
         self.title = None
         self.tags = None
