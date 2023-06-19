@@ -176,6 +176,23 @@ class TagListPage(Page):
         fl.write(template.render(title='All Tags', tags=tags))
         fl.close()
 
+
+class TagListFreqPage(Page):
+    def __init__(self, ctx):
+        Page.__init__(self, ctx)
+        self.outpath = 'tags-freq.html'
+        self.complete()
+
+    def build(self):
+        tags = [ (tag, len(ls)) for tag, ls in self.ctx.alltags.items() ]
+        tags.sort(key=lambda tup:(-tup[1], tup[0]))
+        
+        fl = open(os.path.join(self.ctx.opts.destdir, self.tempoutpath), 'w')
+        template = self.jenv.get_template('tags.html')
+        fl.write(template.render(title='All Tags (by Frequency)', tags=tags))
+        fl.close()
+
+
 class TagPage(Page):
     def __init__(self, ctx, tag):
         Page.__init__(self, ctx)
