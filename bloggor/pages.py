@@ -113,7 +113,7 @@ class TagListPage(Page):
         self.complete()
 
     def build(self):
-        tags = [ (tag, len(ls)) for tag, ls in self.ctx.alltags.items() ]
+        tags = [ (tag, len(ls)) for tag, ls in self.ctx.entriesbytag.items() ]
         tags.sort()
         
         fl = open(os.path.join(self.opts.destdir, self.tempoutpath), 'w')
@@ -129,7 +129,7 @@ class TagListFreqPage(Page):
         self.complete()
 
     def build(self):
-        tags = [ (tag, len(ls)) for tag, ls in self.ctx.alltags.items() ]
+        tags = [ (tag, len(ls)) for tag, ls in self.ctx.entriesbytag.items() ]
         tags.sort(key=lambda tup:(-tup[1], tup[0]))
         
         fl = open(os.path.join(self.opts.destdir, self.tempoutpath), 'w')
@@ -149,7 +149,7 @@ class TagPage(Page):
         if self.outdir:
             os.makedirs(os.path.join(self.opts.destdir, self.outdir), exist_ok=True)
         
-        entries = self.ctx.alltags[self.tag]
+        entries = self.ctx.entriesbytag[self.tag]
         oneentry = (len(entries) == 1)
         
         fl = open(os.path.join(self.opts.destdir, self.tempoutpath), 'w')

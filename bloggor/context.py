@@ -15,7 +15,7 @@ class Context:
         
         self.pages = []
         self.entries = []
-        self.alltags = {}
+        self.entriesbytag = {}
         
         self.jenv = Environment(
             loader = FileSystemLoader('templates'),
@@ -55,10 +55,10 @@ class Context:
 
         for entry in self.entries:
             for tag in entry.tags:
-                if tag not in self.alltags:
-                    self.alltags[tag] = [ entry ]
+                if tag not in self.entriesbytag:
+                    self.entriesbytag[tag] = [ entry ]
                 else:
-                    self.alltags[tag].append(entry)
+                    self.entriesbytag[tag].append(entry)
 
         page = RecentEntriesPage(self)
         self.pages.append(page)
@@ -69,7 +69,7 @@ class Context:
         page = TagListFreqPage(self)
         self.pages.append(page)
 
-        for tag in self.alltags:
+        for tag in self.entriesbytag:
             page = TagPage(self, tag)
             self.pages.append(page)
     
