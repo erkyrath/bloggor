@@ -24,12 +24,19 @@ class Context:
         
         self.jenv = Environment(
             loader = FileSystemLoader('templates'),
-            extensions = [ bloggor.jextension.TagFilename, bloggor.jextension.SplitAtMore ],
+            extensions = [
+                bloggor.jextension.TagFilename,
+                bloggor.jextension.SplitAtMore
+            ],
             autoescape = select_autoescape(),
             keep_trailing_newline = True,
         )
 
-        self.mdenv = markdown.Markdown(extensions=['meta', 'def_list', 'fenced_code', 'tables', bloggor.mdextension.MoreBreakExtension(), bloggor.mdextension.UnwrapExtension()])
+        self.mdenv = markdown.Markdown(extensions=[
+            'meta', 'def_list', 'fenced_code', 'tables',
+            bloggor.mdextension.MoreBreakExtension(),
+            bloggor.mdextension.UnwrapExtension()
+        ])
 
     def build(self):
         print('Reading...')
