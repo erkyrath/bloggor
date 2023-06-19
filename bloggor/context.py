@@ -9,6 +9,7 @@ from bloggor.pages import EntryPage, GenTemplatePage, StaticMDPage
 from bloggor.pages import TagListPage, TagListFreqPage, TagPage
 from bloggor.pages import RecentEntriesPage, YearEntriesPage
 import bloggor.jextension
+import bloggor.mdextension
 
 class Context:
     def __init__(self, opts):
@@ -28,7 +29,7 @@ class Context:
             keep_trailing_newline = True,
         )
 
-        self.mdenv = markdown.Markdown(extensions=['meta', 'def_list', 'fenced_code', 'tables'])
+        self.mdenv = markdown.Markdown(extensions=['meta', 'def_list', 'fenced_code', 'tables', bloggor.mdextension.MoreBreakExtension()])
 
     def build(self):
         print('Reading...')
