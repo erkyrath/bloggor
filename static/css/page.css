@@ -229,7 +229,7 @@ body {
 
 .EntryHead h2 {
     font-family: "Alegreya", "Georgia", "Times New Roman", serif;
-    font-size: 24px;
+    font-size: 1.66em;
     margin-bottom: 6px;
 }
 
@@ -247,6 +247,10 @@ body {
 .UtilHead h3.Selector {
     font-size: 1em;
     font-style: italic;
+}
+
+.EntryBody h1, .EntryBody h2, .EntryBody h3, .EntryBody h4, .EntryBody h5 {
+    font-family: "Alegreya", "Georgia", "Times New Roman", serif;
 }
 
 h1 {
@@ -314,6 +318,7 @@ ul.PlainList {
     list-style: none;
     padding-left: 0px;
 }
+
 .PlainList li {
     margin-left: 1em;
     text-indent: -1em;
