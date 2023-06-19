@@ -89,6 +89,22 @@ class StaticMDPage(Page):
         fl.close()
 
 
+class RecentEntriesPage(Page):
+    def __init__(self, ctx):
+        Page.__init__(self, ctx)
+        self.outpath = 'recent.html'
+        self.complete()
+
+    def build(self):
+        entries = self.ctx.entries[ -20 : ]
+        entries.reverse()
+
+        fl = open(os.path.join(self.ctx.opts.destdir, self.tempoutpath), 'w')
+        template = self.jenv.get_template('recent.html')
+        fl.write(template.render(title='Recent Posts', entries=entries))
+        fl.close()
+        
+    
 class TagListPage(Page):
     def __init__(self, ctx):
         Page.__init__(self, ctx)

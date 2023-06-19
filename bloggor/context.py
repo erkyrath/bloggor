@@ -5,6 +5,7 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 from bloggor.pages import EntryPage, GenTemplatePage, StaticMDPage
 from bloggor.pages import TagListPage, TagListFreqPage, TagPage
+from bloggor.pages import RecentEntriesPage
 import bloggor.jextension
 
 class Context:
@@ -56,6 +57,9 @@ class Context:
                 else:
                     self.alltags[tag].append(entry)
 
+        page = RecentEntriesPage(self)
+        self.pages.append(page)
+        
         page = TagListPage(self)
         self.pages.append(page)
 
