@@ -54,6 +54,8 @@ class Context:
             page.read()
                     
         self.entries.sort(key=lambda entry:(entry.draft, entry.published, entry.title))
+        for ix in range(len(self.entries)):
+            self.entries[ix].index = ix
 
         for entry in self.entries:
             self.entriesbyyear.add(entry.year, entry)

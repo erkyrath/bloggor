@@ -31,15 +31,19 @@
   <li><a href="/###">Narrative games that I wrote about but forgot to post</a>
 </ul>
 
+{% if preventry %}
 <h3>Previous post</h3>
 <ul>
-  <li><a href="/###">A few notes on notes on Disco Elysium</a>
+  <li><a href="/{{ preventry.outpath }}">{{ preventry.title }}</a>
 </ul>
+{% endif %}
 
+{% if nextentry %}
 <h3>Next post</h3>
 <ul>
-  <li><a href="/###">Narrative games that I wrote about but forgot to post</a>
+  <li><a href="/{{ nextentry.outpath }}">{{ nextentry.title }}</a>
 </ul>
+{% endif %}
 
 <h3><a href="http://weheart.github.io/">Games are for everyone</a></h3>
 <a href="http://weheart.github.io/"><img src="/pic/weheart-64.png" alt="A blue and purple heart" width=64 height=64></a>

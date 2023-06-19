@@ -225,6 +225,7 @@ class EntryPage(Page):
 
         self.title = None
         self.tags = None
+        self.index = None
         self.complete()
 
     def __repr__(self):
@@ -270,13 +271,15 @@ class EntryPage(Page):
         if not self.title:
             raise RuntimeException(self.path+': No title')
 
+        # self.index is set after all posts are read and sorted
+        
         self.draft = False  ###
         ### What is the following for drafts? Current date? End of the given month?
 
         self.shortdate = self.published[0:10]
         self.year = int(self.shortdate[0:4])
         val = datetime.date.fromisoformat(self.shortdate)
-        self.published = val.strftime('%A, %B %d, %Y').replace(' 0', ' ')
+        self.longpublished = val.strftime('%A, %B %d, %Y').replace(' 0', ' ')
 
         val = self.shortdate[0:7].replace('-', '/')
         if val != self.outdir:
@@ -286,12 +289,21 @@ class EntryPage(Page):
     def build(self):
         if self.outdir:
             os.makedirs(os.path.join(self.opts.destdir, self.outdir), exist_ok=True)
+
+        preventry = None
+        nextentry = None
+        if self.index > 0:
+            preventry = self.ctx.entries[self.index-1]
+        if self.index < len(self.ctx.entries)-1:
+            nextentry = self.ctx.entries[self.index+1]
             
         fl = open(os.path.join(self.opts.destdir, self.tempoutpath), 'w')
         template = self.jenv.get_template('entry.html')
         fl.write(template.render(
             entry=self,
-            title=self.title))
+            title=self.title,
+            nextentry=nextentry,
+            preventry=preventry))
         fl.close()
 
 
