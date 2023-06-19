@@ -3,15 +3,15 @@
 {% block content %}
   <div class="EntryHead">
     <h2>{{ title }}</h2>
-    <h4 class="Date">{{ published }}</h4>
-    {% if updated %}
-      <h4 class="Date">Updated: {{ updated }}</h4>
+    <h4 class="Date">{{ entry.published }}</h4>
+    {% if entry.updated %}
+      <h4 class="Date">Updated: {{ entry.updated }}</h4>
     {% endif %}
   
     {% if tags %}
     <h4 class="Tags">Tagged:
       {% set comma = joiner(", ") %}
-      {% for tag in tags -%}
+      {% for tag in entry.tags -%}
         {{ comma() }}<a href="/tag/{{ tag|tagfilename|urlencode }}.html">{{ tag }}</a>
       {%- endfor %}
     </h4>
@@ -19,7 +19,7 @@
   </div>
 
   {% autoescape false %}
-  {{ body }}
+  {{ entry.body }}
   {% endautoescape %}
 
 {% endblock %}

@@ -1,4 +1,5 @@
 import os.path
+import datetime
 
 class Page:
     def __init__(self, ctx):
@@ -160,6 +161,8 @@ class EntryPage(Page):
             raise RuntimeException(self.path+': No title')
 
         self.shortdate = self.published[0:10]
+        val = datetime.date.fromisoformat(self.shortdate)
+        self.published = val.strftime('%A, %B %d, %Y').replace(' 0', ' ')
         
     def build(self):
         if self.outdir:
@@ -167,7 +170,7 @@ class EntryPage(Page):
             
         fl = open(os.path.join(self.ctx.opts.destdir, self.tempoutpath), 'w')
         template = self.jenv.get_template('entry.html')
-        fl.write(template.render(title=self.title, body=self.body, tags=self.tags))
+        fl.write(template.render(entry=self, title=self.title))
         fl.close()
 
 
