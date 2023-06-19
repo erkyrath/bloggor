@@ -88,7 +88,59 @@ class StaticMDPage(Page):
         fl.write(template.render(title=self.title, body=self.body))
         fl.close()
 
+
+class TagListPage(Page):
+    def __init__(self, ctx):
+        Page.__init__(self, ctx)
+        self.outpath = 'tags.html'
+        self.complete()
+
+    def build(self):
+        tags = [ (tag, len(ls)) for tag, ls in self.ctx.alltags.items() ]
+        tags.sort()
         
+        fl = open(os.path.join(self.ctx.opts.destdir, self.tempoutpath), 'w')
+        template = self.jenv.get_template('tags.html')
+        fl.write(template.render(title='All Tags (Alphabetical)', tags=tags, sortby='alpha'))
+        fl.close()
+
+
+class TagListFreqPage(Page):
+    def __init__(self, ctx):
+        Page.__init__(self, ctx)
+        self.outpath = 'tags-freq.html'
+        self.complete()
+
+    def build(self):
+        tags = [ (tag, len(ls)) for tag, ls in self.ctx.alltags.items() ]
+        tags.sort(key=lambda tup:(-tup[1], tup[0]))
+        
+        fl = open(os.path.join(self.ctx.opts.destdir, self.tempoutpath), 'w')
+        template = self.jenv.get_template('tags.html')
+        fl.write(template.render(title='All Tags (by Frequency)', tags=tags, sortby='freq'))
+        fl.close()
+
+
+class TagPage(Page):
+    def __init__(self, ctx, tag):
+        Page.__init__(self, ctx)
+        self.tag = tag
+        self.outpath = os.path.join('tag', tagfilename(tag)+'.html')
+        self.complete()
+
+    def build(self):
+        if self.outdir:
+            os.makedirs(os.path.join(self.ctx.opts.destdir, self.outdir), exist_ok=True)
+        
+        entries = self.ctx.alltags[self.tag]
+        oneentry = (len(entries) == 1)
+        
+        fl = open(os.path.join(self.ctx.opts.destdir, self.tempoutpath), 'w')
+        template = self.jenv.get_template('tag.html')
+        fl.write(template.render(title='Tag: '+self.tag, tag=self.tag, entries=entries, oneentry=oneentry))
+        fl.close()
+
+
 HTML = 'html'
 MD = 'md'
         
@@ -171,58 +223,6 @@ class EntryPage(Page):
         fl = open(os.path.join(self.ctx.opts.destdir, self.tempoutpath), 'w')
         template = self.jenv.get_template('entry.html')
         fl.write(template.render(entry=self, title=self.title))
-        fl.close()
-
-
-class TagListPage(Page):
-    def __init__(self, ctx):
-        Page.__init__(self, ctx)
-        self.outpath = 'tags.html'
-        self.complete()
-
-    def build(self):
-        tags = [ (tag, len(ls)) for tag, ls in self.ctx.alltags.items() ]
-        tags.sort()
-        
-        fl = open(os.path.join(self.ctx.opts.destdir, self.tempoutpath), 'w')
-        template = self.jenv.get_template('tags.html')
-        fl.write(template.render(title='All Tags (Alphabetical)', tags=tags, sortby='alpha'))
-        fl.close()
-
-
-class TagListFreqPage(Page):
-    def __init__(self, ctx):
-        Page.__init__(self, ctx)
-        self.outpath = 'tags-freq.html'
-        self.complete()
-
-    def build(self):
-        tags = [ (tag, len(ls)) for tag, ls in self.ctx.alltags.items() ]
-        tags.sort(key=lambda tup:(-tup[1], tup[0]))
-        
-        fl = open(os.path.join(self.ctx.opts.destdir, self.tempoutpath), 'w')
-        template = self.jenv.get_template('tags.html')
-        fl.write(template.render(title='All Tags (by Frequency)', tags=tags, sortby='freq'))
-        fl.close()
-
-
-class TagPage(Page):
-    def __init__(self, ctx, tag):
-        Page.__init__(self, ctx)
-        self.tag = tag
-        self.outpath = os.path.join('tag', tagfilename(tag)+'.html')
-        self.complete()
-
-    def build(self):
-        if self.outdir:
-            os.makedirs(os.path.join(self.ctx.opts.destdir, self.outdir), exist_ok=True)
-        
-        entries = self.ctx.alltags[self.tag]
-        oneentry = (len(entries) == 1)
-        
-        fl = open(os.path.join(self.ctx.opts.destdir, self.tempoutpath), 'w')
-        template = self.jenv.get_template('tag.html')
-        fl.write(template.render(title='Tag: '+self.tag, tag=self.tag, entries=entries, oneentry=oneentry))
         fl.close()
 
 
