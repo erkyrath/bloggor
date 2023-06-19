@@ -1,0 +1,13 @@
+{% extends "page.html" %}
+
+{% block content %}
+  <h1>{{ title }}</h1>
+
+  <ul class="PlainList">
+    {% for entry in entries %}
+      <li>({{ entry.shortdate }}) <a href="/{{ entry.outpath }}">{{ entry.title }}</a>
+    {% endfor %}
+  </ul>
+
+{% endblock %}
+  
