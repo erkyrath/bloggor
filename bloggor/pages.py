@@ -91,6 +91,22 @@ class StaticMDPage(Page):
             body=self.body))
         fl.close()
 
+        
+class FrontPage(Page):
+    def __init__(self, ctx):
+        Page.__init__(self, ctx)
+        self.outpath = 'index.html'
+        self.complete()
+
+    def build(self):
+        fl = open(os.path.join(self.opts.destdir, self.tempoutpath), 'w')
+        template = self.jenv.get_template('front.html')
+        fl.write(template.render(
+            title=None,
+            entries=self.ctx.recententries,
+            recentfew=self.ctx.recentfew))
+        fl.close()
+
 
 class RecentEntriesPage(Page):
     def __init__(self, ctx):

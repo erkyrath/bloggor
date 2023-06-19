@@ -4,6 +4,7 @@ import markdown
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 from bloggor.util import MultiDict
+from bloggor.pages import FrontPage
 from bloggor.pages import EntryPage, GenTemplatePage, StaticMDPage
 from bloggor.pages import TagListPage, TagListFreqPage, TagPage
 from bloggor.pages import RecentEntriesPage, YearEntriesPage
@@ -61,6 +62,9 @@ class Context:
         self.recentfew = self.entries[ -3 : ]
         self.recentfew.reverse()
 
+        self.recententries = self.entries[ -10 : ]
+        self.recententries.reverse()
+
         for entry in self.entries:
             self.entriesbyyear.add(entry.year, entry)
             for tag in entry.tags:
@@ -68,6 +72,9 @@ class Context:
                     self.entriesbytag[tag] = [ entry ]
                 else:
                     self.entriesbytag[tag].append(entry)
+
+        page = FrontPage(self)
+        self.pages.append(page)
 
         page = RecentEntriesPage(self)
         self.pages.append(page)

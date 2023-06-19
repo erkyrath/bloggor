@@ -1,0 +1,34 @@
+{% extends "page.html" %}
+
+{% block content %}
+
+{% for entry in entries %}
+
+  <div class="EntryHead">
+    <h2>{{ entry.title }}</h2>
+    <h4 class="Date">{{ entry.longpublished }}</h4>
+    {% if entry.updated %}
+      <h4 class="Date">Updated: {{ entry.updated }}</h4>
+    {% endif %}
+  
+    {% if entry.tags %}
+    <h4 class="Tags">Tagged:
+      {% set comma = joiner(", ") %}
+      {% for tag in entry.tags -%}
+        {{ comma() }}<a href="/tag/{{ tag|tagfilename|urlencode }}.html">{{ tag }}</a>
+      {%- endfor %}
+    </h4>
+    {% endif %}
+  </div>
+
+  <div class="EntryBody">
+    {% autoescape false %}
+    {{ entry.body }}
+    {% endautoescape %}
+  </div>
+
+  <hr>
+
+{% endfor %}
+
+{% endblock %}
