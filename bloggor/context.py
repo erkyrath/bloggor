@@ -29,7 +29,7 @@ class Context:
             keep_trailing_newline = True,
         )
 
-        self.mdenv = markdown.Markdown(extensions=['meta', 'def_list', 'fenced_code', 'tables', bloggor.mdextension.MoreBreakExtension(), bloggor.mdextension.BoxExtension()])
+        self.mdenv = markdown.Markdown(extensions=['meta', 'def_list', 'fenced_code', 'tables', bloggor.mdextension.MoreBreakExtension(), bloggor.mdextension.UnwrapExtension()])
 
     def build(self):
         print('Reading...')

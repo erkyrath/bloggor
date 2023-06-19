@@ -343,3 +343,6 @@ code {
     font-size: 0.9em;
 }
 
+.PreWrap p {
+    white-space: pre-wrap;
+}
