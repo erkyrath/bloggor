@@ -82,6 +82,8 @@ class LocalLinkProcessor(Treeprocessor):
                 match = self.RE_BLOGURL.match(el.attrib['href'])
                 if match:
                     href = el.attrib['href'][ match.end() : ]
+                    if href.endswith('.html'):
+                        href = href[ : -5 ]
                     if not href.startswith('/'):
                         href = '/'+href
                     el.attrib['href'] = href
