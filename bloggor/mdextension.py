@@ -70,3 +70,32 @@ class UnwrapBlockProcessor(BlockProcessor):
 class UnwrapExtension(Extension):
     def extendMarkdown(self, md):
         md.parser.blockprocessors.register(UnwrapBlockProcessor(md.parser), 'unwrap', 175)
+
+
+class LocalLinkProcessor(Treeprocessor):
+    RE_BLOGURL = re.compile('^https?://blog.zarfhome.com', flags=re.I)
+    
+    def run(self, root):
+        # Iterate over <a> elements
+        for el in root.iter('a'):
+            if 'href' in el.attrib:
+                match = self.RE_BLOGURL.match(el.attrib['href'])
+                if match:
+                    href = el.attrib['href'][ match.end() : ]
+                    if not href.startswith('/'):
+                        href = '/'+href
+                    el.attrib['href'] = href
+        # Iterate over <img> elements
+        for el in root.iter('img'):
+            if 'src' in el.attrib:
+                match = self.RE_BLOGURL.match(el.attrib['src'])
+                if match:
+                    src = el.attrib['src'][ match.end() : ]
+                    if not src.startswith('/'):
+                        src = '/'+src
+                    el.attrib['src'] = src
+                    
+class LocalLinkExtension(Extension):
+    def extendMarkdown(self, md):
+        md.treeprocessors.register(LocalLinkProcessor(md), 'locallink', 15)
+
