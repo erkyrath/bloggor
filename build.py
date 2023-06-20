@@ -30,7 +30,7 @@ popt.add_option('--notemp',
 ctx = bloggor.context.Context(opts)
 
 try:
-    ctx.build()
+    success = ctx.build()
 except RuntimeException as ex:
     print('Error: %s' % (ex,))
     sys.exit()

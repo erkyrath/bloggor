@@ -3,6 +3,7 @@ import os.path
 import markdown
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
+from bloggor.excepts import RuntimeException
 from bloggor.util import MultiDict
 from bloggor.pages import FrontPage
 from bloggor.pages import EntryPage, GenTemplatePage, StaticMDPage
@@ -60,8 +61,16 @@ class Context:
         self.pages.append(page)
 
         print('reading %d pages...' % (len(self.pages),))
+        errors = []
         for page in self.pages:
-            page.read()
+            try:
+                page.read()
+            except RuntimeException as ex:
+                print('Error: %s' % (ex,))
+                errors.append(ex)
+
+        if errors:
+            return False
                     
         self.entries.sort(key=lambda entry:(entry.draft, entry.published, entry.title))
         for ix in range(len(self.entries)):
@@ -102,7 +111,7 @@ class Context:
             self.pages.append(page)
 
         if self.opts.dryrun:
-            return
+            return True
     
         print('building %d pages...' % (len(self.pages),))
         for page in self.pages:
@@ -118,3 +127,4 @@ class Context:
                 page.commit()
 
         print('done')
+        return True
