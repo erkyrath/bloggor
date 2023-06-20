@@ -40,7 +40,7 @@ class Context:
         ])
 
     def build(self):
-        print('Reading...')
+        print('searching...')
         for dirpath, dirnames, filenames in os.walk(self.entriesdir):
             for filename in filenames:
                 if filename.startswith('.'):
@@ -60,7 +60,7 @@ class Context:
         page = GenTemplatePage(self, 'menu.html', 'menu.html')
         self.pages.append(page)
 
-        print('Reading %d pages...' % (len(self.pages),))
+        print('reading %d pages...' % (len(self.pages),))
         for page in self.pages:
             page.read()
                     
@@ -101,18 +101,21 @@ class Context:
         for tag in self.entriesbytag:
             page = TagPage(self, tag)
             self.pages.append(page)
+
+        if self.opts.dryrun:
+            return
     
-        print('Building %d pages...' % (len(self.pages),))
+        print('building %d pages...' % (len(self.pages),))
         for page in self.pages:
             page.build()
 
         if self.opts.notemp:
             pass
         elif self.opts.nocommit:
-            print('Skipping commit')   
+            print('skipping commit')   
         else:
-            print('Committing %d pages...' % (len(self.pages),))
+            print('committing %d pages...' % (len(self.pages),))
             for page in self.pages:
                 page.commit()
 
-        print('Done')
+        print('done')
