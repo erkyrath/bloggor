@@ -3,6 +3,7 @@
 import sys
 import os
 import re
+import datetime
 import optparse
 import json
 import xml.sax
@@ -268,6 +269,8 @@ class Handler(ContentHandler):
         
     def starttag_category_2(self, attrs):
         val = attrs.get('term')
+        if not val:
+            return
         if 'tags' in self.curfields:
             self.curfields['tags'].append(val)
         else:
@@ -344,6 +347,17 @@ if opts.outdir:
     for ent in entries:
         entls.append(ent.jsonmap())
         fl = open('%s/entries/%s.html' % (opts.outdir, ent.shortid,), 'w')
+        fl.write('---\n')
+        fl.write('title: %s\n' % (ent.title,))
+        if ent.tags:
+            fl.write('tags: %s\n' % (', '.join(ent.tags),))
+        fl.write('bloggerid: %s\n' % (ent.id,))
+        fl.write('published: %s\n' % (ent.publishedraw,))
+        if ent.updatedraw.startswith('2017-05-25') or ent.updatedraw < ent.publishedraw:
+            pass
+        else:
+            fl.write('updated:   %s\n' % (ent.updatedraw,))
+        fl.write('---\n')
         fl.write(ent.content)
         fl.close()
 
