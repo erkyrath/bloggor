@@ -33,7 +33,7 @@ class Context:
         )
 
         self.mdenv = markdown.Markdown(extensions=[
-            'meta', 'def_list', 'fenced_code', 'tables',
+            'meta', 'attr_list', 'def_list', 'fenced_code', 'tables',
             bloggor.mdextension.MoreBreakExtension(),
             bloggor.mdextension.UnwrapExtension(),
             bloggor.mdextension.LocalLinkExtension(),
