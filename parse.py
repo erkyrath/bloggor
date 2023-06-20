@@ -80,7 +80,7 @@ class Entry:
         def func(match):
             url = match.group(1)
             if url in gameshelf_image_table:
-                newurl = gameshelf_image_table[url]
+                newurl, prefix, hostpost = gameshelf_image_table[url]
                 return '"$$GSHELFIMAGE:%s$$"' % (newurl,)
             if url in gameshelf_post_table:
                 shortid, newurl = gameshelf_post_table[url]
@@ -93,7 +93,7 @@ class Entry:
         def func(match):
             url = match.group(1)
             if url in blogger_image_table:
-                newurl, size = blogger_image_table[url]
+                newurl, size, prefix, hostpost = blogger_image_table[url]
                 return '"$$BSPOTIMAGE:%s$$"' % (newurl,)
             return '"%s"' % (url,)
         text = pat_blogspot.sub(func, text)
@@ -313,7 +313,7 @@ class Handler(ContentHandler):
 
 blogger_image_table = read_table('blogger-image-table', multi=True)
 blogger_post_table = read_table('blogger-post-table', multi=True)
-gameshelf_image_table = read_table('gameshelf-image-table')
+gameshelf_image_table = read_table('gameshelf-image-table', multi=True)
 gameshelf_post_table = read_table('gameshelf-post-table', multi=True)
 
 handler = Handler()
