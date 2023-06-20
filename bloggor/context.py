@@ -40,7 +40,6 @@ class Context:
         ])
 
     def build(self):
-        print('searching...')
         for dirpath, dirnames, filenames in os.walk(self.entriesdir):
             for filename in filenames:
                 if filename.startswith('.'):
