@@ -35,7 +35,8 @@ class Context:
         self.mdenv = markdown.Markdown(extensions=[
             'meta', 'def_list', 'fenced_code', 'tables',
             bloggor.mdextension.MoreBreakExtension(),
-            bloggor.mdextension.UnwrapExtension()
+            bloggor.mdextension.UnwrapExtension(),
+            bloggor.mdextension.LocalLinkExtension(),
         ])
 
     def build(self):
