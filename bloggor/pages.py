@@ -312,9 +312,14 @@ class EntryPage(Page):
 
         self.shortdate = self.published[0:10]
         self.year = int(self.shortdate[0:4])
-        val = datetime.datetime.fromisoformat(self.shortdate)
-        self.longpublished = val.strftime('%A, %B %d, %Y').replace(' 0', ' ')
+        pubtup = datetime.datetime.fromisoformat(self.published)
+        self.longpublished = pubtup.strftime('%A, %B %d, %Y').replace(' 0', ' ')
 
+        updatup = datetime.datetime.fromisoformat(self.updated)
+        if updatup > pubtup:
+            diff = updatup - pubtup
+            self.longupdated = updatup.strftime('%B %d, %Y').replace(' 0', ' ')
+            
         val = self.shortdate[0:7].replace('-', '/')
         if val != self.outdir:
             raise RuntimeException(self.path+': Published date does not match directory: ' + self.shortdate)
