@@ -283,6 +283,16 @@ class EntryPage(Page):
         if not self.published:
             raise RuntimeException(self.path+': Invalid published date: '+val)
 
+        self.updated = None
+        ls = metadata.get('updated')
+        if ls:
+            val = ''.join(ls)
+            self.updated = parsedate(val)
+            if not self.updated:
+                raise RuntimeException(self.path+': Invalid updated date: '+val)
+        if self.updated is None or self.updated < self.published:
+            self.updated = self.published
+
         self.tags = []
         ls = metadata.get('tags', None)
         if ls:
@@ -302,7 +312,7 @@ class EntryPage(Page):
 
         self.shortdate = self.published[0:10]
         self.year = int(self.shortdate[0:4])
-        val = datetime.date.fromisoformat(self.shortdate)
+        val = datetime.datetime.fromisoformat(self.shortdate)
         self.longpublished = val.strftime('%A, %B %d, %Y').replace(' 0', ' ')
 
         val = self.shortdate[0:7].replace('-', '/')
