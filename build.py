@@ -10,7 +10,7 @@ from bloggor.excepts import RuntimeException
 popt = optparse.OptionParser()
 
 popt.add_option('--src',
-                action='store', dest='srcdir', default='.',
+                action='store', dest='srcdir', default='src',
                 help='source directory')
 popt.add_option('-o', '--out',
                 action='store', dest='destdir', default='site',
