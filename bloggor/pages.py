@@ -318,7 +318,10 @@ class EntryPage(Page):
         updatup = datetime.datetime.fromisoformat(self.updated)
         if updatup > pubtup:
             diff = updatup - pubtup
-            self.longupdated = updatup.strftime('%B %d, %Y').replace(' 0', ' ')
+            if pubtup.year == updatup.year:
+                self.longupdated = updatup.strftime('%B %d').replace(' 0', ' ')
+            else:
+                self.longupdated = updatup.strftime('%B %d, %Y').replace(' 0', ' ')
             
         val = self.shortdate[0:7].replace('-', '/')
         if val != self.outdir:
