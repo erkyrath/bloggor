@@ -318,6 +318,7 @@ blogger_image_table = read_table('blogger-image-table', multi=True)
 blogger_post_table = read_table('blogger-post-table', multi=True)
 gameshelf_image_table = read_table('gameshelf-image-table', multi=True)
 gameshelf_post_table = read_table('gameshelf-post-table', multi=True)
+post_name_table = read_table('post-name-table', multi=True)
 
 handler = Handler()
 
@@ -345,8 +346,18 @@ if opts.outdir:
     
     entls = []
     for ent in entries:
+        prefix, filename = post_name_table[ent.shortid]
+        assert filename == ent.filename
+        assert ent.filename.endswith('.html')
+        assert ent.filename.startswith('/')
+        newuri = os.path.join(opts.outdir, 'entries', ent.filename[1:])
+        
+        os.makedirs(os.path.dirname(newuri), exist_ok=True)
+        
         entls.append(ent.jsonmap())
-        fl = open('%s/entries/%s.html' % (opts.outdir, ent.shortid,), 'w')
+        
+        #fl = open('%s/entries/%s.html' % (opts.outdir, ent.shortid,), 'w')
+        fl = open(newuri, 'w')
         fl.write('---\n')
         fl.write('title: %s\n' % (ent.title,))
         if ent.tags:
