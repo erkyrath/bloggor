@@ -23,6 +23,7 @@ pat_divparastart = re.compile('^<div class="para"(?: style="margin-[a-z]+: 1em; 
 pat_gameshelf = re.compile('["\'](http[s]?://[a-z0-9_.]*jmac.org/[^"\']*)["\']', flags=re.IGNORECASE)
 pat_blogspot = re.compile('["\'](http[s]?://[a-z0-9_.]*(?:googleusercontent|blogspot).com/[^"\']*)["\']', flags=re.IGNORECASE)
 pat_blogzarf = re.compile('["\'](http[s]?://blog.zarfhome.com/[^"\']*)["\']', flags=re.IGNORECASE)
+pat_morebreak = re.compile('<!--more-->', flags=re.IGNORECASE)
 
 class Entry:
     def __init__(self, map):
@@ -43,6 +44,7 @@ class Entry:
         self.shortid = val
 
         self.content = self.modernize(self.content)
+        self.content = self.addmore(self.content)
         self.content = self.degameshelf(self.content)
         self.content = self.deblogger(self.content)
 
@@ -65,6 +67,13 @@ class Entry:
             ls2.append(ln)
         return '\n'.join(ls2)
 
+    def addmore(self, text):
+        match = pat_morebreak.search(text)
+        if match:
+            pos = match.end()
+            text = text[ : pos ] + '\n<a name="more"></a>\n' + text[ pos : ]
+        return text
+        
     def degameshelf(self, text):
         def func(match):
             url = match.group(1)
