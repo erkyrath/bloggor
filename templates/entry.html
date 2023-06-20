@@ -3,10 +3,9 @@
 {% block content %}
   <div class="EntryHead">
     <h2>{{ title }}</h2>
-    <h4 class="Date">{{ entry.longpublished }}</h4>
-    {% if entry.longupdated %}
-      <h4 class="Date">Updated: {{ entry.longupdated }}</h4>
-    {% endif %}
+    <h4 class="Date">{{ entry.longpublished }}
+    {% if entry.longupdated %}&nbsp; (updated {{ entry.longupdated }}){% endif %}
+    </h4>
   
     {% if entry.tags %}
     <h4 class="Tags">Tagged:
