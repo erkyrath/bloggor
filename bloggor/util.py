@@ -1,4 +1,5 @@
 import re
+import datetime
 from collections.abc import MutableMapping
 
 class MultiDict(MutableMapping):
@@ -65,6 +66,35 @@ def parsedate(val):
     return None
 
 
+def relativetime(updatup, pubtup):
+    if updatup <= pubtup:
+        return None
+    
+    diff = updatup - pubtup
+    diffdays = diff / datetime.timedelta(days=1)
+    if diffdays >= 8:
+        if pubtup.year != updatup.year:
+            return updatup.strftime('%B %d, %Y').replace(' 0', ' ')
+        else:
+            return updatup.strftime('%B %d').replace(' 0', ' ')
+    
+    if diffdays > 0.999:
+        val = round(diffdays)
+        if val > 1:
+            return '%d days later' % val
+        else:
+            return '1 day later'
+
+    diffhours = diff / datetime.timedelta(hours=1)
+    if diffhours > 0.999:
+        val = round(diffhours)
+        if val > 1:
+            return '%d hours later' % val
+        else:
+            return '1 hour later'
+
+    return 'straightaway'
+    
 def splitatmore(val):
     pos = val.find('<!--more-->')
     if pos < 0:

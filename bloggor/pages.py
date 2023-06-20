@@ -316,12 +316,7 @@ class EntryPage(Page):
         self.longpublished = pubtup.strftime('%A, %B %d, %Y').replace(' 0', ' ')
 
         updatup = datetime.datetime.fromisoformat(self.updated)
-        if updatup > pubtup:
-            diff = updatup - pubtup
-            if pubtup.year == updatup.year:
-                self.longupdated = updatup.strftime('%B %d').replace(' 0', ' ')
-            else:
-                self.longupdated = updatup.strftime('%B %d, %Y').replace(' 0', ' ')
+        self.longupdated = relativetime(updatup, pubtup)
             
         val = self.shortdate[0:7].replace('-', '/')
         if val != self.outdir:
@@ -351,4 +346,4 @@ class EntryPage(Page):
 
 from bloggor.excepts import RuntimeException
 from bloggor.metafile import MetaFile
-from bloggor.util import tagfilename, parsedate
+from bloggor.util import tagfilename, parsedate, relativetime
