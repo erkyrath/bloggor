@@ -82,7 +82,8 @@ class Entry:
             url = match.group(1)
             if url in gameshelf_image_table:
                 newurl, prefix, hostpost = gameshelf_image_table[url]
-                return '"$$GSHELFIMAGE:%s:%s$$"' % (prefix, newurl,)
+                #return '"$$GSHELFIMAGE:%s:%s$$"' % (prefix, newurl,)
+                return '"/pic/%s/%s"' % (prefix, newurl,)
             if url in gameshelf_post_table:
                 shortid, newurl = gameshelf_post_table[url]
                 #return '"$$GSHELFPOST:%s:%s$$"' % (shortid, newurl,)
@@ -96,7 +97,8 @@ class Entry:
             url = match.group(1)
             if url in blogger_image_table:
                 newurl, size, prefix, hostpost = blogger_image_table[url]
-                return '"$$BSPOTIMAGE:%s:%s$$"' % (prefix, newurl,)
+                #return '"$$BSPOTIMAGE:%s:%s$$"' % (prefix, newurl,)
+                return '"/pic/%s/%s"' % (prefix, newurl,)
             return '"%s"' % (url,)
         text = pat_blogspot.sub(func, text)
         def func2(match):
