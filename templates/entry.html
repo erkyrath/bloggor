@@ -1,8 +1,9 @@
 {% extends "page.html" %}
 
 {% block ogmetadata %}
-  <meta content="{{ title }}" property="og:title">
-  <meta content="{{ entry.excerpt }}" property="og:description">
+  <meta property="og:title" content="{{ title }}">
+  <meta property="og:description" content="{{ entry.excerpt }}">
+  <meta property="og:type" content="article">
 {% endblock %}
 
 {% block content %}

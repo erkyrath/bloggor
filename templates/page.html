@@ -7,9 +7,10 @@
     {%- if not title %}Zarf Updates{% else %}Zarf Updates: {{ title }}{% endif -%}
   </title>
   <link href="/pic/zarfmask-32.png" rel="icon">
+  <meta property="og:site_name" content="Zarf Updates">
   {% block ogmetadata %}
-    <meta content="Zarf Updates" property="og:title">
-    <meta content="Interactive fiction, narrative in games, and so on" property="og:description">
+    <meta property="og:title" content="Zarf Updates">
+    <meta property="og:description" content="Interactive fiction, narrative in games, and so on">
   {% endblock %}
   <link rel="stylesheet" href="/css/page.css" type="text/css">
   <link rel="stylesheet" href="/css/font.css" type="text/css">
