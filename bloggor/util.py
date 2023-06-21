@@ -69,6 +69,7 @@ def parsedate(val):
       2023-05-01T12:00:00
     The "Z" or "+00:00" suffix is optional; we assume UTC whether it's there
     or not.
+    Fractional seconds are accepted but trimmed out because seriously, why.
     If the date is not recognized, raise ValueError.
     """
     if not val:
@@ -86,20 +87,25 @@ def parsedate(val):
     raise ValueError()
 
 
-def relativetime(updatup, pubtup):
-    if updatup <= pubtup:
+def relativetime(after, before):
+    """Say (in English) how far apart two datetimes are.
+    If they're more than a week apart, just report the later time.
+    If they're in the wrong order, or separated by less than 15 minutes,
+    return None.
+    """
+    if after <= before:
         return None
     
-    diff = updatup - pubtup
+    diff = after - before
     if diff < datetime.timedelta(minutes=15):
         return None
     
     diffdays = diff / datetime.timedelta(days=1)
     if diffdays >= 8:
-        if pubtup.year != updatup.year:
-            return updatup.strftime('%B %d, %Y').replace(' 0', ' ')
+        if before.year != after.year:
+            return after.strftime('%B %d, %Y').replace(' 0', ' ')
         else:
-            return updatup.strftime('%B %d').replace(' 0', ' ')
+            return after.strftime('%B %d').replace(' 0', ' ')
     
     if diffdays > 0.999:
         val = round(diffdays)
