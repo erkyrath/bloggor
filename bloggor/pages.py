@@ -121,6 +121,7 @@ class RecentEntriesPage(Page):
 
     def build(self):
         entries = self.ctx.entries[ -20 : ]
+        ### back up to a month break?
         entries.reverse()
         
         yearls = list(self.ctx.entriesbyyear.keys())
