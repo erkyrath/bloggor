@@ -24,7 +24,7 @@ class Context:
         self.recentfew = []
         
         self.jenv = Environment(
-            loader = FileSystemLoader('templates'),
+            loader = FileSystemLoader(os.path.join(self.opts.srcdir, 'templates')),
             extensions = [
                 bloggor.jextension.TagFilename,
                 bloggor.jextension.SplitAtMore
