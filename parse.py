@@ -85,7 +85,8 @@ class Entry:
                 return '"$$GSHELFIMAGE:%s:%s$$"' % (prefix, newurl,)
             if url in gameshelf_post_table:
                 shortid, newurl = gameshelf_post_table[url]
-                return '"$$GSHELFPOST:%s:%s$$"' % (shortid, newurl,)
+                #return '"$$GSHELFPOST:%s:%s$$"' % (shortid, newurl,)
+                return '"%s"' % (newurl[ : -5 ],)
             return '"%s"' % (url,)
         text = pat_gameshelf.sub(func, text)
         return text
@@ -102,7 +103,8 @@ class Entry:
             url = match.group(1)
             if url in blogger_post_table:
                 shortid, newurl = blogger_post_table[url]
-                return '"$$BZARFPOST:%s:%s$$"' % (shortid, newurl,)
+                #return '"$$BZARFPOST:%s:%s$$"' % (shortid, newurl,)
+                return '"%s"' % (newurl[ : -5 ],)
             return '"%s"' % (url,)
         text = pat_blogzarf.sub(func2, text)
         return text
