@@ -134,7 +134,7 @@ def excerpthtml(text, maxlen=160):
     text = pat_htmltag.sub('', text)
     match = pat_whitespace.search(text, maxlen)
     if match:
-        text = text[ : match.start() ]
+        text = text[ : match.start() ] + ' ...'
     text = pat_whitespace.sub(' ', text)
     return text
 
