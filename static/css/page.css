@@ -150,6 +150,7 @@ body {
 .BodyMainCol {
     margin-left: 0px;
     margin-right: 200px;
+    display: flow-root;
 }
 
 .BodySideCol {
