@@ -319,10 +319,8 @@ class EntryPage(Page):
 
         updatup = datetime.datetime.fromisoformat(self.updated)
         self.longupdated = relativetime(updatup, pubtup)
-            
-        val = self.shortdate[0:7].replace('-', '/')
-        if val != self.outdir:
-            raise RuntimeException(self.path+': Published date does not match directory: ' + self.shortdate)
+
+        # shortdate doesn't always match outdir, so we don't check that.
 
         
     def build(self):
