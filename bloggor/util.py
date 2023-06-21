@@ -71,6 +71,9 @@ def relativetime(updatup, pubtup):
         return None
     
     diff = updatup - pubtup
+    if diff < datetime.timedelta(minutes=15):
+        return None
+    
     diffdays = diff / datetime.timedelta(days=1)
     if diffdays >= 8:
         if pubtup.year != updatup.year:
