@@ -127,7 +127,7 @@ def relativetime(after, before):
 pat_htmltag = re.compile('<[^>]*>')
 pat_whitespace = re.compile('[ \t\n\r]+')
 
-def excerpthtml(text, maxlen=160):
+def excerpthtml(text, maxlen=240):
     """Strip tags and line breaks, and take the first N characters or so.
     Yes, we regex HTML -- this is cheap style.
     """
