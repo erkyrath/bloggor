@@ -124,6 +124,20 @@ def relativetime(after, before):
 
     return 'straightaway'
 
+pat_htmltag = re.compile('<[^>]*>')
+pat_whitespace = re.compile('[ \t\n\r]+')
+
+def excerpthtml(text, maxlen=160):
+    """Strip tags and line breaks, and take the first N characters or so.
+    Yes, we regex HTML -- this is cheap style.
+    """
+    text = pat_htmltag.sub('', text)
+    match = pat_whitespace.search(text, maxlen)
+    if match:
+        text = text[ : match.start() ]
+    text = pat_whitespace.sub(' ', text)
+    return text
+
 
 def splitatmore(val):
     """Locate the convention break-here comment. Return the part before it.

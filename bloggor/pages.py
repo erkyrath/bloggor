@@ -273,6 +273,8 @@ class EntryPage(Page):
         self.body = body
         self.metadata = metadata
 
+        self.excerpt = excerpthtml(body)
+
         self.title = None
         ls = metadata.get('title', None)
         if ls:
@@ -351,4 +353,4 @@ class EntryPage(Page):
 
 from bloggor.excepts import RuntimeException
 from bloggor.metafile import MetaFile
-from bloggor.util import tagfilename, parsedate, relativetime
+from bloggor.util import tagfilename, parsedate, relativetime, excerpthtml
