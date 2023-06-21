@@ -46,6 +46,8 @@ def escapefancy(match):
     return '=%X=' % (ord(ch),)
 
 def tagfilename(val):
+    if not val:
+        return '=='
     if pat_basictag.match(val):
         return val.replace(' ', '_')
     return pat_fancychar.sub(escapefancy, val)
@@ -55,6 +57,8 @@ pat_simpledate = re.compile('^[0-9]{4}-[0-9]{2}-[0-9]{2}$')
 pat_fulldate = re.compile('^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}([.][0-9]+)?(Z|[+]00:00)?$')
 
 def parsedate(val):
+    if not val:
+        return None
     if pat_simpledate.match(val):
         return val+'T12:00:00+00:00'
     match = pat_fulldate.match(val)

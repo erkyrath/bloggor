@@ -1,9 +1,22 @@
 import unittest
 
 from util import parsedate
+from util import tagfilename
 
 # Run me with:
 #    python3 bloggor/testcase.py
+
+class TestTagFilename(unittest.TestCase):
+    def test(self):
+        self.assertEqual(tagfilename(''), '==')
+        self.assertEqual(tagfilename('foo'), 'foo')
+        self.assertEqual(tagfilename('foo bar'), 'foo_bar')
+        self.assertEqual(tagfilename('mr. robot'), 'mr=2E=_robot')
+        self.assertEqual(tagfilename('_='), '=5F==3D=')
+        self.assertEqual(tagfilename('\u03B1'), '=3B1=')
+        self.assertEqual(tagfilename('\u03B1\u03B2\u03B3x'), '=3B1==3B2==3B3=x')
+        self.assertEqual(tagfilename('\u623F'), '=623F=')
+        self.assertEqual(tagfilename('\U0001F600'), '=1F600=')
 
 class TestParseDate(unittest.TestCase):
 
