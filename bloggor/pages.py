@@ -228,6 +228,7 @@ class TagPage(Page):
 
 HTML = 'html'
 MD = 'md'
+EST_TZ = datetime.timezone(datetime.timedelta(hours=-5))
         
 class EntryPage(Page):
     def __init__(self, ctx, dirpath, filename):
@@ -310,10 +311,11 @@ class EntryPage(Page):
         self.draft = False  ###
         ### What is the following for drafts? Current date? End of the given month?
 
-        self.shortdate = self.published[0:10]
-        self.year = int(self.shortdate[0:4])
         pubtup = datetime.datetime.fromisoformat(self.published)
-        self.longpublished = pubtup.strftime('%A, %B %d, %Y').replace(' 0', ' ')
+        pubtuplocal = pubtup.astimezone(EST_TZ)
+        self.longpublished = pubtuplocal.strftime('%A, %B %d, %Y').replace(' 0', ' ')
+        self.year = pubtuplocal.year
+        self.shortdate = pubtuplocal.strftime('%Y-%m-%d')
 
         updatup = datetime.datetime.fromisoformat(self.updated)
         self.longupdated = relativetime(updatup, pubtup)
