@@ -282,16 +282,18 @@ class EntryPage(Page):
         if not ls:
             raise RuntimeException(self.path+': No published date')
         val = ''.join(ls)
-        self.published = parsedate(val)
-        if not self.published:
+        try:
+            self.published = parsedate(val)
+        except ValueError:
             raise RuntimeException(self.path+': Invalid published date: '+val)
 
         self.updated = None
         ls = metadata.get('updated')
         if ls:
             val = ''.join(ls)
-            self.updated = parsedate(val)
-            if not self.updated:
+            try:
+                self.updated = parsedate(val)
+            except ValueError:
                 raise RuntimeException(self.path+': Invalid updated date: '+val)
         if self.updated is None or self.updated < self.published:
             self.updated = self.published
