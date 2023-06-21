@@ -123,8 +123,12 @@ def relativetime(after, before):
             return '1 hour later'
 
     return 'straightaway'
-    
+
+
 def splitatmore(val):
+    """Locate the convention break-here comment. Return the part before it.
+    If not found, return None. (This is easier for the template to handle.)
+    """
     pos = val.find('<!--more-->')
     if pos < 0:
         return None
