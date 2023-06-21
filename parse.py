@@ -19,6 +19,10 @@ popt.add_option('-o', '--out',
 
 (opts, args) = popt.parse_args()
 
+if args:
+    print('usage: parse.py [ -o outdir ]')
+    sys.exit()
+
 feedatom = 'Takeout/Blogger/Blogs/Zarf Updates/feed.atom'
 
 pat_divpara = re.compile('^<div class="para"(?: style="margin-[a-z]+: 1em; margin-[a-z]+: 1em;")?>(.*)</div>$')
@@ -27,6 +31,7 @@ pat_gameshelf = re.compile('["\'](http[s]?://[a-z0-9_.]*jmac.org/[^"\']*)["\']',
 pat_blogspot = re.compile('["\'](http[s]?://[a-z0-9_.]*(?:googleusercontent|blogspot).com/[^"\']*)["\']', flags=re.IGNORECASE)
 pat_blogzarf = re.compile('["\'](http[s]?://blog.zarfhome.com/[^"\']*)["\']', flags=re.IGNORECASE)
 pat_morebreak = re.compile('<!--more-->', flags=re.IGNORECASE)
+pat_fatbullet = re.compile('<li>\n*<br/?>', flags=re.IGNORECASE+re.MULTILINE)
 
 class Entry:
     def __init__(self, map):
@@ -51,7 +56,12 @@ class Entry:
         self.content = self.degameshelf(self.content)
         self.content = self.deblogger(self.content)
 
+    def __repr__(self):
+        return '<Entry "%s">' % (self.filename,)
+
     def modernize(self, text):
+        text = pat_fatbullet.sub('<li>', text)
+            
         ls = []
         for ln in text.split('\n'):
             match = pat_divpara.match(ln)
@@ -62,12 +72,14 @@ class Entry:
                 ln = '<p>%s</p>' % (ln,)
                 del ls[-1]
             ls.append(ln)
+            
         ls2 = []
         for ln in ls:
             ln = ln.replace('</div>', '</div>\n')
             if ln.endswith('\n'):
                 ln = ln[ : -1 ]
             ls2.append(ln)
+            
         return '\n'.join(ls2)
 
     def addmore(self, text):
