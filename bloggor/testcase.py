@@ -46,13 +46,13 @@ class TestParseDate(unittest.TestCase):
         self.assertEqual(parsedate(val), val)
 
     def test_bad(self):
-        self.assertIsNone(parsedate(None))
-        self.assertIsNone(parsedate(''))
-        self.assertIsNone(parsedate('2023-05-1'))
-        self.assertIsNone(parsedate('2023-5-01'))
-        self.assertIsNone(parsedate('2023-05-01T12:00:00-00:00'))
-        self.assertIsNone(parsedate('2023-05-01T12:00:00+05:00'))
-        self.assertIsNone(parsedate('2023-05-01 12:00:00+00:00'))
+        self.assertRaises(ValueError, parsedate, None)
+        self.assertRaises(ValueError, parsedate, '')
+        self.assertRaises(ValueError, parsedate, '2023-05-1')
+        self.assertRaises(ValueError, parsedate, '2023-5-01')
+        self.assertRaises(ValueError, parsedate, '2023-05-01T12:00:00-00:00')
+        self.assertRaises(ValueError, parsedate, '2023-05-01T12:00:00+05:00')
+        self.assertRaises(ValueError, parsedate, '2023-05-01 12:00:00+00:00')
 
 if __name__ == '__main__':
     unittest.main()

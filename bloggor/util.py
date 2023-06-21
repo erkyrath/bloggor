@@ -46,6 +46,13 @@ def escapefancy(match):
     return '=%X=' % (ord(ch),)
 
 def tagfilename(val):
+    """Turn any string into an ASCII equivalent which can be used as a
+    filename. (We don't want to worry about whether the filesystem supports
+    UTF-8.)
+
+    Different strings must always map to different strings; after that,
+    human readability is nice. We don't have to reverse this mapping.
+    """
     if not val:
         return '=='
     if pat_basictag.match(val):
@@ -57,8 +64,15 @@ pat_simpledate = re.compile('^[0-9]{4}-[0-9]{2}-[0-9]{2}$')
 pat_fulldate = re.compile('^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}([.][0-9]+)?(Z|[+]00:00)?$')
 
 def parsedate(val):
+    """Accept a date or datetime in ISO format:
+      2023-05-01
+      2023-05-01T12:00:00
+    The "Z" or "+00:00" suffix is optional; we assume UTC whether it's there
+    or not.
+    If the date is not recognized, raise ValueError.
+    """
     if not val:
-        return None
+        raise ValueError()
     if pat_simpledate.match(val):
         return val+'T12:00:00+00:00'
     match = pat_fulldate.match(val)
@@ -69,7 +83,7 @@ def parsedate(val):
             return val[ : match.start(2) ] + '+00:00'
         else:
             return val + '+00:00'
-    return None
+    raise ValueError()
 
 
 def relativetime(updatup, pubtup):
