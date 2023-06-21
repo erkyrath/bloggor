@@ -2,6 +2,14 @@
 
 {% block exthead %}
 <style type="text/css">
+li.month {
+  margin-top: 8px;
+  margin-bottom: 4px;
+  text-indent: 0px;
+  font-size: 0.8em;
+  color: #88D;
+  border-top: 1px solid #CCF;
+}
 li.Entry {
   padding-top: 4px;
   padding-bottom: 4px;
@@ -29,7 +37,13 @@ li.Entry {
   </div>
   
   <ul class="PlainList">
+    {% set lastmonth = 'xxx' %}
+    
     {% for entry in entries %}
+      {% if loop.first or loop.previtem.monthname != entry.monthname %}
+        <li class="month">{{ entry.monthname }}
+      {% endif %}
+      
       <li class="Entry">({{ entry.shortdate }}) <a href="/{{ entry.outuri }}">{{ entry.title }}</a>
       {% if entry.tags %}
         <div class="Tags">

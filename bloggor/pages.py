@@ -316,6 +316,7 @@ class EntryPage(Page):
         pubtuplocal = pubtup.astimezone(EST_TZ)
         self.longpublished = pubtuplocal.strftime('%A, %B %d, %Y').replace(' 0', ' ')
         self.year = pubtuplocal.year
+        self.monthname = pubtuplocal.strftime('%B %Y')
         self.shortdate = pubtuplocal.strftime('%Y-%m-%d')
 
         updatup = datetime.datetime.fromisoformat(self.updated)
