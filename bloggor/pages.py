@@ -214,6 +214,7 @@ class TagPage(Page):
             os.makedirs(os.path.join(self.opts.destdir, self.outdir), exist_ok=True)
         
         entries = self.ctx.entriesbytag[self.tag]
+        entries.reverse()
         oneentry = (len(entries) == 1)
         
         fl = open(os.path.join(self.opts.destdir, self.tempoutpath), 'w')
