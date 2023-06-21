@@ -32,6 +32,7 @@ class Context:
             autoescape = select_autoescape(),
             keep_trailing_newline = True,
         )
+        self.jenv.globals['serverurl'] = opts.serverurl
 
         self.mdenv = markdown.Markdown(extensions=[
             'meta', 'attr_list', 'def_list', 'fenced_code', 'tables',
