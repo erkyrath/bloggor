@@ -52,17 +52,19 @@ def tagfilename(val):
 
 
 pat_simpledate = re.compile('^[0-9]{4}-[0-9]{2}-[0-9]{2}$')
-pat_fulldate = re.compile('^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}([.][0-9]+)?Z$')
+pat_fulldate = re.compile('^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}([.][0-9]+)?(Z|[+]00:00)?$')
 
 def parsedate(val):
     if pat_simpledate.match(val):
-        return val+'T12:00:00Z'
+        return val+'T12:00:00+00:00'
     match = pat_fulldate.match(val)
     if match:
         if match.group(1):
-            return val[ : match.start(1) ]+'Z'
+            return val[ : match.start(1) ] + '+00:00'
+        elif match.group(2):
+            return val[ : match.start(2) ] + '+00:00'
         else:
-            return val
+            return val + '+00:00'
     return None
 
 
