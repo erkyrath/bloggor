@@ -77,7 +77,7 @@ class Context:
         for ix in range(len(self.entries)):
             self.entries[ix].index = ix
 
-        self.recentfew = self.entries[ -3 : ]
+        self.recentfew = self.entries[ -4 : ]
         self.recentfew.reverse()
 
         self.recententries = self.entries[ -10 : ]
