@@ -438,11 +438,11 @@ if opts.outdir:
                 fl.write('authorname: %s\n' % (com.authorname,))
             if com.authoruri == 'http://zarfhome.com/' and com.authorname == 'Andrew Plotkin':
                 fl.write('authoruri: https://mastodon.gamedev.place/@zarfeblong\n')
-            else:
+            elif com.authoruri:
                 fl.write('authoruri: %s\n' % (com.authoruri,))
             fl.write('---\n')
             fl.write(com.content)
-            fl.write('\n')
+            fl.write('\n\n')
         fl.write('---\n')
         fl.close()
 
