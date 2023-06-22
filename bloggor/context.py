@@ -42,6 +42,8 @@ class Context:
         ])
 
     def build(self):
+        errors = []
+        
         for dirpath, dirnames, filenames in os.walk(self.entriesdir):
             for filename in filenames:
                 if filename.startswith('.'):
@@ -50,13 +52,20 @@ class Context:
                     continue
                 if filename.endswith('.comments') or filename.endswith('.json'):
                     continue
-                if filename.endswith('.html') or filename.endswith('.md'):
-                    page = EntryPage(self, dirpath, filename)
-                    self.pages.append(page)
-                    self.entries.append(page)
-                    continue
-                raise RuntimeException('unrecognized filename: '+filename)
+                try:
+                    if filename.endswith('.html') or filename.endswith('.md'):
+                        page = EntryPage(self, dirpath, filename)
+                        self.pages.append(page)
+                        self.entries.append(page)
+                        continue
+                    raise RuntimeException('unrecognized file type: '+filename)
+                except RuntimeException as ex:
+                    print('Error: %s' % (ex,))
+                    errors.append(ex)
 
+        if errors:
+            return False
+                    
         # Preliminary, we'll resort when we have all the data
         self.entries.sort(key=lambda entry:(entry.path))
         
@@ -67,7 +76,6 @@ class Context:
         self.pages.append(page)
 
         print('reading %d pages...' % (len(self.pages),))
-        errors = []
         for page in self.pages:
             try:
                 page.read()
