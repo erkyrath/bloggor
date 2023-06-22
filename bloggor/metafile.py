@@ -119,7 +119,6 @@ class MultiMetaFile:
                         body.append(ln)
                         break  # no meta data - done
             
-            print('### meta %s; going into body with count %d\n' % (meta, count,))
             while True:
                 ln = fl.readline()
                 if not ln:

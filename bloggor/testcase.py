@@ -6,6 +6,7 @@ from util import tagfilename
 from util import parsedate
 from util import relativetime
 from metafile import MetaFile
+from metafile import MultiMetaFile
 
 # Run me with:
 #    python3 bloggor/testcase.py
@@ -185,6 +186,54 @@ class TestMetaFile(unittest.TestCase):
             body, map = MetaFile(None, stream=fl).read()
             self.assertEqual(body, 'Line.\nLines.\n')
             self.assertEqual(map, { 'key':['val1', 'val2'], 'long':['this', 'is more', 'stuff'] })
+
+
+mtestex1 = '''Lines.
+'''
+
+mtestex2 = '''key: value
+
+Lines.
+'''
+
+mtestnomap1 = '''---
+
+key: value
+'''
+
+mtest1 = '''---
+key: value
+
+Lines.
+'''
+
+
+class TestMultiMetaFile(unittest.TestCase):
+    def test(self):
+        with io.StringIO(mtestex1) as fl:
+            mmf = MultiMetaFile(None, stream=fl)
+            self.assertRaises(Exception, mmf.read)
+            
+        with io.StringIO(mtestex2) as fl:
+            mmf = MultiMetaFile(None, stream=fl)
+            self.assertRaises(Exception, mmf.read)
+            
+        with io.StringIO(mtestnomap1) as fl: 
+            ls = MultiMetaFile(None, stream=fl).read()
+            self.assertEqual(ls, [ ('key: value\n', {}) ])
+            
+        with io.StringIO(mtest1) as fl: 
+            ls = MultiMetaFile(None, stream=fl).read()
+            self.assertEqual(ls, [ ('Lines.\n', { 'key':['value'] }) ])
+
+        with io.StringIO(mtest1) as fl:
+            metafile = MultiMetaFile(None, stream=fl)
+            ls = metafile.read()
+            self.assertEqual(ls, [ ('Lines.\n', { 'key':['value'] }) ])
+            ls = metafile.read()
+            self.assertEqual(ls, [ ('Lines.\n', { 'key':['value'] }) ])
+
+
 
 if __name__ == '__main__':
     unittest.main()
