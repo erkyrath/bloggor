@@ -28,12 +28,14 @@ class CommentThread:
         mfl = MultiMetaFile(self.path)
         ls = mfl.read()
 
-        for body, meta in ls:
-            self.comments.append(Comment(self.ctx, self, body, meta))
+        for ix, tup in enumerate(ls):
+            body, meta = tup
+            self.comments.append(Comment(self.ctx, self, ix, body, meta))
 
 class Comment:
-    def __init__(self, ctx, thread, body, meta):
+    def __init__(self, ctx, thread, index, body, meta):
         self.thread = thread
+        self.id = '%s[%d]' % (thread.outuri, index,)
 
         body = body.rstrip() + '\n'
 
@@ -55,7 +57,7 @@ class Comment:
             ctx.mdenv.reset()
             self.body = ctx.mdenv.convert(body)
         else:
-            raise RuntimeException(thread.outuri+': unknown comment format: '+format)
+            raise RuntimeException(self.id+': unknown comment format: '+format)
 
         self.authorname = None
         self.authoruri = None
@@ -69,12 +71,12 @@ class Comment:
 
         ls = meta.get('published')
         if not ls:
-            raise RuntimeException(thread.outuri+': No published date')
+            raise RuntimeException(self.id+': No published date')
         val = ''.join(ls)
         try:
             self.published = parsedate(val)
         except ValueError:
-            raise RuntimeException(thread.outuri+': Invalid published date: '+val)
+            raise RuntimeException(self.id+': Invalid published date: '+val)
 
 
 from bloggor.metafile import MultiMetaFile
