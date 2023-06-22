@@ -42,6 +42,8 @@ class Comment:
             format = TXT
         else:
             format = ''.join(format)
+            if format == 'text':
+                format = TXT
             
         if format == TXT:
             self.body = str(markupsafe.escape(body))
@@ -49,6 +51,9 @@ class Comment:
             self.body = body
         elif format == WHTML:
             self.body = '<div class="PreWrapAll">\n%s</div>' % (body,)
+        elif format == MD:
+            ctx.mdenv.reset()
+            self.body = ctx.mdenv.convert(body)
         else:
             raise RuntimeException(thread.outuri+': unknown comment format: '+format)
 
