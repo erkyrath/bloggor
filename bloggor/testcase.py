@@ -167,6 +167,15 @@ class TestMetaFile(unittest.TestCase):
             self.assertEqual(body, 'Lines.\n')
             self.assertEqual(map, { 'key':['value'] })
 
+        with io.StringIO(test1) as fl:
+            metafile = MetaFile(None, stream=fl)
+            body, map = metafile.read()
+            self.assertEqual(body, 'Lines.\n')
+            self.assertEqual(map, { 'key':['value'] })
+            body, map = metafile.read()
+            self.assertEqual(body, 'Lines.\n')
+            self.assertEqual(map, { 'key':['value'] })
+
         with io.StringIO(test2) as fl: 
             body, map = MetaFile(None, stream=fl).read()
             self.assertEqual(body, 'Lines.\n')
