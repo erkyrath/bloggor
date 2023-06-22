@@ -61,7 +61,15 @@ class Comment:
 
         self.authorname = None
         self.authoruri = None
-        
+        self.depth = 0
+
+        ls = meta.get('depth', None)
+        if ls:
+            try:
+                self.depth = int(ls[0])
+            except:
+                raise RuntimeException(self.id+': Depth must be a number: ' + ''.join(ls))
+            
         ls = meta.get('authorname', None)
         if ls:
             self.authorname = ' '.join(ls)
@@ -77,6 +85,9 @@ class Comment:
             self.published = parsedate(val)
         except ValueError:
             raise RuntimeException(self.id+': Invalid published date: '+val)
+
+    def __repr__(self):
+        return '<%s "%s">' % (self.__class__.__name__, self.id)
 
 
 from bloggor.metafile import MultiMetaFile
