@@ -452,7 +452,7 @@ if opts.outdir:
                 fl.write('authoruri: %s\n' % (com.authoruri,))
             fl.write('---\n')
             writeescapedashes(fl, com.content)
-            fl.write('\n\n')
+            fl.write('\n')
         fl.write('---\n')
         fl.close()
 
