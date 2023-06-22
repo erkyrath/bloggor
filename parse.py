@@ -48,6 +48,10 @@ class Entry:
         if 'tags' in map:
             self.tags.extend(map['tags'])
 
+        self.comments = []
+        self.replies = []
+        self.flatreplies = []
+
         (_, _, val) = self.id.rpartition('-')
         self.shortid = val
 
@@ -150,9 +154,15 @@ class Comment:
         self.publishedraw = map['published']
         self.updatedraw = map['updated']
 
+        self.depth = None
+        self.replies = []
+
         (_, _, val) = self.id.rpartition('-')
         self.shortid = val
         
+    def __repr__(self):
+        return '<Comment %s (%s)>' % (self.shortid, self.depth,)
+
     def jsonmap(self):
         map = {}
         map['id'] = self.id
@@ -350,10 +360,31 @@ for ent in entries:
 
 entries.sort(key=lambda ent: ent.publishedraw)
 
-def commentsortkey(com):
+def depthifycomments(ent):
+    map = {}
+    for com in ent.comments:
+        map[com.id] = com
+    for com in ent.comments:
+        if not com.inreplyto or com.inreplyto not in map:
+            ent.replies.append(com)
+        else:
+            parentcom = map[com.inreplyto]
+            parentcom.replies.append(com)
+    ent.replies.sort(key=lambda com:com.publishedraw)
+    def func(ls, depth=0):
+        ls.sort(key=lambda com: com.publishedraw)
+        for com in ls:
+            com.depth = depth
+            ent.flatreplies.append(com)
+            func(com.replies, depth+1)
+    func(ent.replies, 0)
+    assert len(ent.comments) == len(ent.flatreplies)
+
+for com in comments:
     ent = entriesmap[com.parentid]
-    return (ent.publishedraw, com.publishedraw)
-comments.sort(key=commentsortkey)
+    ent.comments.append(com)
+for ent in entries:
+    depthifycomments(ent)
 
 if opts.outdir:
     print('Writing to %s...' % (opts.outdir,))
