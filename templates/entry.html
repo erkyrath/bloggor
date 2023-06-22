@@ -44,7 +44,7 @@
 	{% else %}
           <span class="CommentAuthor">{% if com.authorname %}{{ com.authorname }}{% else %}anonymous{% endif %}</span>
 	{% endif %}
-	({{ com.published }})
+	({{ com.longpublished }}):
       </div>
       {% autoescape false %}
       {{ com.body }}
