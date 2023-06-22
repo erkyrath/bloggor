@@ -57,8 +57,27 @@ class Comment:
         else:
             raise RuntimeException(thread.outuri+': unknown comment format: '+format)
 
-            
+        self.authorname = None
+        self.authoruri = None
+        
+        ls = meta.get('authorname', None)
+        if ls:
+            self.authorname = ' '.join(ls)
+        ls = meta.get('authoruri', None)
+        if ls:
+            self.authoruri = ' '.join(ls)
+
+        ls = meta.get('published')
+        if not ls:
+            raise RuntimeException(thread.outuri+': No published date')
+        val = ''.join(ls)
+        try:
+            self.published = parsedate(val)
+        except ValueError:
+            raise RuntimeException(thread.outuri+': Invalid published date: '+val)
+
+
 from bloggor.metafile import MultiMetaFile
 from bloggor.excepts import RuntimeException
+from bloggor.util import parsedate
 
-    
