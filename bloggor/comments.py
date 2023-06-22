@@ -14,10 +14,11 @@ class CommentThread:
         assert filename.endswith('.comments')
 
         self.path = os.path.join(self.dirpath, self.filename)
-        print('###', self.path)
+        self.outpath = os.path.relpath(self.path, start=ctx.entriesdir)
+        self.outuri = self.outpath[ : -9]
         
     def __repr__(self):
-        return '<%s "%s">' % (self.__class__.__name__, self.path)
+        return '<%s "%s">' % (self.__class__.__name__, self.outuri)
 
     def read(self):
         pass

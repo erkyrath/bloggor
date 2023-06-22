@@ -20,8 +20,9 @@ class Context:
         
         self.pages = []
         self.entries = []
-        self.commentsmap = {}
-        
+        self.comments = []
+
+        self.entriesbyuri = {}
         self.entriesbytag = {}
         self.entriesbyyear = MultiDict()
         self.recentfew = []
@@ -60,10 +61,11 @@ class Context:
                         page = EntryPage(self, dirpath, filename)
                         self.pages.append(page)
                         self.entries.append(page)
+                        self.entriesbyuri[page.outuri] = page
                         continue
                     if filename.endswith('.comments'):
                         com = CommentThread(self, dirpath, filename)
-                        self.commentsmap[com.filename] = com
+                        self.comments.append(com)
                         continue
                     raise RuntimeException('unrecognized file type: '+filename)
                 except RuntimeException as ex:
@@ -72,9 +74,14 @@ class Context:
 
         if errors:
             return False
-                    
+
         # Preliminary, we'll resort when we have all the data
         self.entries.sort(key=lambda entry:(entry.path))
+
+        for comthread in self.comments:
+            if comthread.outuri not in self.entriesbyuri:
+                raise RuntimeException('comments file has no entry: '+epath)
+            self.entriesbyuri[comthread.outuri].comments = comthread
         
         page = StaticMDPage(self, 'about.md', 'about.html')
         self.pages.append(page)
