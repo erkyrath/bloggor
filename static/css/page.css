@@ -348,3 +348,7 @@ code {
 .PreWrap p {
     white-space: pre-wrap;
 }
+
+.PreWrapAll {
+    white-space: pre-wrap;
+}
