@@ -34,10 +34,10 @@ class MetaFile:
         else:
             while True:
                 ln = fl.readline()
-                m1 = META_RE.match(ln)
                 if ln.strip() == '' or END_RE.match(ln):
                     # blank line or end of YAML header - done
                     break
+                m1 = META_RE.match(ln)
                 if m1:
                     key = m1.group('key').lower().strip()
                     value = m1.group('value').strip()
@@ -60,3 +60,80 @@ class MetaFile:
 
         return self.content, self.meta
 
+pat_dashes = re.compile(r'^(---+)\s*$')
+
+class MultiMetaFile:
+    def __init__(self, filename=None, stream=None):
+        self.filename = filename
+        self.stream = stream
+        if filename and stream:
+            raise Exception('cannot supply both filename and stream')
+        self.ls = None
+    
+    def read(self):
+        if self.ls is not None:
+            return self.ls
+
+        self.ls = []
+
+        if self.stream:
+            fl = self.stream
+        else:
+            fl = open(self.filename)
+
+        ln = fl.readline()
+        match = pat_dashes.match(ln)
+        if not match:
+            raise Exception('not a MultiMetaFile')
+        count = len(match.group(1))
+
+        done = False
+        while not done:
+            meta = {}
+            body = []
+            
+            while True:
+                ln = fl.readline()
+                if ln.strip() == '':
+                    # blank line - done
+                    break
+                match = pat_dashes.match(ln)
+                if match:
+                    # end of YAML header - done
+                    count = len(match.group(1))
+                    break
+                m1 = META_RE.match(ln)
+                if m1:
+                    key = m1.group('key').lower().strip()
+                    value = m1.group('value').strip()
+                    try:
+                        meta[key].append(value)
+                    except KeyError:
+                        meta[key] = [value]
+                else:
+                    m2 = META_MORE_RE.match(ln)
+                    if m2 and key:
+                        # Add another line to existing key
+                        meta[key].append(m2.group('value').strip())
+                    else:
+                        body.append(ln)
+                        break  # no meta data - done
+            
+            print('### meta %s; going into body with count %d\n' % (meta, count,))
+            while True:
+                ln = fl.readline()
+                if not ln:
+                    done = True
+                    break
+                match = pat_dashes.match(ln)
+                if match and len(match.group(1)) == count:
+                    break
+                body.append(ln)
+
+            if body or meta:
+                self.ls.append( (''.join(body), meta) )
+            
+        if fl != self.stream:
+            fl.close()
+
+        return self.ls
