@@ -117,7 +117,18 @@ class TestRelativeTime(unittest.TestCase):
         self.assertEqual(relativetime(d2, d1), 'May 9, 2024')
 
 
-test1 = '''key: value
+testnomap1 = '''key: value
+
+Lines.
+'''
+
+testnomap2 = '''---
+
+key: value
+'''
+
+test1 = '''---
+key: value
 
 Lines.
 '''
@@ -141,11 +152,21 @@ Lines.
 
 class TestMetaFile(unittest.TestCase):
     def test(self):
-        with io.StringIO(test1) as fl: 
+        with io.StringIO(testnomap1) as fl: 
             body, map = MetaFile(None, stream=fl).read()
-            self.assertEqual(body, test1)
+            self.assertEqual(body, testnomap1)
             self.assertEqual(map, {})
             
+        with io.StringIO(testnomap2) as fl: 
+            body, map = MetaFile(None, stream=fl).read()
+            self.assertEqual(body, 'key: value\n')
+            self.assertEqual(map, {})
+            
+        with io.StringIO(test1) as fl: 
+            body, map = MetaFile(None, stream=fl).read()
+            self.assertEqual(body, 'Lines.\n')
+            self.assertEqual(map, { 'key':['value'] })
+
         with io.StringIO(test2) as fl: 
             body, map = MetaFile(None, stream=fl).read()
             self.assertEqual(body, 'Lines.\n')
