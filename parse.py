@@ -389,7 +389,6 @@ for ent in entries:
 if opts.outdir:
     print('Writing to %s...' % (opts.outdir,))
     os.makedirs(opts.outdir+'/entries', exist_ok=True)
-    os.makedirs(opts.outdir+'/comments', exist_ok=True)
     
     entls = []
     for ent in entries:
@@ -429,9 +428,22 @@ if opts.outdir:
         comuri = os.path.join(opts.outdir, 'entries', ent.filename[1:-5]+'.comments')
         fl = open(comuri, 'w')
         for com in ent.flatreplies:
+            fl.write('---\n')
+            fl.write('bloggerid: %s\n' % (com.id,))
+            fl.write('published: %s\n' % (com.publishedraw,))
+            fl.write('format: whtml\n')
+            if com.depth:
+                fl.write('depth: %d\n' % (com.depth,))
+            if com.authorname:
+                fl.write('authorname: %s\n' % (com.authorname,))
+            if com.authoruri == 'http://zarfhome.com/' and com.authorname == 'Andrew Plotkin':
+                fl.write('authoruri: https://mastodon.gamedev.place/@zarfeblong\n')
+            else:
+                fl.write('authoruri: %s\n' % (com.authoruri,))
+            fl.write('---\n')
             fl.write(com.content)
             fl.write('\n')
-            fl.write('---------------\n')
+        fl.write('---\n')
         fl.close()
 
     map = { 'entries':entls, 'comments':comls }
