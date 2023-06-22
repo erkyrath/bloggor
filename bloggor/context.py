@@ -79,10 +79,17 @@ class Context:
         self.entries.sort(key=lambda entry:(entry.path))
 
         for comthread in self.comments:
-            if comthread.outuri not in self.entriesbyuri:
-                raise RuntimeException('comments file has no entry: '+epath)
-            self.entriesbyuri[comthread.outuri].comments = comthread
+            try:
+                if comthread.outuri not in self.entriesbyuri:
+                    raise RuntimeException('comments file has no entry: '+comthread.outuri)
+                self.entriesbyuri[comthread.outuri].comments = comthread
+            except RuntimeException as ex:
+                print('Error: %s' % (ex,))
+                errors.append(ex)
         
+        if errors:
+            return False
+
         page = StaticMDPage(self, 'about.md', 'about.html')
         self.pages.append(page)
 
