@@ -420,10 +420,18 @@ if opts.outdir:
         fl.close()
 
     comls = []
-    for com in comments:
-        comls.append(com.jsonmap())
-        fl = open('%s/comments/%s.html' % (opts.outdir, com.shortid,), 'w')
-        fl.write(com.content)
+    for ent in entries:
+        if not ent.flatreplies:
+            continue
+        for com in ent.flatreplies:
+            comls.append(com.jsonmap())
+        prefix, filename = post_name_table[ent.shortid]
+        comuri = os.path.join(opts.outdir, 'entries', ent.filename[1:-5]+'.comments')
+        fl = open(comuri, 'w')
+        for com in ent.flatreplies:
+            fl.write(com.content)
+            fl.write('\n')
+            fl.write('---------------\n')
         fl.close()
 
     map = { 'entries':entls, 'comments':comls }
