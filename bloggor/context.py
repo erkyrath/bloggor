@@ -9,6 +9,7 @@ from bloggor.pages import FrontPage
 from bloggor.pages import EntryPage, GenTemplatePage, StaticMDPage
 from bloggor.pages import TagListPage, TagListFreqPage, TagPage
 from bloggor.pages import RecentEntriesPage, YearEntriesPage
+from bloggor.comments import CommentThread
 import bloggor.jextension
 import bloggor.mdextension
 
@@ -19,6 +20,8 @@ class Context:
         
         self.pages = []
         self.entries = []
+        self.commentsmap = {}
+        
         self.entriesbytag = {}
         self.entriesbyyear = MultiDict()
         self.recentfew = []
@@ -50,13 +53,17 @@ class Context:
                     continue
                 if filename.endswith('~'):
                     continue
-                if filename.endswith('.comments') or filename.endswith('.json'):
+                if filename.endswith('.json'):
                     continue
                 try:
                     if filename.endswith('.html') or filename.endswith('.md'):
                         page = EntryPage(self, dirpath, filename)
                         self.pages.append(page)
                         self.entries.append(page)
+                        continue
+                    if filename.endswith('.comments'):
+                        com = CommentThread(self, dirpath, filename)
+                        self.commentsmap[com.filename] = com
                         continue
                     raise RuntimeException('unrecognized file type: '+filename)
                 except RuntimeException as ex:
