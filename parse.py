@@ -439,6 +439,7 @@ if opts.outdir:
         fl = open(comuri, 'w')
         for com in ent.flatreplies:
             fl.write('---\n')
+            fl.write('source: blogger\n')
             fl.write('bloggerid: %s\n' % (com.id,))
             fl.write('published: %s\n' % (com.publishedraw,))
             fl.write('format: whtml\n')
