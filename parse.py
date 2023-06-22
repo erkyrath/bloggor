@@ -177,6 +177,16 @@ class Comment:
         map['updatedraw'] = self.updatedraw
         return map
 
+
+pat_dashes = re.compile(r'^(---+)\s*$')
+
+def writeescapedashes(fl, text, delim=3):
+    ls = text.split('\n')
+    for ln in ls:
+        match = pat_dashes.match(ln)
+        if match and len(match.group(1)) == delim:
+            ln = '-' + ln
+        fl.write(ln+'\n')
     
 class Handler(ContentHandler):
     depth = None
@@ -441,7 +451,7 @@ if opts.outdir:
             elif com.authoruri:
                 fl.write('authoruri: %s\n' % (com.authoruri,))
             fl.write('---\n')
-            fl.write(com.content)
+            writeescapedashes(fl, com.content)
             fl.write('\n\n')
         fl.write('---\n')
         fl.close()
