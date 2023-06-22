@@ -78,11 +78,11 @@ class Context:
         # Preliminary, we'll resort when we have all the data
         self.entries.sort(key=lambda entry:(entry.path))
 
-        for comthread in self.comments:
+        for comt in self.comments:
             try:
-                if comthread.outuri not in self.entriesbyuri:
-                    raise RuntimeException('comments file has no entry: '+comthread.outuri)
-                self.entriesbyuri[comthread.outuri].comments = comthread
+                if comt.outuri not in self.entriesbyuri:
+                    raise RuntimeException('comments file has no entry: '+comt.outuri)
+                self.entriesbyuri[comt.outuri].comments = comt
             except RuntimeException as ex:
                 print('Error: %s' % (ex,))
                 errors.append(ex)
@@ -105,9 +105,9 @@ class Context:
                 errors.append(ex)
 
         print('Reading %d comment threads...' % (len(self.comments),))
-        for comthread in self.comments:
+        for comt in self.comments:
             try:
-                comthread.read()
+                comt.read()
             except RuntimeException as ex:
                 print('Error: %s' % (ex,))
                 errors.append(ex)
