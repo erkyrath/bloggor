@@ -229,6 +229,38 @@ Lines.
 ---
 '''
 
+mtest5 = '''---
+key: value
+----
+Lines.
+----
+'''
+
+mtest6 = '''---
+key: value
+---
+Lines.
+----
+'''
+
+mtest7 = '''---
+key: val1  
+long: this
+    is more
+    stuff
+key: val2
+---
+Line.
+Lines.
+---
+foo: bar
+-----
+Test.
+---
+Other.
+-----
+'''
+
 
 class TestMultiMetaFile(unittest.TestCase):
     def test(self):
@@ -266,6 +298,21 @@ class TestMultiMetaFile(unittest.TestCase):
         with io.StringIO(mtest4) as fl: 
             ls = MultiMetaFile(None, stream=fl).read()
             self.assertEqual(ls, [ ('Lines.\n----\n', { 'key':['value'] }) ])
+
+        with io.StringIO(mtest5) as fl: 
+            ls = MultiMetaFile(None, stream=fl).read()
+            self.assertEqual(ls, [ ('Lines.\n', { 'key':['value'] }) ])
+
+        with io.StringIO(mtest6) as fl: 
+            ls = MultiMetaFile(None, stream=fl).read()
+            self.assertEqual(ls, [ ('Lines.\n----\n', { 'key':['value'] }) ])
+
+        with io.StringIO(mtest7) as fl: 
+            ls = MultiMetaFile(None, stream=fl).read()
+            self.assertEqual(ls, [
+                ('Line.\nLines.\n', { 'key':['val1', 'val2'], 'long':['this', 'is more', 'stuff'] }),
+                ('Test.\n---\nOther.\n', { 'foo':['bar'] } ),
+            ])
 
 
 
