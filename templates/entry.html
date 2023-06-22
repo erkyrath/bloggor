@@ -37,18 +37,20 @@
 
   {% if comments %}
     {% for com in comments %}
-      <hr>
-      <div class="CommentHead">
-        {% if com.authoruri %}
-          <a class="CommentAuthor" href="{{ com.authoruri }}">{% if com.authorname %}{{ com.authorname }}{% else %}anonymous{% endif %}</a>
-	{% else %}
-          <span class="CommentAuthor">{% if com.authorname %}{{ com.authorname }}{% else %}anonymous{% endif %}</span>
-	{% endif %}
-	({{ com.longpublished }}):
+      <div class="Comment">
+        <hr>
+        <div class="CommentHead">
+          {% if com.authoruri %}
+            <a class="CommentAuthor" href="{{ com.authoruri }}">{% if com.authorname %}{{ com.authorname }}{% else %}anonymous{% endif %}</a>
+          {% else %}
+            <span class="CommentAuthor">{% if com.authorname %}{{ com.authorname }}{% else %}anonymous{% endif %}</span>
+          {% endif %}
+          ({{ com.longpublished }}):
+        </div>
+        {% autoescape false %}
+        {{ com.body }}
+        {% endautoescape %}
       </div>
-      {% autoescape false %}
-      {{ com.body }}
-      {% endautoescape %}
     {% endfor %}
   {% endif %}
 {% endblock %}
