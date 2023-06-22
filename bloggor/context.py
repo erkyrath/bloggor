@@ -48,9 +48,14 @@ class Context:
                     continue
                 if filename.endswith('~'):
                     continue
-                page = EntryPage(self, dirpath, filename)
-                self.pages.append(page)
-                self.entries.append(page)
+                if filename.endswith('.comments') or filename.endswith('.json'):
+                    continue
+                if filename.endswith('.html') or filename.endswith('.md'):
+                    page = EntryPage(self, dirpath, filename)
+                    self.pages.append(page)
+                    self.entries.append(page)
+                    continue
+                raise RuntimeException('unrecognized filename: '+filename)
 
         # Preliminary, we'll resort when we have all the data
         self.entries.sort(key=lambda entry:(entry.path))
