@@ -122,12 +122,39 @@ test1 = '''key: value
 Lines.
 '''
 
-class TestMetafile(unittest.TestCase):
+test2 = '''---
+key: value
+---
+Lines.
+'''
+
+test3 = '''---
+key: val1  
+long: this
+    is more
+    stuff
+key: val2
+---
+Line.
+Lines.
+'''
+
+class TestMetaFile(unittest.TestCase):
     def test(self):
-        fl = io.StringIO(test1)
-        body, map = MetaFile(None, stream=fl).read()
-        self.assertEqual(body, test1)
-        self.assertEqual(map, {})
+        with io.StringIO(test1) as fl: 
+            body, map = MetaFile(None, stream=fl).read()
+            self.assertEqual(body, test1)
+            self.assertEqual(map, {})
+            
+        with io.StringIO(test2) as fl: 
+            body, map = MetaFile(None, stream=fl).read()
+            self.assertEqual(body, 'Lines.\n')
+            self.assertEqual(map, { 'key':['value'] })
+
+        with io.StringIO(test3) as fl: 
+            body, map = MetaFile(None, stream=fl).read()
+            self.assertEqual(body, 'Line.\nLines.\n')
+            self.assertEqual(map, { 'key':['val1', 'val2'], 'long':['this', 'is more', 'stuff'] })
 
 if __name__ == '__main__':
     unittest.main()
