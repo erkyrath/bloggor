@@ -82,7 +82,9 @@ class Context:
             try:
                 if comt.outuri not in self.entriesbyuri:
                     raise RuntimeException('comments file has no entry: '+comt.outuri)
-                self.entriesbyuri[comt.outuri].comments = comt
+                ent = self.entriesbyuri[comt.outuri]
+                ent.comments = comt
+                comt.entry = ent
             except RuntimeException as ex:
                 print('Error: %s' % (ex,))
                 errors.append(ex)

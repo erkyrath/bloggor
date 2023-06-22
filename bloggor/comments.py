@@ -16,6 +16,7 @@ class CommentThread:
         self.path = os.path.join(self.dirpath, self.filename)
         self.outpath = os.path.relpath(self.path, start=ctx.entriesdir)
         self.outuri = self.outpath[ : -9]
+        self.entry = None
         
     def __repr__(self):
         return '<%s "%s">' % (self.__class__.__name__, self.outuri)
