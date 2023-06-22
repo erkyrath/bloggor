@@ -50,7 +50,8 @@ class Comment:
                 format = TXT
             
         if format == TXT:
-            self.body = str(markupsafe.escape(body))
+            val = str(markupsafe.escape(body))
+            self.body = '<div class="PreWrapAll">\n%s</div>' % (val,)
         elif format == HTML:
             self.body = body
         elif format == WHTML:

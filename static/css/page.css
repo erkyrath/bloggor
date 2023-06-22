@@ -247,6 +247,16 @@ body {
     font-style: italic;
 }
 
+.CommentHead {
+}
+
+.CommentBody {
+}
+
+.CommentHead .CommentAuthor {
+    font-weight: bold;
+}
+
 .UtilHead h3.Selector {
     font-size: 1em;
     font-style: italic;
