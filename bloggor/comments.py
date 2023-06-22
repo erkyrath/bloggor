@@ -61,6 +61,7 @@ class Comment:
         else:
             raise RuntimeException(self.id+': unknown comment format: '+format)
 
+        self.source = None
         self.authorname = None
         self.authoruri = None
         self.depth = 0
@@ -71,6 +72,10 @@ class Comment:
                 self.depth = int(ls[0])
             except:
                 raise RuntimeException(self.id+': Depth must be a number: ' + ''.join(ls))
+            
+        ls = meta.get('source', None)
+        if ls:
+            self.source = ''.join(ls)
             
         ls = meta.get('authorname', None)
         if ls:
