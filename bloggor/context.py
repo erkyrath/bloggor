@@ -104,6 +104,14 @@ class Context:
                 print('Error: %s' % (ex,))
                 errors.append(ex)
 
+        print('Reading %d comment threads...' % (len(self.comments),))
+        for comthread in self.comments:
+            try:
+                comthread.read()
+            except RuntimeException as ex:
+                print('Error: %s' % (ex,))
+                errors.append(ex)
+
         if errors:
             return False
                     
