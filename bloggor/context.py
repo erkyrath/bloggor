@@ -20,7 +20,7 @@ class Context:
         
         self.pages = []
         self.entries = []
-        self.comments = []
+        self.commentthreads = []
 
         self.entriesbyuri = {}
         self.entriesbytag = {}
@@ -65,7 +65,7 @@ class Context:
                         continue
                     if filename.endswith('.comments'):
                         com = CommentThread(self, dirpath, filename)
-                        self.comments.append(com)
+                        self.commentthreads.append(com)
                         continue
                     raise RuntimeException('unrecognized file type: '+filename)
                 except RuntimeException as ex:
@@ -78,12 +78,12 @@ class Context:
         # Preliminary, we'll resort when we have all the data
         self.entries.sort(key=lambda entry:(entry.path))
 
-        for comt in self.comments:
+        for comt in self.commentthreads:
             try:
                 if comt.outuri not in self.entriesbyuri:
                     raise RuntimeException('comments file has no entry: '+comt.outuri)
                 ent = self.entriesbyuri[comt.outuri]
-                ent.comments = comt
+                ent.commentthread = comt
                 comt.entry = ent
             except RuntimeException as ex:
                 print('Error: %s' % (ex,))
@@ -106,8 +106,8 @@ class Context:
                 print('Error: %s' % (ex,))
                 errors.append(ex)
 
-        print('Reading %d comment threads...' % (len(self.comments),))
-        for comt in self.comments:
+        print('Reading %d comment threads...' % (len(self.commentthreads),))
+        for comt in self.commentthreads:
             try:
                 comt.read()
             except RuntimeException as ex:

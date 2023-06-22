@@ -256,6 +256,7 @@ class EntryPage(Page):
         self.title = None
         self.tags = None
         self.index = None
+        self.commentthread = None
         self.comments = None
         self.complete()
 
