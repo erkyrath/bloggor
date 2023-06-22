@@ -75,7 +75,7 @@ class Context:
         page = GenTemplatePage(self, 'menu.html', 'menu.html')
         self.pages.append(page)
 
-        print('reading %d pages...' % (len(self.pages),))
+        print('Reading %d pages...' % (len(self.pages),))
         for page in self.pages:
             try:
                 page.read()
@@ -127,18 +127,17 @@ class Context:
         if self.opts.dryrun:
             return True
     
-        print('building %d pages...' % (len(self.pages),))
+        print('Building %d pages...' % (len(self.pages),))
         for page in self.pages:
             page.build()
 
         if self.opts.notemp:
             pass
         elif self.opts.nocommit:
-            print('skipping commit')   
+            print('Skipping commit')   
         else:
-            print('committing %d pages...' % (len(self.pages),))
+            print('Committing %d pages...' % (len(self.pages),))
             for page in self.pages:
                 page.commit()
 
-        print('done')
         return True
