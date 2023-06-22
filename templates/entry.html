@@ -37,7 +37,7 @@
 
   {% if comments %}
     {% for com in comments %}
-      <div class="Comment">
+      <div class="Comment" {% if com.depth %}style="margin-left: {{ 2*com.depth }}em;"{% endif %}>
         <hr>
         <div class="CommentHead">
           {% if com.authoruri %}
