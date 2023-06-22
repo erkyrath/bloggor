@@ -97,6 +97,17 @@ class Comment:
         except ValueError:
             raise RuntimeException(self.id+': Invalid published date: '+val)
 
+        if self.source == 'gameshelf':
+            self.sourcename = 'imported from Gameshelf'
+        elif self.source == 'blogger':
+            self.sourcename = 'imported from Blogger'
+        elif self.source == 'mastodon':
+            self.sourcename = 'from Mastodon'
+        elif self.source == 'zarf':
+            self.sourcename = 'from Zarf'
+        else:
+            self.sourcename = None
+
         pubtup = datetime.datetime.fromisoformat(self.published)
         pubtuplocal = pubtup.astimezone(EST_TZ)
         self.longpublished = pubtuplocal.strftime('%B %d, %Y at %I:%M %p').replace(' 0', ' ')

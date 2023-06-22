@@ -257,6 +257,14 @@ body {
     font-weight: bold;
 }
 
+hr.CommentDecl {
+    margin-top: 3em;
+}
+
+h3.CommentDecl {
+    font-weight: normal;
+}
+
 .UtilHead h3.Selector {
     font-size: 1em;
     font-style: italic;

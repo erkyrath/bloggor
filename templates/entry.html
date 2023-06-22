@@ -37,6 +37,10 @@
 
   {% if comments %}
     {% for com in comments %}
+      {% if loop.first or loop.previtem.sourcename != com.sourcename %}
+      <hr class="CommentDecl">
+      <h3 class="CommentDecl">Comments {% if com.sourcename %}{{ com.sourcename }}{% endif %}</h3>
+      {% endif %}
       <div class="Comment" {% if com.depth %}style="margin-left: {{ 2*com.depth }}em;"{% endif %}>
         <hr>
         <div class="CommentHead">
