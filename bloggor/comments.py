@@ -32,6 +32,8 @@ class CommentThread:
             body, meta = tup
             self.comments.append(Comment(self.ctx, self, ix, body, meta))
 
+        self.entry.comments = self.comments
+
 class Comment:
     def __init__(self, ctx, thread, index, body, meta):
         self.thread = thread
