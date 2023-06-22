@@ -1,9 +1,11 @@
 import unittest
 import datetime
+import io
 
 from util import tagfilename
 from util import parsedate
 from util import relativetime
+from metafile import MetaFile
 
 # Run me with:
 #    python3 bloggor/testcase.py
@@ -114,6 +116,18 @@ class TestRelativeTime(unittest.TestCase):
         d2 = fromiso('2024-05-09T12:00:00+00:00')
         self.assertEqual(relativetime(d2, d1), 'May 9, 2024')
 
+
+test1 = '''key: value
+
+Lines.
+'''
+
+class TestMetafile(unittest.TestCase):
+    def test(self):
+        fl = io.StringIO(test1)
+        body, map = MetaFile(None, stream=fl).read()
+        self.assertEqual(body, test1)
+        self.assertEqual(map, {})
 
 if __name__ == '__main__':
     unittest.main()
