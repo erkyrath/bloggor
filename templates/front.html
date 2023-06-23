@@ -22,7 +22,7 @@
     {% if entry.comments %}
     <h4 class="Comments">Comments: {{ entry.comments|count }}
       {% if entry.commentthread.latestpublished %}
-        &nbsp; (latest {{ entry.commentthread.latestpublished }})
+        &nbsp; (latest {{ entry.commentthread.longlatestpublished }})
       {% endif %}
     </h4>
     {% endif %}
