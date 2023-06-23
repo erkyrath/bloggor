@@ -238,16 +238,20 @@ body {
 
 .EntryHead h4 {
     margin-top: 6px;
-    margin-bottom: 6px;    
+    margin-bottom: 6px;
     font-size: 0.85em;
 }
 
 .EntryHead h4.Tags {
+    margin-top: 0px;
+    margin-bottom: 0px;
     font-weight: normal;
     font-style: italic;
 }
 
 .EntryHead h4.Comments {
+    margin-top: 0px;
+    margin-bottom: 0px;
     font-weight: normal;
     font-style: italic;
 }
