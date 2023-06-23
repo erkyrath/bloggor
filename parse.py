@@ -32,6 +32,7 @@ pat_blogspot = re.compile('["\'](http[s]?://[a-z0-9_.]*(?:googleusercontent|blog
 pat_blogzarf = re.compile('["\'](http[s]?://blog.zarfhome.com/[^"\']*)["\']', flags=re.IGNORECASE)
 pat_morebreak = re.compile('<!--more-->', flags=re.IGNORECASE)
 pat_fatbullet = re.compile('<li>\n*<br/?>', flags=re.IGNORECASE+re.MULTILINE)
+pat_hrtag = re.compile('<hr */?>', flags=re.IGNORECASE)
 
 class Entry:
     def __init__(self, map):
@@ -55,6 +56,8 @@ class Entry:
         (_, _, val) = self.id.rpartition('-')
         self.shortid = val
 
+        self.bakedcomments = self.countbaked(self.content)
+
         self.content = self.modernize(self.content)
         self.content = self.addmore(self.content)
         self.content = self.degameshelf(self.content)
@@ -62,6 +65,14 @@ class Entry:
 
     def __repr__(self):
         return '<Entry "%s">' % (self.filename,)
+
+    def countbaked(self, text):
+        pos = text.find('Comments imported from Gameshelf')
+        if pos < 0:
+            return 0
+        val = text[ pos : ]
+        ls = pat_hrtag.findall(val)
+        return len(ls)
 
     def modernize(self, text):
         text = pat_fatbullet.sub('<li>', text)
@@ -424,6 +435,8 @@ if opts.outdir:
             pass
         else:
             fl.write('updated:   %s\n' % (ent.updatedraw,))
+        if ent.bakedcomments:
+            fl.write('bakedcomments: %d\n' % (ent.bakedcomments,))
         fl.write('---\n')
         fl.write(ent.content)
         fl.close()
