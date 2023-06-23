@@ -9,6 +9,7 @@ from bloggor.pages import FrontPage
 from bloggor.pages import EntryPage, GenTemplatePage, StaticMDPage
 from bloggor.pages import TagListPage, TagListFreqPage, TagPage
 from bloggor.pages import RecentEntriesPage, YearEntriesPage
+from bloggor.pages import FeedPage
 from bloggor.comments import CommentThread
 import bloggor.jextension
 import bloggor.mdextension
@@ -154,6 +155,9 @@ class Context:
         for tag in self.entriesbytag:
             page = TagPage(self, tag)
             self.pages.append(page)
+
+        page = FeedPage(self, 'feeds/posts/default.rss')
+        self.pages.append(page)
 
         if self.opts.dryrun:
             return True

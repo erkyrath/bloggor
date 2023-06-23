@@ -1,5 +1,6 @@
 import os.path
 import datetime
+import feedgenerator
 
 class Page:
     def __init__(self, ctx):
@@ -225,6 +226,40 @@ class TagPage(Page):
             tag=self.tag,
             entries=entries,
             oneentry=oneentry))
+        fl.close()
+
+class FeedPage(Page):
+    def __init__(self, ctx, outpath):
+        Page.__init__(self, ctx)
+        self.outpath = outpath
+        self.complete()
+
+    def build(self):
+        feed = feedgenerator.DefaultFeed(
+            title = 'Zarf Updates',
+            link = self.opts.serverurl,
+            author_name = 'Andrew Plotkin',
+            description = 'Interactive fiction, narrative in games, and so on',
+            language = 'en',
+            categories = ['foo', 'bar'], ###
+        )
+
+        entries = self.ctx.entries[ -25 : ]
+        entries.reverse()
+
+        for entry in entries:
+            feed.add_item(
+                title = entry.title,
+                description = entry.body,
+                link = self.opts.serverurl+entry.outuri,
+                author_name = 'Andrew Plotkin',
+                categories = entry.tags,
+                pubdate = datetime.datetime.fromisoformat(entry.published),
+                ### updateddate?
+            )
+        
+        fl = open(os.path.join(self.opts.destdir, self.tempoutpath), 'w')
+        feed.write(fl, 'utf-8')
         fl.close()
 
 
