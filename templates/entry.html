@@ -29,7 +29,11 @@
     {% endif %}
 
     {% if totalcomments %}
-    <h4 class="Tags">{{ totalcomments }} comments</h4>
+    <h4 class="Comments">Comments: {{ totalcomments }}
+      {% if entry.commentthread.latestpublished %}
+        &nbsp; (latest {{ entry.commentthread.latestpublished }})
+      {% endif %}
+    </h4>
     {% endif %}
   </div>
 
