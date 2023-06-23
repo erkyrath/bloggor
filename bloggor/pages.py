@@ -30,6 +30,13 @@ class Page:
     def __repr__(self):
         return '<%s "%s">' % (self.__class__.__name__, self.outuri)
 
+    def openwrite(self):
+        if self.outdir:
+            os.makedirs(os.path.join(self.opts.destdir, self.outdir), exist_ok=True)
+            
+        fl = open(os.path.join(self.opts.destdir, self.tempoutpath), 'w')
+        return fl
+
     def commit(self):
         assert self.tempoutpath != self.outpath
         os.replace(os.path.join(self.opts.destdir, self.tempoutpath), os.path.join(self.opts.destdir, self.outpath))
@@ -53,10 +60,7 @@ class GenTemplatePage(Page):
         pass
         
     def build(self):
-        if self.outdir:
-            os.makedirs(os.path.join(self.opts.destdir, self.outdir), exist_ok=True)
-            
-        fl = open(os.path.join(self.opts.destdir, self.tempoutpath), 'w')
+        fl = self.openwrite()
         template = self.jenv.get_template(self.template)
         fl.write(template.render())
         fl.close()
@@ -87,10 +91,7 @@ class StaticMDPage(Page):
             self.title = ' '.join(ls)
 
     def build(self):
-        if self.outdir:
-            os.makedirs(os.path.join(self.opts.destdir, self.outdir), exist_ok=True)
-            
-        fl = open(os.path.join(self.opts.destdir, self.tempoutpath), 'w')
+        fl = self.openwrite()
         template = self.jenv.get_template('static.html')
         fl.write(template.render(
             title=self.title,
@@ -105,7 +106,7 @@ class FrontPage(Page):
         self.complete()
 
     def build(self):
-        fl = open(os.path.join(self.opts.destdir, self.tempoutpath), 'w')
+        fl = self.openwrite()
         template = self.jenv.get_template('front.html')
         fl.write(template.render(
             title=None,
@@ -128,7 +129,7 @@ class RecentEntriesPage(Page):
         yearls = list(self.ctx.entriesbyyear.keys())
         yearls.sort(reverse=True)
 
-        fl = open(os.path.join(self.opts.destdir, self.tempoutpath), 'w')
+        fl = self.openwrite()
         template = self.jenv.get_template('recent.html')
         fl.write(template.render(
             title='Recent Posts',
@@ -151,7 +152,7 @@ class YearEntriesPage(Page):
         yearls = list(self.ctx.entriesbyyear.keys())
         yearls.sort(reverse=True)
 
-        fl = open(os.path.join(self.opts.destdir, self.tempoutpath), 'w')
+        fl = self.openwrite()
         template = self.jenv.get_template('recent.html')
         fl.write(template.render(
             title='Posts From %d' % (self.year,),
@@ -171,7 +172,7 @@ class TagListPage(Page):
         tags = [ (tag, len(ls)) for tag, ls in self.ctx.entriesbytag.items() ]
         tags.sort()
         
-        fl = open(os.path.join(self.opts.destdir, self.tempoutpath), 'w')
+        fl = self.openwrite()
         template = self.jenv.get_template('tags.html')
         fl.write(template.render(
             title='All Tags (Alphabetical)',
@@ -191,7 +192,7 @@ class TagListFreqPage(Page):
         tags = [ (tag, len(ls)) for tag, ls in self.ctx.entriesbytag.items() ]
         tags.sort(key=lambda tup:(-tup[1], tup[0]))
         
-        fl = open(os.path.join(self.opts.destdir, self.tempoutpath), 'w')
+        fl = self.openwrite()
         template = self.jenv.get_template('tags.html')
         fl.write(template.render(
             title='All Tags (by Frequency)',
@@ -212,14 +213,11 @@ class TagPage(Page):
         return '<%s "%s">' % (self.__class__.__name__, self.tag)
 
     def build(self):
-        if self.outdir:
-            os.makedirs(os.path.join(self.opts.destdir, self.outdir), exist_ok=True)
-        
         entries = self.ctx.entriesbytag[self.tag]
         entries.reverse()
         oneentry = (len(entries) == 1)
         
-        fl = open(os.path.join(self.opts.destdir, self.tempoutpath), 'w')
+        fl = self.openwrite()
         template = self.jenv.get_template('tag.html')
         fl.write(template.render(
             title='Tag: '+self.tag,
@@ -266,7 +264,7 @@ class FeedPage(Page):
                 ### updateddate?
             )
         
-        fl = open(os.path.join(self.opts.destdir, self.tempoutpath), 'w')
+        fl = self.openwrite()
         feed.write(fl, 'utf-8')
         fl.close()
 
@@ -385,9 +383,6 @@ class EntryPage(Page):
 
         
     def build(self):
-        if self.outdir:
-            os.makedirs(os.path.join(self.opts.destdir, self.outdir), exist_ok=True)
-
         preventry = None
         nextentry = None
         if self.index > 0:
@@ -400,7 +395,7 @@ class EntryPage(Page):
         else:
             totalcomments = self.bakedcomments + len(self.comments)
             
-        fl = open(os.path.join(self.opts.destdir, self.tempoutpath), 'w')
+        fl = self.openwrite()
         template = self.jenv.get_template('entry.html')
         fl.write(template.render(
             entry=self,
