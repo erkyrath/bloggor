@@ -67,16 +67,16 @@ class TestRelativeTime(unittest.TestCase):
         d1 = fromiso('2023-05-01T12:00:00+00:00')
         
         d2 = fromiso('2023-05-01T12:00:00+00:00')
-        self.assertIsNone(relativetime(d2, d1))
+        self.assertEqual(relativetime(d2, d1), 'straightaway')
 
         d2 = fromiso('2023-05-01T11:00:00+00:00')
-        self.assertIsNone(relativetime(d2, d1))
+        self.assertEqual(relativetime(d2, d1), 'straightaway')
 
         d2 = fromiso('2023-04-30T12:00:00+00:00')
-        self.assertIsNone(relativetime(d2, d1))
+        self.assertEqual(relativetime(d2, d1), 'straightaway')
 
         d2 = fromiso('2023-04-30T12:10:00+00:00')
-        self.assertIsNone(relativetime(d2, d1))
+        self.assertEqual(relativetime(d2, d1), 'straightaway')
 
         d2 = fromiso('2023-05-01T12:20:00+00:00')
         self.assertEqual(relativetime(d2, d1), 'straightaway')

@@ -90,15 +90,13 @@ def parsedate(val):
 def relativetime(after, before):
     """Say (in English) how far apart two datetimes are.
     If they're more than a week apart, just report the later time.
-    If they're in the wrong order, or separated by less than 15 minutes,
-    return None.
+    If they're in the wrong order, or separated by less than one hour,
+    return "straightaway".
     """
     if after <= before:
-        return None
+        return 'straightaway'
     
     diff = after - before
-    if diff < datetime.timedelta(minutes=15):
-        return None
     
     diffdays = diff / datetime.timedelta(days=1)
     if diffdays >= 8:

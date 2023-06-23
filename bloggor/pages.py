@@ -333,7 +333,10 @@ class EntryPage(Page):
         self.shortdate = pubtuplocal.strftime('%Y-%m-%d')
 
         updatup = datetime.datetime.fromisoformat(self.updated)
-        self.longupdated = relativetime(updatup, pubtup)
+        if updatup - pubtup < datetime.timedelta(minutes=15):
+            self.longupdated = None
+        else:
+            self.longupdated = relativetime(updatup, pubtup)
 
         # shortdate doesn't always match outdir, so we don't check that.
 
