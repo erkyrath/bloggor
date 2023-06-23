@@ -267,7 +267,8 @@ class FeedPage(Page):
         for entry in entries:
             feed.add_item(
                 title = entry.title,
-                description = entry.body,
+                description = entry.excerpt,
+                content = entry.body,
                 link = self.opts.serverurl+entry.outuri,
                 author_name = 'Andrew Plotkin',
                 categories = entry.tags,
