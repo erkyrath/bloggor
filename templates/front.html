@@ -18,6 +18,14 @@
       {%- endfor %}
     </h4>
     {% endif %}
+    
+    {% if entry.comments %}
+    <h4 class="Comments">Comments: {{ entry.comments|count }}
+      {% if entry.commentthread.latestpublished %}
+        &nbsp; (latest {{ entry.commentthread.latestpublished }})
+      {% endif %}
+    </h4>
+    {% endif %}
   </div>
 
   {% set partbody = entry.body|splitatmore %}
