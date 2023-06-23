@@ -236,9 +236,9 @@ class FeedPage(Page):
         self.complete()
 
     def build(self):
-        if self.format == 'atom':
+        if self.format == constants.ATOM:
             cla = feedgenerator.Atom1Feed
-        elif self.format == 'rss':
+        elif self.format == constants.RSS:
             cla = feedgenerator.Rss201rev2Feed
         else:
             raise RuntimeException('unknown feed format: '+self.format)
@@ -412,6 +412,7 @@ class EntryPage(Page):
         fl.close()
 
 
+from bloggor import constants
 from bloggor.excepts import RuntimeException
 from bloggor.metafile import MetaFile
 from bloggor.util import tagfilename, parsedate, relativetime, excerpthtml
