@@ -311,10 +311,16 @@ class EntryPage(Page):
                     if tag:
                         self.tags.append(tag)
 
+        self.bakedcomments = 0
+        ls = metadata.get('bakedcomments', None)
+        if ls:
+            self.bakedcomments = int(ls[0])
+
         if not self.title:
             raise RuntimeException(self.path+': No title')
 
         # self.index is set after all posts are read and sorted
+        # same goes for self.comments
         
         self.draft = False  ###
         ### What is the following for drafts? Current date? End of the given month?
@@ -342,6 +348,11 @@ class EntryPage(Page):
             preventry = self.ctx.entries[self.index-1]
         if self.index < len(self.ctx.entries)-1:
             nextentry = self.ctx.entries[self.index+1]
+
+        if not self.comments:
+            totalcomments = self.bakedcomments
+        else:
+            totalcomments = self.bakedcomments + len(self.comments)
             
         fl = open(os.path.join(self.opts.destdir, self.tempoutpath), 'w')
         template = self.jenv.get_template('entry.html')
@@ -349,6 +360,7 @@ class EntryPage(Page):
             entry=self,
             title=self.title,
             comments=self.comments,
+            totalcomments=totalcomments,
             nextentry=nextentry,
             preventry=preventry))
         fl.close()
