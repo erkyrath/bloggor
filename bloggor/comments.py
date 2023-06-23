@@ -24,6 +24,7 @@ class CommentThread:
         self.entry = None
         self.comments = []
         self.latestpublished = None
+        self.longlatestpublished = None
         
     def __repr__(self):
         return '<%s "%s" (%d)>' % (self.__class__.__name__, self.outuri, len(self.comments))
@@ -39,6 +40,9 @@ class CommentThread:
         publs = [ com.published for com in self.comments if com.published ]
         if publs:
             self.latestpublished = max(publs)
+            pubtup = datetime.datetime.fromisoformat(self.entry.published)
+            updatup = datetime.datetime.fromisoformat(self.latestpublished)
+            self.longlatestpublished = relativetime(updatup, pubtup)
 
         self.entry.comments = self.comments
 
@@ -123,5 +127,5 @@ class Comment:
 
 from bloggor.metafile import MultiMetaFile
 from bloggor.excepts import RuntimeException
-from bloggor.util import parsedate
+from bloggor.util import parsedate, relativetime
 

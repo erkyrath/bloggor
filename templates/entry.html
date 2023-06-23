@@ -31,7 +31,7 @@
     {% if totalcomments %}
     <h4 class="Comments">Comments: {{ totalcomments }}
       {% if entry.commentthread.latestpublished %}
-        &nbsp; (latest {{ entry.commentthread.latestpublished }})
+        &nbsp; (latest {{ entry.commentthread.longlatestpublished }})
       {% endif %}
     </h4>
     {% endif %}
