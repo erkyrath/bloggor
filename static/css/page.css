@@ -247,6 +247,11 @@ body {
     font-style: italic;
 }
 
+.EntryHead h4.Comments {
+    font-weight: normal;
+    font-style: italic;
+}
+
 .CommentHead {
 }
 
