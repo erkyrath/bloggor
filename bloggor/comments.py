@@ -4,11 +4,6 @@ import datetime
 import markdown
 import markupsafe
 
-HTML = 'html'
-WHTML = 'whtml'
-MD = 'md'
-TXT = 'txt'
-
 class CommentThread:
     def __init__(self, ctx, dirpath, filename):
         self.ctx = ctx
@@ -53,20 +48,20 @@ class Comment:
 
         format = meta.get('format')
         if not format:
-            format = TXT
+            format = constants.TXT
         else:
             format = ''.join(format)
             if format == 'text':
-                format = TXT
+                format = constants.TXT
             
-        if format == TXT:
+        if format == constants.TXT:
             val = str(markupsafe.escape(body))
             self.body = '<div class="PreWrapAll">\n%s</div>' % (val,)
-        elif format == HTML:
+        elif format == constants.HTML:
             self.body = body
-        elif format == WHTML:
+        elif format == constants.WHTML:
             self.body = '<div class="PreWrapAll">\n%s</div>' % (body,)
-        elif format == MD:
+        elif format == constants.MD:
             ctx.mdenv.reset()
             self.body = ctx.mdenv.convert(body)
         else:

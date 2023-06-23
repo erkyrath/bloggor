@@ -271,9 +271,6 @@ class FeedPage(Page):
         feed.write(fl, 'utf-8')
         fl.close()
 
-
-HTML = 'html'
-MD = 'md'
         
 class EntryPage(Page):
     def __init__(self, ctx, dirpath, filename):
@@ -284,10 +281,10 @@ class EntryPage(Page):
         self.path = os.path.join(self.dirpath, self.filename)
         
         if filename.endswith('.html'):
-            self.type = HTML
+            self.type = constants.HTML
             outfile = filename
         elif filename.endswith('.md'):
-            self.type = MD
+            self.type = constants.MD
             outfile = filename[ : -3 ] + '.html'
         else:
             raise RuntimeException(self.path+': Unrecognized entry format: ' + filename)
@@ -304,16 +301,18 @@ class EntryPage(Page):
         self.complete()
 
     def read(self):
-        if self.type == HTML:
+        if self.type == constants.HTML:
             mfl = MetaFile(self.path)
             body, metadata = mfl.read()
-        else:
+        elif self.type == constants.MD:
             fl = open(self.path)
             dat = fl.read()
             fl.close()
             self.mdenv.reset()
             body = self.mdenv.convert(dat)
             metadata = self.mdenv.Meta
+        else:
+            raise RuntimeException(self.path+': Unrecognized entry format: ' + self.type)
 
         self.body = body
         self.metadata = metadata
