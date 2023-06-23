@@ -15,9 +15,9 @@ class Page:
         self.outdir = None
 
     def complete(self):
-        if not self.outpath.endswith('.html'):
-            raise RuntimeException(self.outpath+': not html')
-        self.outuri = self.outpath[ 0 : -5 ]
+        self.outuri, dot, suffix = self.outpath.rpartition('.')
+        if suffix not in ('html', 'rss'):
+            raise RuntimeException(self.outpath+': not html or other known suffix')
         if '.' in self.outuri:
             raise RuntimeException(self.outuri+': uri contains dot')
             
