@@ -240,6 +240,9 @@ class FeedPage(Page):
             cla = feedgenerator.Rss201rev2Feed
         else:
             raise RuntimeException('unknown feed format: '+self.format)
+
+        commontags = [ tag for tag, ls in self.ctx.entriesbytag.items() if len(ls) > 1 ]
+        commontags.sort()
         
         feed = cla(
             title = 'Zarf Updates',
@@ -247,7 +250,7 @@ class FeedPage(Page):
             author_name = 'Andrew Plotkin',
             description = 'Interactive fiction, narrative in games, and so on',
             language = 'en',
-            categories = ['foo', 'bar'], ###
+            categories = commontags,
         )
 
         entries = self.ctx.entries[ -25 : ]
