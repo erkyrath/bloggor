@@ -9,8 +9,6 @@ WHTML = 'whtml'
 MD = 'md'
 TXT = 'txt'
 
-EST_TZ = datetime.timezone(datetime.timedelta(hours=-5))
-
 class CommentThread:
     def __init__(self, ctx, dirpath, filename):
         self.ctx = ctx
@@ -118,13 +116,14 @@ class Comment:
             self.sourcename = None
 
         pubtup = datetime.datetime.fromisoformat(self.published)
-        pubtuplocal = pubtup.astimezone(EST_TZ)
+        pubtuplocal = pubtup.astimezone(constants.EST_TZ)
         self.longpublished = pubtuplocal.strftime('%B %d, %Y at %I:%M %p').replace(' 0', ' ')
 
     def __repr__(self):
         return '<%s "%s">' % (self.__class__.__name__, self.id)
 
 
+from bloggor import constants
 from bloggor.metafile import MultiMetaFile
 from bloggor.excepts import RuntimeException
 from bloggor.util import parsedate, relativetime

@@ -274,7 +274,6 @@ class FeedPage(Page):
 
 HTML = 'html'
 MD = 'md'
-EST_TZ = datetime.timezone(datetime.timedelta(hours=-5))
         
 class EntryPage(Page):
     def __init__(self, ctx, dirpath, filename):
@@ -370,7 +369,7 @@ class EntryPage(Page):
         ### What is the following for drafts? Current date? End of the given month?
 
         pubtup = datetime.datetime.fromisoformat(self.published)
-        pubtuplocal = pubtup.astimezone(EST_TZ)
+        pubtuplocal = pubtup.astimezone(constants.EST_TZ)
         self.longpublished = pubtuplocal.strftime('%A, %B %d, %Y').replace(' 0', ' ')
         self.year = pubtuplocal.year
         self.monthname = pubtuplocal.strftime('%B %Y')
