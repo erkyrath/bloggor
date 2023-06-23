@@ -16,14 +16,14 @@ class Page:
 
     def complete(self):
         self.outuri, dot, suffix = self.outpath.rpartition('.')
-        if suffix not in ('html', 'rss'):
+        if suffix not in ('html', 'rss', 'xml'):
             raise RuntimeException(self.outpath+': not html or other known suffix')
         if '.' in self.outuri:
             raise RuntimeException(self.outuri+': uri contains dot')
             
         self.outdir = os.path.dirname(self.outpath)
         if not self.opts.notemp:
-            self.tempoutpath = self.outpath + '_tmp.html'
+            self.tempoutpath = self.outpath + '_tmp.' + suffix
         else:
             self.tempoutpath = self.outpath
 
@@ -229,13 +229,21 @@ class TagPage(Page):
         fl.close()
 
 class FeedPage(Page):
-    def __init__(self, ctx, outpath):
+    def __init__(self, ctx, format, outpath):
         Page.__init__(self, ctx)
         self.outpath = outpath
+        self.format = format
         self.complete()
 
     def build(self):
-        feed = feedgenerator.DefaultFeed(
+        if self.format == 'atom':
+            cla = feedgenerator.Atom1Feed
+        elif self.format == 'rss':
+            cla = feedgenerator.Rss201rev2Feed
+        else:
+            raise RuntimeException('unknown feed format: '+self.format)
+        
+        feed = cla(
             title = 'Zarf Updates',
             link = self.opts.serverurl,
             author_name = 'Andrew Plotkin',

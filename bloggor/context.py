@@ -156,7 +156,10 @@ class Context:
             page = TagPage(self, tag)
             self.pages.append(page)
 
-        page = FeedPage(self, 'feeds/posts/default.rss')
+        page = FeedPage(self, 'atom', 'feeds/posts/default.xml')
+        self.pages.append(page)
+
+        page = FeedPage(self, 'rss', 'feeds/posts/default.rss')
         self.pages.append(page)
 
         if self.opts.dryrun:
@@ -166,11 +169,17 @@ class Context:
         for page in self.pages:
             page.build()
 
+        ls = [ page.outpath for page in self.pages ]
+        assert len(ls) == len(set(ls))
+
         if self.opts.notemp:
             pass
         elif self.opts.nocommit:
             print('Skipping commit')   
         else:
+            ls = [ page.tempoutpath for page in self.pages ]
+            assert len(ls) == len(set(ls))
+            
             print('Committing %d pages...' % (len(self.pages),))
             for page in self.pages:
                 page.commit()
