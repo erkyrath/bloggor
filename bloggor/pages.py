@@ -227,11 +227,18 @@ class TagPage(Page):
         fl.close()
 
 class FeedPage(Page):
-    def __init__(self, ctx, format, outpath):
+    def __init__(self, ctx, format, outpath, withsuffix=False):
         Page.__init__(self, ctx)
         self.outpath = outpath
         self.format = format
         self.complete()
+
+        self.feed_url = self.opts.serverurl+outpath
+        if not withsuffix:
+            self.feed_url, _, _ = self.feed_url.rpartition('.')
+
+    def __repr__(self):
+        return '<%s (%s) "%s">' % (self.__class__.__name__, self.format, self.outuri)
 
     def build(self):
         if self.format == constants.ATOM:
@@ -249,6 +256,7 @@ class FeedPage(Page):
             link = self.opts.serverurl,
             author_name = 'Andrew Plotkin',
             description = 'Interactive fiction, narrative in games, and so on',
+            feed_url = self.feed_url,
             language = 'en',
             categories = commontags,
         )

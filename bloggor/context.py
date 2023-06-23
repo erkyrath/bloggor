@@ -160,7 +160,7 @@ class Context:
         page = FeedPage(self, constants.ATOM, 'feeds/posts/default.xml')
         self.pages.append(page)
 
-        page = FeedPage(self, constants.RSS, 'feeds/posts/default.rss')
+        page = FeedPage(self, constants.RSS, 'feeds/posts/default.rss', withsuffix=True)
         self.pages.append(page)
 
         if self.opts.dryrun:
