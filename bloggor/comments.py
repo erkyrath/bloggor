@@ -23,6 +23,7 @@ class CommentThread:
         self.outuri = self.outpath[ : -9]
         self.entry = None
         self.comments = []
+        self.latestpublished = None
         
     def __repr__(self):
         return '<%s "%s" (%d)>' % (self.__class__.__name__, self.outuri, len(self.comments))
@@ -34,6 +35,10 @@ class CommentThread:
         for ix, tup in enumerate(ls):
             body, meta = tup
             self.comments.append(Comment(self.ctx, self, ix, body, meta))
+
+        publs = [ com.published for com in self.comments if com.published ]
+        if publs:
+            self.latestpublished = max(publs)
 
         self.entry.comments = self.comments
 
