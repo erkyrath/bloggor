@@ -378,8 +378,10 @@ class EntryPage(Page):
         publocal = self.published.astimezone(constants.EST_TZ)
         self.longpublished = publocal.strftime('%A, %B %d, %Y').replace(' 0', ' ')
         self.year = publocal.year
+        self.month = publocal.month
         self.monthname = publocal.strftime('%B %Y')
         self.shortdate = publocal.strftime('%Y-%m-%d')
+        self.shortmonth = publocal.strftime('%Y-%m')
 
         if self.updated - self.published < datetime.timedelta(minutes=15):
             self.longupdated = None
