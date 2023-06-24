@@ -53,7 +53,13 @@ li.Entry {
       
       <li class="Entry">({{ entry.shortdate }}) <a href="/{{ entry.outuri }}">{{ entry.title }}</a>
       
-      {% if entry.comments %}
+      {% if entry.comments and entry.comments|count == 1 %}
+        <div class="Comments">1 comment
+          {% if entry.commentthread.latestpublished %}
+            &nbsp; ({{ entry.commentthread.longlatestpublished }})
+          {% endif %}
+        </div>
+      {% elif entry.comments %}
         <div class="Comments">{{ entry.comments|count }} comments
           {% if entry.commentthread.latestpublished %}
             &nbsp; (latest {{ entry.commentthread.longlatestpublished }})
