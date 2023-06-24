@@ -33,9 +33,7 @@ class CommentThread:
         publs = [ com.published for com in self.comments if com.published ]
         if publs:
             self.latestpublished = max(publs)
-            pubtup = datetime.datetime.fromisoformat(self.entry.published)
-            updatup = datetime.datetime.fromisoformat(self.latestpublished)
-            self.longlatestpublished = relativetime(updatup, pubtup)
+            self.longlatestpublished = relativetime(self.latestpublished, self.entry.published)
 
         self.entry.comments = self.comments
 
@@ -95,7 +93,8 @@ class Comment:
             raise RuntimeException(self.id+': No published date')
         val = ''.join(ls)
         try:
-            self.published = parsedate(val)
+            self.publishedraw = parsedate(val)
+            self.published = datetime.datetime.fromisoformat(self.publishedraw)
         except ValueError:
             raise RuntimeException(self.id+': Invalid published date: '+val)
 
@@ -110,8 +109,7 @@ class Comment:
         else:
             self.sourcename = None
 
-        pubtup = datetime.datetime.fromisoformat(self.published)
-        pubtuplocal = pubtup.astimezone(constants.EST_TZ)
+        pubtuplocal = self.published.astimezone(constants.EST_TZ)
         self.longpublished = pubtuplocal.strftime('%B %d, %Y at %I:%M %p').replace(' 0', ' ')
 
     def __repr__(self):

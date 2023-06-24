@@ -272,8 +272,8 @@ class FeedPage(Page):
                 link = self.opts.serverurl+entry.outuri,
                 author_name = 'Andrew Plotkin',
                 categories = entry.tags,
-                pubdate = datetime.datetime.fromisoformat(entry.published),
-                ### updateddate?
+                pubdate = entry.published,
+                updateddate = entry.updated,
             )
         
         fl = self.openwrite()
@@ -338,19 +338,23 @@ class EntryPage(Page):
             raise RuntimeException(self.path+': No published date')
         val = ''.join(ls)
         try:
-            self.published = parsedate(val)
+            self.publishedraw = parsedate(val)
+            self.published = datetime.datetime.fromisoformat(self.publishedraw)
         except ValueError:
             raise RuntimeException(self.path+': Invalid published date: '+val)
 
+        self.updatedraw = None
         self.updated = None
         ls = metadata.get('updated')
         if ls:
             val = ''.join(ls)
             try:
-                self.updated = parsedate(val)
+                self.updatedraw = parsedate(val)
+                self.updated = datetime.datetime.fromisoformat(self.updatedraw)
             except ValueError:
                 raise RuntimeException(self.path+': Invalid updated date: '+val)
         if self.updated is None or self.updated < self.published:
+            self.updatedraw = self.publishedraw
             self.updated = self.published
 
         self.tags = []
@@ -376,18 +380,16 @@ class EntryPage(Page):
         self.draft = False  ###
         ### What is the following for drafts? Current date? End of the given month?
 
-        pubtup = datetime.datetime.fromisoformat(self.published)
-        pubtuplocal = pubtup.astimezone(constants.EST_TZ)
+        pubtuplocal = self.published.astimezone(constants.EST_TZ)
         self.longpublished = pubtuplocal.strftime('%A, %B %d, %Y').replace(' 0', ' ')
         self.year = pubtuplocal.year
         self.monthname = pubtuplocal.strftime('%B %Y')
         self.shortdate = pubtuplocal.strftime('%Y-%m-%d')
 
-        updatup = datetime.datetime.fromisoformat(self.updated)
-        if updatup - pubtup < datetime.timedelta(minutes=15):
+        if self.updated - self.published < datetime.timedelta(minutes=15):
             self.longupdated = None
         else:
-            self.longupdated = relativetime(updatup, pubtup)
+            self.longupdated = relativetime(self.updated, self.published)
 
         # shortdate doesn't always match outdir, so we don't check that.
 
