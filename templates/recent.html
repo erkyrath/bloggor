@@ -43,7 +43,7 @@ li div.Comments {
       {% else %}
         (See <a href="/recent">recent posts</a> or posts from:
       {% endif %}
-      {% for yr in years %} <a href="/year-{{ yr }}">{{ yr }}</a>{% endfor -%})
+      {% for yr in years %} <a href="/{{ yr }}/">{{ yr }}</a>{% endfor -%})
     </h3>
   </div>
   

@@ -143,7 +143,7 @@ class YearEntriesPage(Page):
     def __init__(self, ctx, year):
         Page.__init__(self, ctx)
         self.year = year
-        self.outpath = 'year-%d.html' % (self.year,)
+        self.outpath = '%d/index.html' % (self.year,)
         self.complete()
 
     def build(self):
