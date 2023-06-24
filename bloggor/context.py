@@ -10,6 +10,7 @@ from bloggor.pages import FrontPage
 from bloggor.pages import EntryPage, GenTemplatePage, StaticMDPage
 from bloggor.pages import TagListPage, TagListFreqPage, TagPage
 from bloggor.pages import RecentEntriesPage, YearEntriesPage
+from bloggor.pages import HistoryPage
 from bloggor.pages import FeedPage
 from bloggor.comments import CommentThread
 import bloggor.jextension
@@ -138,6 +139,9 @@ class Context:
                     self.entriesbytag[tag].append(entry)
 
         page = FrontPage(self)
+        self.pages.append(page)
+
+        page = HistoryPage(self)
         self.pages.append(page)
 
         page = RecentEntriesPage(self)

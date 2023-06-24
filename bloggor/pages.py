@@ -162,6 +162,32 @@ class YearEntriesPage(Page):
         fl.close()
         
     
+class HistoryPage(Page):
+    def __init__(self, ctx):
+        Page.__init__(self, ctx)
+        self.outpath = 'history.html'
+        self.complete()
+
+    def build(self):
+        yearls = list(self.ctx.entriesbyyear.keys())
+        yearls.sort()
+
+        monthls = [
+            ('January', '01'), ('February', '02'), ('March', '03'),
+            ('April', '04'), ('May', '05'), ('June', '06'),
+            ('July', '07'), ('August', '08'), ('September', '09'),
+            ('October', '10'), ('November', '11'), ('December', '12'),
+        ]
+
+        fl = self.openwrite()
+        template = self.jenv.get_template('history.html')
+        fl.write(template.render(
+            title='History',
+            years=yearls,
+            months=monthls))
+        fl.close()
+
+
 class TagListPage(Page):
     def __init__(self, ctx):
         Page.__init__(self, ctx)
