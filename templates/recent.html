@@ -61,13 +61,13 @@ li div.Comments {
       {% if entry.comments and entry.comments|count == 1 %}
         <div class="Comments">1 comment
           {% if entry.commentthread.latestpublished %}
-            &nbsp; ({{ entry.commentthread.longlatestpublished }})
+            &nbsp; ({{ entry.commentthread.shortlatestpublished }})
           {% endif %}
         </div>
       {% elif entry.comments %}
         <div class="Comments">{{ entry.comments|count }} comments
           {% if entry.commentthread.latestpublished %}
-            &nbsp; (latest {{ entry.commentthread.longlatestpublished }})
+            &nbsp; (latest {{ entry.commentthread.shortlatestpublished }})
           {% endif %}
         </div>
       {% endif %}

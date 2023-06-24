@@ -34,6 +34,7 @@ class CommentThread:
         if publs:
             self.latestpublished = max(publs)
             self.longlatestpublished = relativetime(self.latestpublished, self.entry.published)
+            self.shortlatestpublished = relativetime(self.latestpublished, self.entry.published, english=False)
 
         self.entry.comments = self.comments
 

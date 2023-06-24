@@ -87,7 +87,7 @@ def parsedate(val):
     raise ValueError()
 
 
-def relativetime(after, before):
+def relativetime(after, before, english=True):
     """Say (in English) how far apart two datetimes are.
     If they're more than a week apart, just report the later time.
     If they're in the wrong order, or separated by less than one hour,
@@ -100,10 +100,16 @@ def relativetime(after, before):
     
     diffdays = diff / datetime.timedelta(days=1)
     if diffdays >= 8:
-        if before.year != after.year:
-            return after.strftime('%B %d, %Y').replace(' 0', ' ')
+        if english:
+            if before.year != after.year:
+                return after.strftime('%B %d, %Y').replace(' 0', ' ')
+            else:
+                return after.strftime('%B %d').replace(' 0', ' ')
         else:
-            return after.strftime('%B %d').replace(' 0', ' ')
+            if before.year != after.year:
+                return after.strftime('%Y-%m-%d')
+            else:
+                return after.strftime('%m-%d')
     
     if diffdays > 0.999:
         val = round(diffdays)
