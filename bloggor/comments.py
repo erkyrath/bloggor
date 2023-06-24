@@ -109,8 +109,8 @@ class Comment:
         else:
             self.sourcename = None
 
-        pubtuplocal = self.published.astimezone(constants.EST_TZ)
-        self.longpublished = pubtuplocal.strftime('%B %d, %Y at %I:%M %p').replace(' 0', ' ')
+        publocal = self.published.astimezone(constants.EST_TZ)
+        self.longpublished = publocal.strftime('%B %d, %Y at %I:%M %p').replace(' 0', ' ')
 
     def __repr__(self):
         return '<%s "%s">' % (self.__class__.__name__, self.id)

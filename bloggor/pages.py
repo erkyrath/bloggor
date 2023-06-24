@@ -380,11 +380,11 @@ class EntryPage(Page):
         self.draft = False  ###
         ### What is the following for drafts? Current date? End of the given month?
 
-        pubtuplocal = self.published.astimezone(constants.EST_TZ)
-        self.longpublished = pubtuplocal.strftime('%A, %B %d, %Y').replace(' 0', ' ')
-        self.year = pubtuplocal.year
-        self.monthname = pubtuplocal.strftime('%B %Y')
-        self.shortdate = pubtuplocal.strftime('%Y-%m-%d')
+        publocal = self.published.astimezone(constants.EST_TZ)
+        self.longpublished = publocal.strftime('%A, %B %d, %Y').replace(' 0', ' ')
+        self.year = publocal.year
+        self.monthname = publocal.strftime('%B %Y')
+        self.shortdate = publocal.strftime('%Y-%m-%d')
 
         if self.updated - self.published < datetime.timedelta(minutes=15):
             self.longupdated = None
