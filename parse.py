@@ -25,14 +25,19 @@ if args:
 
 feedatom = 'Takeout/Blogger/Blogs/Zarf Updates/feed.atom'
 
+EST_TZ = datetime.timezone(datetime.timedelta(hours=-5))
+
 pat_divpara = re.compile('^<div class="para"(?: style="margin-[a-z]+: 1em; margin-[a-z]+: 1em;")?>(.*)</div>$')
 pat_divparastart = re.compile('^<div class="para"(?: style="margin-[a-z]+: 1em; margin-[a-z]+: 1em;")?>$')
 pat_gameshelf = re.compile('["\'](http[s]?://[a-z0-9_.]*jmac.org/[^"\']*)["\']', flags=re.IGNORECASE)
 pat_blogspot = re.compile('["\'](http[s]?://[a-z0-9_.]*(?:googleusercontent|blogspot).com/[^"\']*)["\']', flags=re.IGNORECASE)
 pat_blogzarf = re.compile('["\'](http[s]?://blog.zarfhome.com/[^"\']*)["\']', flags=re.IGNORECASE)
+
 pat_morebreak = re.compile('<!--more-->', flags=re.IGNORECASE)
 pat_fatbullet = re.compile('<li>\n*<br/?>', flags=re.IGNORECASE+re.MULTILINE)
-pat_hrtag = re.compile('<hr */?>', flags=re.IGNORECASE)
+
+pat_bakedline = re.compile('<hr */?>\n*<h3>\n*Comments imported from Gameshelf</h3>\n*', flags=re.MULTILINE)
+pat_bakedhead = re.compile('<hr */?>\n*<b>([^<]+)</b> [(]([^)]+)[)]:<br */>', flags=re.MULTILINE)
 
 class Entry:
     def __init__(self, map):
@@ -56,23 +61,14 @@ class Entry:
         (_, _, val) = self.id.rpartition('-')
         self.shortid = val
 
-        self.bakedcomments = self.countbaked(self.content)
-
         self.content = self.modernize(self.content)
         self.content = self.addmore(self.content)
         self.content = self.degameshelf(self.content)
         self.content = self.deblogger(self.content)
+        self.content, self.bakedcomments = self.trimbaked(self.content)
 
     def __repr__(self):
         return '<Entry "%s">' % (self.filename,)
-
-    def countbaked(self, text):
-        pos = text.find('Comments imported from Gameshelf')
-        if pos < 0:
-            return 0
-        val = text[ pos : ]
-        ls = pat_hrtag.findall(val)
-        return len(ls)
 
     def modernize(self, text):
         text = pat_fatbullet.sub('<li>', text)
@@ -138,6 +134,30 @@ class Entry:
         text = pat_blogzarf.sub(func2, text)
         return text
 
+    def trimbaked(self, text):
+        match = pat_bakedline.search(text)
+        if not match:
+            return text, []
+        comthread = text[ match.end() : ]
+        text = text[ : match.start() ]
+        comments = []
+
+        ls = list(pat_bakedhead.finditer(comthread))
+        assert ls[0].start() == 0
+        for ix, match in enumerate(ls):
+            authorname = match.group(1)
+            pubdate = datetime.datetime.strptime(match.group(2), '%b %d, %Y at %I:%M %p')
+            pubdate = pubdate.replace(tzinfo=EST_TZ).astimezone(datetime.timezone.utc)
+            if ix+1 < len(ls):
+                endpos = ls[ix+1].start()
+            else:
+                endpos = len(comthread)
+            seg = comthread[match.end() : endpos]
+            seg = seg.strip()
+            comments.append(BakedComment(authorname, pubdate, seg))
+            
+        return text, comments
+
     def jsonmap(self):
         map = {}
         map['id'] = self.id
@@ -188,6 +208,11 @@ class Comment:
         map['updatedraw'] = self.updatedraw
         return map
 
+class BakedComment:
+    def __init__(self, authorname, pubdate, content):
+        self.authorname = authorname
+        self.publishedraw = pubdate.isoformat()
+        self.content = content
 
 pat_dashes = re.compile(r'^(---+)\s*$')
 
@@ -435,21 +460,30 @@ if opts.outdir:
             pass
         else:
             fl.write('updated:   %s\n' % (ent.updatedraw,))
-        if ent.bakedcomments:
-            fl.write('bakedcomments: %d\n' % (ent.bakedcomments,))
         fl.write('---\n')
         fl.write(ent.content)
         fl.close()
 
     comls = []
     for ent in entries:
-        if not ent.flatreplies:
+        if not ent.flatreplies and not ent.bakedcomments:
             continue
         for com in ent.flatreplies:
             comls.append(com.jsonmap())
         prefix, filename = post_name_table[ent.shortid]
         comuri = os.path.join(opts.outdir, 'entries', ent.filename[1:-5]+'.comments')
         fl = open(comuri, 'w')
+        
+        for com in ent.bakedcomments:
+            fl.write('---\n')
+            fl.write('source: gameshelf\n')
+            fl.write('published: %s\n' % (com.publishedraw,))
+            fl.write('format: html\n')
+            fl.write('authorname: %s\n' % (com.authorname,))
+            fl.write('---\n')
+            writeescapedashes(fl, com.content)
+            fl.write('\n')
+            
         for com in ent.flatreplies:
             fl.write('---\n')
             fl.write('source: blogger\n')
@@ -467,6 +501,7 @@ if opts.outdir:
             fl.write('---\n')
             writeescapedashes(fl, com.content)
             fl.write('\n')
+            
         fl.write('---\n')
         fl.close()
 
