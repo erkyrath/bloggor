@@ -54,6 +54,7 @@ class Entry:
         if 'tags' in map:
             self.tags.extend(map['tags'])
 
+        self.bakedcomments = []
         self.comments = []
         self.replies = []
         self.flatreplies = []
@@ -65,7 +66,7 @@ class Entry:
         self.content = self.addmore(self.content)
         self.content = self.degameshelf(self.content)
         self.content = self.deblogger(self.content)
-        self.content, self.bakedcomments = self.trimbaked(self.content)
+        self.content = self.trimbaked(self.content)
 
     def __repr__(self):
         return '<Entry "%s">' % (self.filename,)
@@ -137,10 +138,9 @@ class Entry:
     def trimbaked(self, text):
         match = pat_bakedline.search(text)
         if not match:
-            return text, []
+            return text
         comthread = text[ match.end() : ]
         text = text[ : match.start() ]
-        comments = []
 
         ls = list(pat_bakedhead.finditer(comthread))
         assert ls[0].start() == 0
@@ -154,9 +154,9 @@ class Entry:
                 endpos = len(comthread)
             seg = comthread[match.end() : endpos]
             seg = seg.strip()
-            comments.append(BakedComment(authorname, pubdate, seg))
+            self.bakedcomments.append(BakedComment(authorname, pubdate, seg))
             
-        return text, comments
+        return text
 
     def jsonmap(self):
         map = {}
