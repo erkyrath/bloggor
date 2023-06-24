@@ -366,11 +366,6 @@ class EntryPage(Page):
                     if tag:
                         self.tags.append(tag)
 
-        self.bakedcomments = 0
-        ###ls = metadata.get('bakedcomments', None)
-        ###if ls:
-        ###    self.bakedcomments = int(ls[0])
-
         if not self.title:
             raise RuntimeException(self.path+': No title')
 
@@ -402,18 +397,12 @@ class EntryPage(Page):
         if self.index < len(self.ctx.entries)-1:
             nextentry = self.ctx.entries[self.index+1]
 
-        if not self.comments:
-            totalcomments = self.bakedcomments
-        else:
-            totalcomments = self.bakedcomments + len(self.comments)
-            
         fl = self.openwrite()
         template = self.jenv.get_template('entry.html')
         fl.write(template.render(
             entry=self,
             title=self.title,
             comments=self.comments,
-            totalcomments=totalcomments,
             nextentry=nextentry,
             preventry=preventry))
         fl.close()
