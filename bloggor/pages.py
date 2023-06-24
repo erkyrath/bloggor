@@ -185,7 +185,8 @@ class HistoryPage(Page):
             title='History',
             entriesbymonth=self.ctx.entriesbymonth,
             years=yearls,
-            months=monthls))
+            months=monthls,
+            recentfew=self.ctx.recentfew))
         fl.close()
 
 
