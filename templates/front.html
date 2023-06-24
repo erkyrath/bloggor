@@ -46,6 +46,11 @@
       <h3 class="Selector"><a href="{{ entry.outuri }}#more">Read the rest...</a></h3>
     </div>
   {% endif %}
+  {% if entry.comments %}
+    <div class="UtilHead">
+      <h3 class="Selector"><a href="{{ entry.outuri }}#comments">Read the comments...</a></h3>
+    </div>
+  {% endif %}
 
   <hr>
 
