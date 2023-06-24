@@ -14,13 +14,17 @@ li.Entry {
   padding-top: 4px;
   padding-bottom: 4px;
 }
-.Tags {
+li div.Title {
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+li div.Tags {
   line-height: 1.3em;
   font-size: 0.8em;
   font-style: italic;
   margin-left: 3em;
 }
-.Comments {
+li div.Comments {
   line-height: 1.3em;
   font-size: 0.8em;
   font-style: italic;
@@ -51,7 +55,8 @@ li.Entry {
         <li class="month">{{ entry.monthname }}
       {% endif %}
       
-      <li class="Entry">({{ entry.shortdate }}) <a href="/{{ entry.outuri }}">{{ entry.title }}</a>
+      <li class="Entry">
+      <div class="Title">({{ entry.shortdate }}) <a href="/{{ entry.outuri }}">{{ entry.title }}</a></div>
       
       {% if entry.comments and entry.comments|count == 1 %}
         <div class="Comments">1 comment
