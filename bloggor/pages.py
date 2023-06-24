@@ -367,9 +367,9 @@ class EntryPage(Page):
                         self.tags.append(tag)
 
         self.bakedcomments = 0
-        ls = metadata.get('bakedcomments', None)
-        if ls:
-            self.bakedcomments = int(ls[0])
+        ###ls = metadata.get('bakedcomments', None)
+        ###if ls:
+        ###    self.bakedcomments = int(ls[0])
 
         if not self.title:
             raise RuntimeException(self.path+': No title')
