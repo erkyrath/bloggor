@@ -183,6 +183,7 @@ class HistoryPage(Page):
         template = self.jenv.get_template('history.html')
         fl.write(template.render(
             title='History',
+            entriesbymonth=self.ctx.entriesbymonth,
             years=yearls,
             months=monthls))
         fl.close()

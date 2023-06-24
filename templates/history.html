@@ -24,9 +24,15 @@
 
   <div class="YearTable">
     {% for monthname, month in months %}
+      {% set ymonth = "%s-%s"|format(year, month) %}
+      {% set ls = entriesbymonth[ymonth] %}
       <div class="Month">
-        <div>{{ year }}-{{ monthname }}</div>
-        <div><a href="/{{ year }}/#{{ year }}-{{ month }}">POSTS</a></div>
+        <div>{{ monthname }}</div>
+	{% if not ls %}
+	  <div>&nbsp;</div>
+	{% else %}
+          <div><a href="/{{ year }}/#{{ ymonth }}">{{ ls|count }} {% if ls|count == 1 %}post{% else %}posts{% endif %}</a></div>
+	{% endif %}
       </div>
     {% endfor %}
   </div>

@@ -28,6 +28,7 @@ class Context:
         self.entriesbyuri = {}
         self.entriesbytag = {}
         self.entriesbyyear = MultiDict()
+        self.entriesbymonth = MultiDict()
         self.recentfew = []
         
         self.jenv = Environment(
@@ -132,6 +133,7 @@ class Context:
 
         for entry in self.entries:
             self.entriesbyyear.add(entry.year, entry)
+            self.entriesbymonth.add(entry.shortmonth, entry)
             for tag in entry.tags:
                 if tag not in self.entriesbytag:
                     self.entriesbytag[tag] = [ entry ]
