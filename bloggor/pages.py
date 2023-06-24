@@ -402,7 +402,6 @@ class EntryPage(Page):
         fl.write(template.render(
             entry=self,
             title=self.title,
-            comments=self.comments,
             nextentry=nextentry,
             preventry=preventry))
         fl.close()
