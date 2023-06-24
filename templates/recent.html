@@ -15,6 +15,13 @@ li.Entry {
   padding-bottom: 4px;
 }
 .Tags {
+  line-height: 1.3em;
+  font-size: 0.8em;
+  font-style: italic;
+  margin-left: 3em;
+}
+.Comments {
+  line-height: 1.3em;
   font-size: 0.8em;
   font-style: italic;
   margin-left: 3em;
@@ -45,6 +52,15 @@ li.Entry {
       {% endif %}
       
       <li class="Entry">({{ entry.shortdate }}) <a href="/{{ entry.outuri }}">{{ entry.title }}</a>
+      
+      {% if entry.comments %}
+        <div class="Comments">{{ entry.comments|count }} comments
+          {% if entry.commentthread.latestpublished %}
+            &nbsp; (latest {{ entry.commentthread.longlatestpublished }})
+          {% endif %}
+        </div>
+      {% endif %}
+    
       {% if entry.tags %}
         <div class="Tags">
         {% set comma = joiner(", ") %}
