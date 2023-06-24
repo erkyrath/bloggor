@@ -111,11 +111,20 @@ class TestRelativeTime(unittest.TestCase):
         d2 = fromiso('2023-05-09T12:00:00+00:00')
         self.assertEqual(relativetime(d2, d1), 'May 9')
 
+        d2 = fromiso('2023-05-09T12:00:00+00:00')
+        self.assertEqual(relativetime(d2, d1, english=False), '05-09')
+
         d2 = fromiso('2023-11-01T12:00:00+00:00')
         self.assertEqual(relativetime(d2, d1), 'November 1')
 
+        d2 = fromiso('2023-11-01T12:00:00+00:00')
+        self.assertEqual(relativetime(d2, d1, english=False), '11-01')
+
         d2 = fromiso('2024-05-09T12:00:00+00:00')
         self.assertEqual(relativetime(d2, d1), 'May 9, 2024')
+
+        d2 = fromiso('2024-05-09T12:00:00+00:00')
+        self.assertEqual(relativetime(d2, d1, english=False), '2024-05-09')
 
 
 testnomap1 = '''key: value
