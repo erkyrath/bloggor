@@ -29,6 +29,7 @@ class Context:
         self.entriesbytag = {}
         self.entriesbyyear = MultiDict()
         self.entriesbymonth = MultiDict()
+        self.recentyears = []
         self.recentfew = []
         
         self.jenv = Environment(
@@ -141,6 +142,12 @@ class Context:
                 else:
                     self.entriesbytag[tag].append(entry)
 
+        ls = list(self.entriesbyyear.keys())
+        ls.sort(reverse=True)
+        self.recentyears = ls[ : 5 ]
+
+        # Done processing our entry pages.
+        
         page = FrontPage(self)
         self.pages.append(page)
 

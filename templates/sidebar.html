@@ -15,6 +15,14 @@
 
 <h3><a href="/history">Blog archive</a></h3>
 
+<p>
+  <a href="/recent">recent</a>
+  {% for year in blogctx.recentyears %}
+    <a href="/{{ year }}/">{{ year }}</a>
+  {% endfor %}
+  (<a href="/history">more...</a>)
+</p>
+
 {% set populartags = ['if', 'interactive fiction', 'zarf', 'myst', 'cyan', 'hadean lands', 'meanwhile', 'igf', 'boston', 'infocom', 'zork'] %}
 
 <h3><a href="/tags">Tag archive</a></h3>
