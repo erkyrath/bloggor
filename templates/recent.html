@@ -59,13 +59,15 @@ li div.Comments {
       <div class="Title">({{ entry.shortdate }}) <a href="/{{ entry.outuri }}">{{ entry.title }}</a></div>
       
       {% if entry.comments and entry.comments|count == 1 %}
-        <div class="Comments">1 comment
+        <div class="Comments">
+          <a href="/{{ entry.outuri }}#comments">1 comment</a>
           {% if entry.commentthread.latestpublished %}
             &nbsp; ({{ entry.commentthread.shortlatestpublished }})
           {% endif %}
         </div>
       {% elif entry.comments %}
-        <div class="Comments">{{ entry.comments|count }} comments
+        <div class="Comments">
+          <a href="/{{ entry.outuri }}#comments">{{ entry.comments|count }} comments</a>
           {% if entry.commentthread.latestpublished %}
             &nbsp; (latest {{ entry.commentthread.shortlatestpublished }})
           {% endif %}
