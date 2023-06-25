@@ -1,0 +1,4 @@
+pytz
+Jinja2~=3.1
+Markdown~=3.4
+feedgenerator~=2.0
