@@ -196,8 +196,8 @@ class TagListPage(Page):
         self.complete()
 
     def build(self):
-        tags = [ (tag, len(ls)) for tag, ls in self.ctx.entriesbytag.items() ]
-        tags.sort()
+        tags = [ (tag, sortform(tag), len(ls)) for tag, ls in self.ctx.entriesbytag.items() ]
+        tags.sort(key=lambda tup:tup[1])
         
         fl = self.openwrite()
         template = self.jenv.get_template('tags.html')
@@ -216,8 +216,8 @@ class TagListFreqPage(Page):
         self.complete()
 
     def build(self):
-        tags = [ (tag, len(ls)) for tag, ls in self.ctx.entriesbytag.items() ]
-        tags.sort(key=lambda tup:(-tup[1], tup[0]))
+        tags = [ (tag, sortform(tag), len(ls)) for tag, ls in self.ctx.entriesbytag.items() ]
+        tags.sort(key=lambda tup:(-tup[2], tup[1]))
         
         fl = self.openwrite()
         template = self.jenv.get_template('tags.html')
@@ -439,4 +439,4 @@ class EntryPage(Page):
 from bloggor import constants
 from bloggor.excepts import RuntimeException
 from bloggor.metafile import MetaFile
-from bloggor.util import tagfilename, parsedate, relativetime, excerpthtml
+from bloggor.util import tagfilename, parsedate, relativetime, excerpthtml, sortform

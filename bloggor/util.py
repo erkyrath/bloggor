@@ -36,6 +36,16 @@ class MultiDict(MutableMapping):
     def totallen(self):
         return sum([ len(ls) for ls in self.map.values() ])
 
+
+def sortform(val):
+    if val.startswith('the '):
+        return val[4:]
+    if val.startswith('a '):
+        return val[2:]
+    if val.startswith('an '):
+        return val[2:]    
+    return val
+
 pat_basictag = re.compile('^[a-z0-9 -]*$')
 pat_fancychar = re.compile('[^a-z0-9-]')
 

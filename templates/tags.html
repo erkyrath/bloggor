@@ -30,7 +30,7 @@
   <hr>
   
   <div class="TagTable">
-    {% for tag, count in tags %}
+    {% for tag, sortform, count in tags %}
       <div class="Tag"><a href="/tag/{{ tag|tagfilename|urlencode }}">{{ tag }}</a> ({{ count }})</div>
     {% endfor %}
   </div>
