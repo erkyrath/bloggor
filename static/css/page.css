@@ -90,7 +90,8 @@ body {
 .Head h1 {
     font-family: "Alegreya", "Georgia", "Times New Roman", serif;
     font-size: 40px;
-    margin-top: 6px;
+    line-height: 40px;
+    margin-top: 0px;
     margin-bottom: 0px;
 }
 
@@ -107,7 +108,8 @@ body {
     font-family: "Alegreya", "Georgia", "Times New Roman", serif;
     font-size: 20px;
     font-weight: normal;
-    margin-top: 20px;
+    line-height: 20px;
+    margin-top: 10px;
     margin-bottom: 10px;
 }
 
@@ -234,7 +236,6 @@ body {
     font-family: "Alegreya", "Georgia", "Times New Roman", serif;
     font-size: 1.66em;
     margin-bottom: 6px;
-    line-height: 1.4em;
 }
 
 .EntryHead h4 {
@@ -288,18 +289,21 @@ h1 {
     font-size: 1.50em;
     margin-top: 0.85em;
     margin-bottom: 0.85em;
+    line-height: 1.4em;
 }
 
 h2 {
     font-size: 1.20em;
     margin-top: 0.85em;
     margin-bottom: 0.85em;
+    line-height: 1.4em;
 }
 
 h3 {
     font-size: 1.10em;
     margin-top: 0.85em;
     margin-bottom: 0.85em;
+    line-height: 1.4em;
 }
 
 h4 {
