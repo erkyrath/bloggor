@@ -2,6 +2,10 @@
 
 {% block exthead %}
 <style type="text/css">
+h2.YearName {
+  margin-bottom: 2px;
+  margin-left: 0.5em;
+}
 .YearTable {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
@@ -24,7 +28,7 @@
 {% block content %}
 
 {% for year in years %}
-  <h2>{{ year }}</h2>
+  <h2 class="YearName">{{ year }}</h2>
 
   <div class="YearTable">
     {% for monthname, month in months %}
