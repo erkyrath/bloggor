@@ -33,7 +33,7 @@ h2.YearName {
   <div class="YearTable">
     {% for monthname, month in months %}
       {% set ymonth = "%s-%s"|format(year, month) %}
-      {% set ls = entriesbymonth[ymonth] %}
+      {% set ls = blogctx.entriesbymonth[ymonth] %}
       <div class="Month">
         <h4 class="MonthName">{{ monthname }}</h4>
 	{% if not ls %}
