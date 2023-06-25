@@ -30,7 +30,7 @@ for ln in fl.readlines():
             prefix = ln[ 0 : 30 ]
             for key in urimap:
                 if key.startswith(prefix):
-                    res	= (urimap[key], key)
+                    res = (urimap[key], key)
                     break
     print('  '+res[0])
     print('  '+res[1])
