@@ -122,8 +122,14 @@ class RecentEntriesPage(Page):
         self.complete()
 
     def build(self):
-        entries = self.ctx.entries[ -20 : ]
-        ### back up to a month break?
+        # 20 recent entries, plus enough to round out the first month
+        pos = len(self.ctx.entries) - 20
+        if pos < 0:
+            pos = 0
+        else:
+            while pos > 0 and self.ctx.entries[pos-1].shortmonth == self.ctx.entries[pos].shortmonth:
+                pos -= 1
+        entries = self.ctx.entries[ pos : ]
         entries.reverse()
         
         yearls = list(self.ctx.entriesbyyear.keys())
