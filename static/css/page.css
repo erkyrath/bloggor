@@ -191,9 +191,11 @@ body {
     }
     .Head h1 {
 	font-size: 36px;
+        line-height: 36px;
     }
     .Head h3 {
 	font-size: 18px;
+        line-height: 18px;
     }
     .SubtitleExtra {
 	display: none;
