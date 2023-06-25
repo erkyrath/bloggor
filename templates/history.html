@@ -28,7 +28,7 @@ h2.YearName {
 {% block content %}
 
 {% for year in years %}
-  <h2 class="YearName">{{ year }}</h2>
+  <h2 class="YearName"><a href="/{{ year }}/">{{ year }}</a></h2>
 
   <div class="YearTable">
     {% for monthname, month in months %}

@@ -41,6 +41,7 @@ class Context:
             keep_trailing_newline = True,
         )
         self.jenv.globals['serverurl'] = opts.serverurl
+        self.jenv.globals['blogctx'] = self
 
         self.mdenv = markdown.Markdown(extensions=[
             'meta', 'attr_list', 'def_list', 'fenced_code', 'tables',
