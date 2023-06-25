@@ -39,11 +39,11 @@ h2.YearName {
       {% set ls = blogctx.entriesbymonth[ymonth] %}
       <div class="Month">
         <h4 class="MonthName">{{ monthname }}</h4>
-	{% if not ls %}
-	  <div>&nbsp;</div>
-	{% else %}
+        {% if not ls %}
+          <div>&nbsp;</div>
+        {% else %}
           <div><a href="/{{ year }}/#{{ ymonth }}">{{ ls|count }} {% if ls|count == 1 %}post{% else %}posts{% endif %}</a></div>
-	{% endif %}
+        {% endif %}
       </div>
     {% endfor %}
   </div>
