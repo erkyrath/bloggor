@@ -26,7 +26,10 @@ h2.YearName {
 {% endblock %}
 
 {% block content %}
-
+<div class="UtilHead">
+  <h1>{{ title }}</h1>
+<div>
+  
 {% for year in years %}
   <h2 class="YearName"><a href="/{{ year }}/">{{ year }}</a></h2>
 

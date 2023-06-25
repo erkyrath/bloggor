@@ -182,7 +182,7 @@ class HistoryPage(Page):
         fl = self.openwrite()
         template = self.jenv.get_template('history.html')
         fl.write(template.render(
-            title='History',
+            title='Blog Archive',
             years=yearls,
             months=monthls,
             recentfew=self.ctx.recentfew))
