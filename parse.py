@@ -4,6 +4,7 @@ import sys
 import os
 import re
 import datetime
+import pytz
 import optparse
 import json
 import xml.sax
@@ -25,7 +26,7 @@ if args:
 
 feedatom = 'Takeout/Blogger/Blogs/Zarf Updates/feed.atom'
 
-EST_TZ = datetime.timezone(datetime.timedelta(hours=-5))
+eastern_tz = pytz.timezone('US/Eastern')
 
 pat_divpara = re.compile('^<div class="para"(?: style="margin-[a-z]+: 1em; margin-[a-z]+: 1em;")?>(.*)</div>$')
 pat_divparastart = re.compile('^<div class="para"(?: style="margin-[a-z]+: 1em; margin-[a-z]+: 1em;")?>$')
@@ -146,8 +147,9 @@ class Entry:
         assert ls[0].start() == 0
         for ix, match in enumerate(ls):
             authorname = match.group(1)
-            pubdate = datetime.datetime.strptime(match.group(2), '%b %d, %Y at %I:%M %p')
-            pubdate = pubdate.replace(tzinfo=EST_TZ).astimezone(datetime.timezone.utc)
+            locdate = datetime.datetime.strptime(match.group(2), '%b %d, %Y at %I:%M %p')
+            locdate = eastern_tz.localize(locdate)
+            pubdate = locdate.astimezone(datetime.timezone.utc)
             if ix+1 < len(ls):
                 endpos = ls[ix+1].start()
             else:
