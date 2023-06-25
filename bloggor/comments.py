@@ -110,7 +110,7 @@ class Comment:
         else:
             self.sourcename = None
 
-        publocal = self.published.astimezone(constants.EST_TZ)
+        publocal = self.published.astimezone(constants.eastern_tz)
         self.longpublished = publocal.strftime('%B %d, %Y at %I:%M %p').replace(' 0', ' ')
 
     def __repr__(self):

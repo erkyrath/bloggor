@@ -1,4 +1,4 @@
-import datetime
+import pytz
 
 HTML = 'html'
 MD = 'md'
@@ -8,4 +8,4 @@ TXT = 'txt'
 RSS = 'rss'
 ATOM = 'atom'
 
-EST_TZ = datetime.timezone(datetime.timedelta(hours=-5))
+eastern_tz = pytz.timezone('US/Eastern')

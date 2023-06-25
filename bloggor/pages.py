@@ -408,7 +408,7 @@ class EntryPage(Page):
         self.draft = False  ###
         ### What is the following for drafts? Current date? End of the given month?
 
-        publocal = self.published.astimezone(constants.EST_TZ)
+        publocal = self.published.astimezone(constants.eastern_tz)
         self.longpublished = publocal.strftime('%A, %B %d, %Y').replace(' 0', ' ')
         self.year = publocal.year
         self.month = publocal.month
