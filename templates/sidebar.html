@@ -45,14 +45,14 @@
 {% if preventry %}
 <h3>Previous post</h3>
 <ul>
-  <li><a href="/{{ preventry.outuri }}">{{ preventry.title }}</a>
+  <li><a rel="prev" href="/{{ preventry.outuri }}">{{ preventry.title }}</a>
 </ul>
 {% endif %}
 
 {% if nextentry %}
 <h3>Next post</h3>
 <ul>
-  <li><a href="/{{ nextentry.outuri }}">{{ nextentry.title }}</a>
+  <li><a rel="next" href="/{{ nextentry.outuri }}">{{ nextentry.title }}</a>
 </ul>
 {% endif %}
 

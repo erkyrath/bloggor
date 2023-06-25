@@ -54,7 +54,7 @@
         <hr>
         <div class="CommentHead">
           {% if com.authoruri %}
-            <a class="CommentAuthor" href="{{ com.authoruri }}">{% if com.authorname %}{{ com.authorname }}{% else %}anonymous{% endif %}</a>
+            <a class="CommentAuthor" rel="nofollow" href="{{ com.authoruri }}">{% if com.authorname %}{{ com.authorname }}{% else %}anonymous{% endif %}</a>
           {% else %}
             <span class="CommentAuthor">{% if com.authorname %}{{ com.authorname }}{% else %}anonymous{% endif %}</span>
           {% endif %}
