@@ -187,25 +187,25 @@ body {
 
 @media (max-width: 480px) {
     .Head .MenuButton {
-	display: block;
+        display: block;
     }
     .Head h1 {
-	font-size: 36px;
+        font-size: 36px;
         line-height: 36px;
     }
     .Head h3 {
-	font-size: 18px;
+        font-size: 18px;
         line-height: 18px;
     }
     .SubtitleExtra {
-	display: none;
+        display: none;
     }
     .BodyMainCol {
-	margin-left: 0px;
-	margin-right: 0px;
+        margin-left: 0px;
+        margin-right: 0px;
     }
     .BodySideCol {
-	display: none;
+        display: none;
     }
 }
 
