@@ -388,3 +388,8 @@ code {
 .PreWrapAll {
     white-space: pre-wrap;
 }
+
+.ClearBoth {
+    clear: both;
+}
+
