@@ -136,3 +136,17 @@ class MultiMetaFile:
             fl.close()
 
         return self.ls
+
+
+def ls_as_bool(ls, default=False):
+    if not ls:
+        return default
+    val = ''.join(ls)
+    val = val.lower()
+    if val in ('t', 'true', 'y', 'yes'):
+        return True
+    if val in ('f', 'false', 'n', 'no'):
+        return False
+    raise ValueError()
+
+

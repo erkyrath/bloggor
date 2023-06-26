@@ -123,13 +123,13 @@ class RecentEntriesPage(Page):
 
     def build(self):
         # 20 recent entries, plus enough to round out the first month
-        pos = len(self.ctx.entries) - 20
+        pos = len(self.ctx.liveentries) - 20
         if pos < 0:
             pos = 0
         else:
-            while pos > 0 and self.ctx.entries[pos-1].shortmonth == self.ctx.entries[pos].shortmonth:
+            while pos > 0 and self.ctx.liveentries[pos-1].shortmonth == self.ctx.liveentries[pos].shortmonth:
                 pos -= 1
-        entries = self.ctx.entries[ pos : ]
+        entries = self.ctx.liveentries[ pos : ]
         entries.reverse()
         
         yearls = list(self.ctx.entriesbyyear.keys())
@@ -294,7 +294,7 @@ class FeedPage(Page):
             categories = commontags,
         )
 
-        entries = self.ctx.entries[ -25 : ]
+        entries = self.ctx.liveentries[ -25 : ]
         entries.reverse()
 
         for entry in entries:
@@ -335,6 +335,7 @@ class EntryPage(Page):
         if self.outpath.startswith('..') or self.outpath.startswith('/'):
             raise RuntimeException(self.path+': Bad outpath: ' + self.outpath)
 
+        self.live = False
         self.title = None
         self.tags = None
         self.index = None
@@ -404,8 +405,13 @@ class EntryPage(Page):
 
         # self.index is set after all posts are read and sorted
         # same goes for self.comments
-        
-        self.draft = False  ###
+
+        try:
+            self.live = ls_as_bool(metadata.get('live'))
+        except ValueError:
+            raise RuntimeException(self.path+': Live must be bool')
+
+        self.live = True ###
         ### What is the following for drafts? Current date? End of the given month?
 
         publocal = self.published.astimezone(constants.eastern_tz)
@@ -428,9 +434,9 @@ class EntryPage(Page):
         preventry = None
         nextentry = None
         if self.index > 0:
-            preventry = self.ctx.entries[self.index-1]
-        if self.index < len(self.ctx.entries)-1:
-            nextentry = self.ctx.entries[self.index+1]
+            preventry = self.ctx.liveentries[self.index-1]
+        if self.index < len(self.ctx.liveentries)-1:
+            nextentry = self.ctx.liveentries[self.index+1]
 
         fl = self.openwrite()
         template = self.jenv.get_template('entry.html')
@@ -444,5 +450,5 @@ class EntryPage(Page):
 
 from bloggor import constants
 from bloggor.excepts import RuntimeException
-from bloggor.metafile import MetaFile
+from bloggor.metafile import MetaFile, ls_as_bool
 from bloggor.util import tagfilename, parsedate, relativetime, excerpthtml, sortform

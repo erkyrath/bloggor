@@ -24,8 +24,12 @@ class Context:
         self.pages = []
         self.entries = []
         self.commentthreads = []
-
         self.entriesbyuri = {}
+
+        self.liveentries = []
+        self.draftentries = []
+        
+        # These are only live entries.
         self.entriesbytag = {}
         self.entriesbyyear = MultiDict()
         self.entriesbymonth = MultiDict()
@@ -122,18 +126,24 @@ class Context:
 
         if errors:
             return False
-                    
-        self.entries.sort(key=lambda entry:(entry.draft, entry.published, entry.title))
-        for ix in range(len(self.entries)):
-            self.entries[ix].index = ix
 
-        self.recentfew = self.entries[ -4 : ]
+        for page in self.entries:
+            if page.live:
+                self.liveentries.append(page)
+            else:
+                self.draftentries.append(page)
+                    
+        self.liveentries.sort(key=lambda entry:(entry.published, entry.title))
+        for ix in range(len(self.liveentries)):
+            self.liveentries[ix].index = ix
+
+        self.recentfew = self.liveentries[ -4 : ]
         self.recentfew.reverse()
 
-        self.recententries = self.entries[ -10 : ]
+        self.recententries = self.liveentries[ -10 : ]
         self.recententries.reverse()
 
-        for entry in self.entries:
+        for entry in self.liveentries:
             self.entriesbyyear.add(entry.year, entry)
             self.entriesbymonth.add(entry.shortmonth, entry)
             for tag in entry.tags:
