@@ -40,21 +40,21 @@ class MoreBreakExtension(Extension):
 
 
 class UnwrapBlockProcessor(BlockProcessor):
-    RE_FENCE_START = r'^ *[{]{3,} *\n'
-    RE_FENCE_END = r'\n *[}]{3,}\s*$'
+    RE_FENCE_START = re.compile(r'^ *[{]{3,}( +\{(?P<attrs>[^\}\n]*)\})? *\n')
+    RE_FENCE_END = re.compile(r'\n *[}]{3,}\s*$')
 
     def test(self, parent, block):
-        return re.match(self.RE_FENCE_START, block)
+        return self.RE_FENCE_START.match(block)
 
     def run(self, parent, blocks):
         original_block = blocks[0]
-        blocks[0] = re.sub(self.RE_FENCE_START, '', blocks[0])
+        blocks[0] = self.RE_FENCE_START.sub('', blocks[0])
 
         # Find block with ending fence
         for block_num, block in enumerate(blocks):
-            if re.search(self.RE_FENCE_END, block):
+            if self.RE_FENCE_END.search(block):
                 # remove fence
-                blocks[block_num] = re.sub(self.RE_FENCE_END, '', block)
+                blocks[block_num] = self.RE_FENCE_END.sub('', block)
                 # render fenced area inside a new div
                 e = etree.SubElement(parent, 'div')
                 e.set('class', 'PreWrap')
