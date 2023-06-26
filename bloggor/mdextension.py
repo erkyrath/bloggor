@@ -73,7 +73,7 @@ class UnwrapExtension(Extension):
 
 
 class LocalLinkProcessor(Treeprocessor):
-    RE_BLOGURL = re.compile('^https?://blog.zarfhome.com', flags=re.I)
+    RE_BLOGURL = re.compile('^https?://blog.zarfhome.com', flags=re.IGNORECASE)
     
     def run(self, root):
         # Iterate over <a> elements
