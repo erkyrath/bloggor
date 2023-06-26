@@ -21,7 +21,7 @@
   {% block exthead %}{% endblock %}
 </head>
 <body>
-  <div class="Head" role="banner">
+  <div id="header" class="Head" role="banner">
     <div class="HeadCol">
       <h1><a href="/">Zarf Updates</a></h1>
       <h3><span class="Subtitle">Interactive fiction, narrative in games</span><span class="SubtitleExtra">, and so on</span></h3>
@@ -31,16 +31,16 @@
   
   <div class="Body"><div class="BodySub">
   
-    <div id="sidebar" class="BodySideCol Sidebar">
+    <div id="sidebar" class="BodySideCol Sidebar" role="navigation">
       {% include "sidebar.html" %}
     </div>
     
-    <div class="BodyMainCol" role="main">
+    <div id="mainbody" class="BodyMainCol" role="main">
       {% block content %}{% endblock %}
     </div>
     
   </div></div>
-  <div class="Foot" role="contentinfo">
+  <div id="footer" class="Foot" role="contentinfo">
     <div class="FootCol">
       <p>All posts copyright by Andrew Plotkin.
       Hosted by <a href="https://zarfhome.com/">Zarfhome</a>
