@@ -401,6 +401,10 @@ code {
     float: right;
 }
 
+.Center {
+    text-align: center;
+}
+
 .ImageWrap {
     position: relative;
 }
@@ -411,5 +415,7 @@ code {
 
 .ImageWrap p {
     white-space: pre-wrap;
+    font-size: 0.8em;
+    font-weight: bold;
 }
 
