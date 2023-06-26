@@ -411,7 +411,6 @@ class EntryPage(Page):
         except ValueError:
             raise RuntimeException(self.path+': Live must be bool')
 
-        self.live = True ###
         ### What is the following for drafts? Current date? End of the given month?
 
         publocal = self.published.astimezone(constants.eastern_tz)
@@ -433,9 +432,9 @@ class EntryPage(Page):
     def build(self):
         preventry = None
         nextentry = None
-        if self.index > 0:
+        if self.live and self.index > 0:
             preventry = self.ctx.liveentries[self.index-1]
-        if self.index < len(self.ctx.liveentries)-1:
+        if self.live and self.index < len(self.ctx.liveentries)-1:
             nextentry = self.ctx.liveentries[self.index+1]
 
         fl = self.openwrite()
