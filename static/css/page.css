@@ -393,3 +393,23 @@ code {
     clear: both;
 }
 
+.FloatLeft {
+    float: left;
+}
+
+.FloatRight {
+    float: right;
+}
+
+.ImageWrap {
+    position: relative;
+}
+
+.ImageWrap img {
+    max-width: 100%;
+}
+
+.ImageWrap p {
+    white-space: pre-wrap;
+}
+
