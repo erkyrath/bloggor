@@ -462,6 +462,7 @@ if opts.outdir:
             pass
         else:
             fl.write('updated:   %s\n' % (ent.updatedraw,))
+        fl.write('live: true\n')
         fl.write('---\n')
         fl.write(ent.content)
         fl.close()
