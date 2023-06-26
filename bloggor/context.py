@@ -212,4 +212,7 @@ class Context:
             for page in self.pages:
                 page.commit()
 
+        for page in self.draftentries:
+            print('Draft: %s%s' % (self.opts.serverurl, page.outuri,))
+
         return True
