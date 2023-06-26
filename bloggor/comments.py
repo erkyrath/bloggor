@@ -18,6 +18,7 @@ class CommentThread:
         self.comments = []
         self.latestpublished = None
         self.longlatestpublished = None
+        self.shortlatestpublished = None
         
     def __repr__(self):
         return '<%s "%s" (%d)>' % (self.__class__.__name__, self.outuri, len(self.comments))
@@ -31,7 +32,7 @@ class CommentThread:
             self.comments.append(Comment(self.ctx, self, ix, body, meta))
 
         publs = [ com.published for com in self.comments if com.published ]
-        if publs:
+        if publs and self.entry.published:
             self.latestpublished = max(publs)
             self.longlatestpublished = relativetime(self.latestpublished, self.entry.published)
             self.shortlatestpublished = relativetime(self.latestpublished, self.entry.published, english=False)
