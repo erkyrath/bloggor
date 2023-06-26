@@ -343,6 +343,10 @@ class EntryPage(Page):
         self.comments = None
         self.complete()
 
+    def __repr__(self):
+        val = '' if self.live else ' DRAFT'
+        return '<%s%s "%s">' % (self.__class__.__name__, val, self.outuri)
+
     def read(self):
         if self.type == constants.HTML:
             mfl = MetaFile(self.path)
