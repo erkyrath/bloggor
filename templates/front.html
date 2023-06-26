@@ -4,6 +4,8 @@
 
 {% for entry in entries %}
 
+<div role="article">
+
   <div class="EntryHead">
     <h2><a href="{{ entry.outuri }}">{{ entry.title }}</a></h2>
     <h4 class="Date">{{ entry.longpublished }}
@@ -53,6 +55,8 @@
   {% endif %}
 
   <hr>
+
+</div>
 
 {% endfor %}
 
