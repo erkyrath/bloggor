@@ -1,6 +1,7 @@
 
 import re
 import markdown
+from markdown.extensions import attr_list
 from markdown.extensions import Extension
 from markdown.treeprocessors import Treeprocessor
 from markdown.blockprocessors import BlockProcessor
@@ -48,7 +49,14 @@ class UnwrapBlockProcessor(BlockProcessor):
 
     def run(self, parent, blocks):
         original_block = blocks[0]
-        blocks[0] = self.RE_FENCE_START.sub('', blocks[0])
+        match = self.RE_FENCE_START.search(blocks[0])
+        if not match:
+            return False
+        if match.group('attrs'):
+            id, classes, config = self.handle_attrs(attr_list.get_attrs(match.group('attrs')))
+        else:
+            id, classes, config = '', [ 'PreWrap' ], {}
+        blocks[0] = blocks[0][ : match.start() ] + blocks[0][ match.end() : ]
 
         # Find block with ending fence
         for block_num, block in enumerate(blocks):
@@ -57,7 +65,11 @@ class UnwrapBlockProcessor(BlockProcessor):
                 blocks[block_num] = self.RE_FENCE_END.sub('', block)
                 # render fenced area inside a new div
                 e = etree.SubElement(parent, 'div')
-                e.set('class', 'PreWrap')
+                if id:
+                    e.set('id', id)
+                e.set('class', ' '.join(classes))
+                for k, v in config.items():
+                    e.set(k, v)
                 self.parser.parseBlocks(e, blocks[0:block_num + 1])
                 # remove used blocks
                 for i in range(0, block_num + 1):
@@ -66,6 +78,19 @@ class UnwrapBlockProcessor(BlockProcessor):
         # No closing marker!  Restore and do nothing
         blocks[0] = original_block
         return False  # equivalent to our test() routine returning False
+
+    def handle_attrs(self, attrs):
+        id = ''
+        classes = []
+        configs = {}
+        for k, v in attrs:
+            if k == 'id':
+                id = v
+            elif k == '.':
+                classes.append(v)
+            else:
+                configs[k] = v
+        return id, classes, configs
 
 class UnwrapExtension(Extension):
     def extendMarkdown(self, md):
