@@ -34,6 +34,7 @@ class Context:
         self.entriesbyyear = MultiDict()
         self.entriesbymonth = MultiDict()
         self.recentyears = []
+        self.recententries = []
         self.recentfew = []
         
         self.jenv = Environment(
@@ -132,7 +133,9 @@ class Context:
                 self.liveentries.append(page)
             else:
                 self.draftentries.append(page)
-                    
+
+        self.draftentries.sort(key=lambda entry:entry.outuri)
+                
         self.liveentries.sort(key=lambda entry:(entry.published, entry.title))
         for ix in range(len(self.liveentries)):
             self.liveentries[ix].index = ix
