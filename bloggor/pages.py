@@ -341,6 +341,12 @@ class EntryPage(Page):
         self.index = None
         self.commentthread = None
         self.comments = None
+        
+        self.publishedraw = None
+        self.published = None
+        self.updatedraw = None
+        self.updated = None
+
         self.complete()
 
     def __repr__(self):
@@ -371,30 +377,6 @@ class EntryPage(Page):
         if ls:
             self.title = ' '.join(ls)
 
-        ls = metadata.get('published')
-        if not ls:
-            raise RuntimeException(self.path+': No published date')
-        val = ''.join(ls)
-        try:
-            self.publishedraw = parsedate(val)
-            self.published = datetime.datetime.fromisoformat(self.publishedraw)
-        except ValueError:
-            raise RuntimeException(self.path+': Invalid published date: '+val)
-
-        self.updatedraw = None
-        self.updated = None
-        ls = metadata.get('updated')
-        if ls:
-            val = ''.join(ls)
-            try:
-                self.updatedraw = parsedate(val)
-                self.updated = datetime.datetime.fromisoformat(self.updatedraw)
-            except ValueError:
-                raise RuntimeException(self.path+': Invalid updated date: '+val)
-        if self.updated is None or self.updated < self.published:
-            self.updatedraw = self.publishedraw
-            self.updated = self.published
-
         self.tags = []
         ls = metadata.get('tags', None)
         if ls:
@@ -415,7 +397,32 @@ class EntryPage(Page):
         except ValueError:
             raise RuntimeException(self.path+': Live must be bool')
 
-        ### What is the following for drafts? Current date? End of the given month?
+        if not self.live:
+            self.longpublished = 'DRAFT'
+            self.longupdated = None
+            return
+
+        ls = metadata.get('published')
+        if not ls:
+            raise RuntimeException(self.path+': No published date')
+        val = ''.join(ls)
+        try:
+            self.publishedraw = parsedate(val)
+            self.published = datetime.datetime.fromisoformat(self.publishedraw)
+        except ValueError:
+            raise RuntimeException(self.path+': Invalid published date: '+val)
+
+        ls = metadata.get('updated')
+        if ls:
+            val = ''.join(ls)
+            try:
+                self.updatedraw = parsedate(val)
+                self.updated = datetime.datetime.fromisoformat(self.updatedraw)
+            except ValueError:
+                raise RuntimeException(self.path+': Invalid updated date: '+val)
+        if self.updated is None or self.updated < self.published:
+            self.updatedraw = self.publishedraw
+            self.updated = self.published
 
         publocal = self.published.astimezone(constants.eastern_tz)
         self.longpublished = publocal.strftime('%A, %B %d, %Y').replace(' 0', ' ')
