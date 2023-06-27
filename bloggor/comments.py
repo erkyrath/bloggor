@@ -90,10 +90,12 @@ class Comment:
         if ls:
             self.authoruri = ' '.join(ls)
 
-        ls = meta.get('published')
-        if not ls:
+        try:
+            val = ls_as_value(meta.get('published'))
+        except ValueError as ex:
+            raise RuntimeException(self.id+': Invalid published date: '+str(ex))
+        if val is None:
             raise RuntimeException(self.id+': No published date')
-        val = ''.join(ls)
         try:
             self.publishedraw = parsedate(val)
             self.published = datetime.datetime.fromisoformat(self.publishedraw)
@@ -119,7 +121,7 @@ class Comment:
 
 
 from bloggor import constants
-from bloggor.metafile import MultiMetaFile
+from bloggor.metafile import MultiMetaFile, ls_as_value
 from bloggor.excepts import RuntimeException
 from bloggor.util import parsedate, relativetime
 
