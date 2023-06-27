@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="/css/page.css" type="text/css">
   <link rel="stylesheet" href="/css/font.css" type="text/css">
   <script src="/js/menu.js" type="text/javascript"></script>
+  <script src="/js/fedicomments.js" type="text/javascript"></script>    
 </head>
 <body>
   <div class="Head">
@@ -69,7 +70,11 @@
       <p>Line.</p>
       <p>Last line.</p>
     </div>
-    
+
+      <hr id="comments" class="CommentDecl">
+      <h3 class="CommentDecl">Comments from Mastodon</h3>
+      <button id="loadcommentbutton" onclick="return handle_comments_button(event, '110605586119723795');">Load Comments</button>
+
   </div></div>
   <div class="Foot">
     <div class="FootCol">
