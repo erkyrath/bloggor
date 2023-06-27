@@ -150,6 +150,8 @@ def ls_as_bool(ls, default=False):
     if len(ls) > 1:
         raise ValueError('not a single value')
     val = ls[0].strip()
+    if not val:
+        return default
     val = val.lower()
     if val in ('t', 'true', 'y', 'yes'):
         return True
@@ -162,6 +164,10 @@ def ls_as_value(ls):
         return None
     if len(ls) > 1:
         raise ValueError('not a single value')
-    return ls[0].strip()
+    val = ls[0].strip()
+    if not val:
+        return None
+    return val
+
 
 

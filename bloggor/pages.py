@@ -341,6 +341,7 @@ class EntryPage(Page):
         self.index = None
         self.commentthread = None
         self.comments = None
+        self.fedipostid = None
         
         self.publishedraw = None
         self.published = None
@@ -392,6 +393,11 @@ class EntryPage(Page):
         # self.index is set after all posts are read and sorted
         # same goes for self.comments
 
+        try:
+            self.fedipostid = ls_as_value(metadata.get('fedipostid'))
+        except ValueError as ex:
+            raise RuntimeException(self.path+': Fedipostid not valid: '+str(ex))
+        
         try:
             self.live = ls_as_bool(metadata.get('live'))
         except ValueError as ex:
