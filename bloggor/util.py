@@ -1,5 +1,6 @@
 import re
 import datetime
+import math
 from collections.abc import MutableMapping
 
 class MultiDict(MutableMapping):
@@ -162,3 +163,11 @@ def splitatmore(val):
         return None
     else:
         return val[ : pos ]
+
+
+def depthstep(val):
+    if not val:
+        return '0'
+    val = 2.54 * math.atan(val)
+    return '%.3f' % (val,)
+

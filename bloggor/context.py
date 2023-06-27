@@ -41,7 +41,8 @@ class Context:
             loader = FileSystemLoader(os.path.join(self.opts.srcdir, 'templates')),
             extensions = [
                 bloggor.jextension.TagFilename,
-                bloggor.jextension.SplitAtMore
+                bloggor.jextension.SplitAtMore,
+                bloggor.jextension.CommentDepthStep,
             ],
             autoescape = select_autoescape(),
             keep_trailing_newline = True,

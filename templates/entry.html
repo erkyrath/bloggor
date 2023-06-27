@@ -52,7 +52,7 @@
       <hr {% if loop.first %}id="comments"{% endif %} class="CommentDecl">
       <h3 class="CommentDecl">Comments {% if com.sourcename %}{{ com.sourcename }}{% endif %}</h3>
       {% endif %}
-      <div id="comment-{{ loop.index }}" class="Comment" role="comment" {% if com.depth %}style="margin-left: {{ 2*com.depth }}em;"{% endif %}>
+      <div id="comment-{{ loop.index }}" class="Comment" role="comment" {% if com.depth %}style="margin-left: {{ com.depth|depthstep }}em;"{% endif %}>
         <hr>
         <div class="CommentHead">
           {% if com.authoruri %}
