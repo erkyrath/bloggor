@@ -18,7 +18,7 @@ function handle_comments_button(ev, fedipostid)
     
     fetch(url).then(function(response) {
         return response.json();
-    }).then(handle_response, handle_failure);
+    }).then(obj => handle_response(obj, fedipostid), handle_failure);
 }
 
 function display_comment_status(msg)
@@ -26,22 +26,56 @@ function display_comment_status(msg)
     console.log(msg); //###
 }
 
-var tmpdata = null; //###
-
 function handle_failure(data)
 {
-    console.log('### failure:', data);
-    tmpdata = data; //###
     display_comment_status('Unable to load: ' + data.message);
 }
 
-function handle_response(data)
+function handle_response(obj, fedipostid)
 {
-    console.log('### success:', data);
-    tmpdata = data; //###
-
-    if (data['error']) {
-        display_comment_status('Unable to load: ' + data['error']);
+    if (obj['error']) {
+        display_comment_status('Unable to load: ' + obj['error']);
         return;
+    }
+
+    console.log('### success with postid', fedipostid, 'count', obj['descendants'].length);
+
+    var idmap = new Map();
+    idmap.set(fedipostid, { _replies: [] });
+              
+    for (var el of obj['descendants']) {
+        idmap.set(el.id, el);
+    }
+
+    for (var el of obj['descendants']) {
+        var parid = el.in_reply_to_id;
+        if (!idmap.has(parid)) {
+            console.log('message '+el.id+' in reply to '+parid+', which is not known');
+            continue;
+        }
+        var par = idmap.get(parid);
+        if (par._replies == null) {
+            par._replies = [ el ];
+        }
+        else {
+            par._replies.push(el);
+        }
+    }
+
+    var flatls = [];
+
+    function func(ls, depth) {
+        for (var el of ls) {
+            flatls.push(el);
+            el._depth = depth;
+            if (el._replies != null) {
+                func(el._replies, depth+1);
+            }
+        }
+    }
+
+    func(idmap.get(fedipostid)._replies, 0);
+
+    for (var el of flatls) {
     }
 }
