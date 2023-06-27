@@ -135,7 +135,8 @@ class MultiMetaFile:
                 body.append(ln)
 
             if body or meta:
-                self.ls.append( (''.join(body), meta) )
+                mf = MetaFile(init=( ''.join(body), meta ))
+                self.ls.append(mf)
             
         if fl != self.stream:
             fl.close()

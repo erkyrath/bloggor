@@ -289,41 +289,51 @@ class TestMultiMetaFile(unittest.TestCase):
             
         with io.StringIO(mtestnomap1) as fl: 
             ls = MultiMetaFile(None, stream=fl).read()
+            ls = [ mf.read() for mf in ls ]
             self.assertEqual(ls, [ ('key: value\n', {}) ])
             
         with io.StringIO(mtest1) as fl: 
             ls = MultiMetaFile(None, stream=fl).read()
+            ls = [ mf.read() for mf in ls ]
             self.assertEqual(ls, [ ('Lines.\n', { 'key':['value'] }) ])
 
         with io.StringIO(mtest1) as fl:
             metafile = MultiMetaFile(None, stream=fl)
             ls = metafile.read()
+            ls = [ mf.read() for mf in ls ]
             self.assertEqual(ls, [ ('Lines.\n', { 'key':['value'] }) ])
             ls = metafile.read()
+            ls = [ mf.read() for mf in ls ]
             self.assertEqual(ls, [ ('Lines.\n', { 'key':['value'] }) ])
 
         with io.StringIO(mtest2) as fl: 
             ls = MultiMetaFile(None, stream=fl).read()
+            ls = [ mf.read() for mf in ls ]
             self.assertEqual(ls, [ ('Lines.\n', { 'key':['value'] }) ])
 
         with io.StringIO(mtest3) as fl: 
             ls = MultiMetaFile(None, stream=fl).read()
+            ls = [ mf.read() for mf in ls ]
             self.assertEqual(ls, [ ('Lines.\n----\n', { 'key':['value'] }) ])
 
         with io.StringIO(mtest4) as fl: 
             ls = MultiMetaFile(None, stream=fl).read()
+            ls = [ mf.read() for mf in ls ]
             self.assertEqual(ls, [ ('Lines.\n----\n', { 'key':['value'] }) ])
 
         with io.StringIO(mtest5) as fl: 
             ls = MultiMetaFile(None, stream=fl).read()
+            ls = [ mf.read() for mf in ls ]
             self.assertEqual(ls, [ ('Lines.\n', { 'key':['value'] }) ])
 
         with io.StringIO(mtest6) as fl: 
             ls = MultiMetaFile(None, stream=fl).read()
+            ls = [ mf.read() for mf in ls ]
             self.assertEqual(ls, [ ('Lines.\n----\n', { 'key':['value'] }) ])
 
         with io.StringIO(mtest7) as fl: 
             ls = MultiMetaFile(None, stream=fl).read()
+            ls = [ mf.read() for mf in ls ]
             self.assertEqual(ls, [
                 ('Line.\nLines.\n', { 'key':['val1', 'val2'], 'long':['this', 'is more', 'stuff'] }),
                 ('Test.\n---\nOther.\n', { 'foo':['bar'] } ),

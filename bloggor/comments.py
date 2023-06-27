@@ -27,8 +27,8 @@ class CommentThread:
         mfl = MultiMetaFile(self.path)
         ls = mfl.read()
 
-        for ix, tup in enumerate(ls):
-            body, meta = tup
+        for ix, mf in enumerate(ls):
+            body, meta = mf.read()
             self.comments.append(Comment(self.ctx, self, ix, body, meta))
 
         publs = [ com.published for com in self.comments if com.published ]
