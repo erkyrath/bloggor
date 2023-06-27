@@ -1,9 +1,32 @@
 #!/usr/bin/env python3
 
 import sys
+import optparse
 import re
 import json
 from html_sanitizer import Sanitizer
+
+popt = optparse.OptionParser()
+
+popt.add_option('-o', '--out',
+                action='store', dest='outfile',
+                help='write to file')
+
+(opts, args) = popt.parse_args()
+
+if len(args) != 1:
+    print('usage: fetchfedithread.py [ URL ] [ -o outfile ]')
+    sys.exit(-1)
+
+threadurl = args[0]
+
+match = re.match('(?:.*/)?([0-9]+)$', threadurl)
+if not match:
+    print('does not look like a thread URL: '+threadurl)
+    sys.exit(-1)
+
+threadid = match.group(1)
+print('###', threadid)
 
 fl = open('sample-fedi-thread.json')
 dat = fl.read()
@@ -55,6 +78,12 @@ def write_comments(obj, fl=sys.stdout):
     fl.write('---\n')
 
 obj = json.loads(dat)
-write_comments(obj)
+
+if opts.outfile:
+    fl = open(opts.outfile, 'w')
+    write_comments(obj, fl)
+    fl.close()
+else:
+    write_comments(obj)
 
 
