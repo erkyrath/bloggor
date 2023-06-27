@@ -26,7 +26,6 @@ if not match:
     sys.exit(-1)
 
 threadid = match.group(1)
-print('###', threadid)
 
 fl = open('sample-fedi-thread.json')
 dat = fl.read()
@@ -50,11 +49,38 @@ def write_comments(obj, fl=sys.stdout):
         print('no comments')
         return
 
-    ### sort on 'in_reply_to_id'
+    idmap = {}
+    idmap[threadid] = { '_replies':[] }
     
     for el in obj['descendants']:
+        id = el['id']
+        idmap[id] = el
+
+    for el in obj['descendants']:
+        parid = el['in_reply_to_id']
+        if parid not in idmap:
+            raise Exception('message %s in reply to %s, which is not known' % (el['id'], parid))
+        par = idmap[parid]
+        if '_replies' not in par:
+            par['_replies'] = [ el ]
+        else:
+            par['_replies'].append(el)
+
+    flatls = []
+
+    def func(ls, depth=0):
+        for el in ls:
+            flatls.append(el)
+            el['_depth'] = depth
+            if '_replies' in el:
+                func(el['_replies'], depth+1)
+    
+    func(idmap[threadid]['_replies'])
+    
+    for el in flatls:
         published = el['created_at']
         body = el['content']
+        depth = el.get('_depth')
         authorname = None
         authoruri = None
         author = el.get('account')
@@ -66,6 +92,8 @@ def write_comments(obj, fl=sys.stdout):
             
         fl.write('---\n')
         fl.write('published: %s\n' % (published,))
+        if depth:
+            fl.write('depth: %d\n' % (depth,))
         if authorname:
             fl.write('authorname: %s\n' % (authorname,))
         if authoruri:
