@@ -141,12 +141,21 @@ class MultiMetaFile:
 def ls_as_bool(ls, default=False):
     if not ls:
         return default
-    val = ''.join(ls)
+    if len(ls) > 1:
+        raise ValueError('not a single value')
+    val = ls[0].strip()
     val = val.lower()
     if val in ('t', 'true', 'y', 'yes'):
         return True
     if val in ('f', 'false', 'n', 'no'):
         return False
-    raise ValueError()
+    raise ValueError('not a boolean value')
+
+def ls_as_value(ls):
+    if not ls:
+        return None
+    if len(ls) > 1:
+        raise ValueError('not a single value')
+    return ls[0].strip()
 
 

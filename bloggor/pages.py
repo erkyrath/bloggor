@@ -394,27 +394,31 @@ class EntryPage(Page):
 
         try:
             self.live = ls_as_bool(metadata.get('live'))
-        except ValueError:
-            raise RuntimeException(self.path+': Live must be bool')
+        except ValueError as ex:
+            raise RuntimeException(self.path+': Live not valid: '+str(ex))
 
         if not self.live:
             self.longpublished = 'DRAFT'
             self.longupdated = None
             return
 
-        ls = metadata.get('published')
-        if not ls:
+        try:
+            val = ls_as_value(metadata.get('published'))
+        except ValueError as ex:
+            raise RuntimeException(self.path+': Invalid published date: '+str(ex))
+        if val is None:
             raise RuntimeException(self.path+': No published date')
-        val = ''.join(ls)
         try:
             self.publishedraw = parsedate(val)
             self.published = datetime.datetime.fromisoformat(self.publishedraw)
         except ValueError:
             raise RuntimeException(self.path+': Invalid published date: '+val)
 
-        ls = metadata.get('updated')
-        if ls:
-            val = ''.join(ls)
+        try:
+            val = ls_as_value(metadata.get('updated'))
+        except ValueError as ex:
+            raise RuntimeException(self.path+': Invalid updated date: '+str(ex))
+        if val is not None:
             try:
                 self.updatedraw = parsedate(val)
                 self.updated = datetime.datetime.fromisoformat(self.updatedraw)
@@ -460,5 +464,5 @@ class EntryPage(Page):
 
 from bloggor import constants
 from bloggor.excepts import RuntimeException
-from bloggor.metafile import MetaFile, ls_as_bool
+from bloggor.metafile import MetaFile, ls_as_bool, ls_as_value
 from bloggor.util import tagfilename, parsedate, relativetime, excerpthtml, sortform
