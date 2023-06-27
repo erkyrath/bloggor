@@ -8,11 +8,16 @@ BEGIN_RE = re.compile(r'^-{3}(\s.*)?')
 END_RE = re.compile(r'^(-{3}|\.{3})(\s.*)?')
 
 class MetaFile:
-    def __init__(self, filename=None, stream=None):
+    def __init__(self, filename=None, stream=None, init=None):
         self.filename = filename
         self.stream = stream
+        if init is not None:
+            self.content, self.meta = init
+            return
         if filename and stream:
             raise Exception('cannot supply both filename and stream')
+        if not filename and not stream:
+            raise Exception('must supply either filename or stream')
         self.content = None
         self.meta = None
 

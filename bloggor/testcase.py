@@ -196,6 +196,12 @@ class TestMetaFile(unittest.TestCase):
             self.assertEqual(body, 'Line.\nLines.\n')
             self.assertEqual(map, { 'key':['val1', 'val2'], 'long':['this', 'is more', 'stuff'] })
 
+    def test_init(self):
+        mf = MetaFile(init=( 'hello', { 'x':[1], 'y':[2,22] } ))
+        body, map = mf.read()
+        self.assertEqual(body, 'hello')
+        self.assertEqual(map, { 'x':[1], 'y':[2,22] })
+
 
 mtestex1 = '''Lines.
 '''
