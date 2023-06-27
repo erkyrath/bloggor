@@ -4,6 +4,7 @@ import sys
 import optparse
 import re
 import json
+import urllib.request
 from html_sanitizer import Sanitizer
 
 popt = optparse.OptionParser()
@@ -11,6 +12,12 @@ popt = optparse.OptionParser()
 popt.add_option('-o', '--out',
                 action='store', dest='outfile',
                 help='write to file')
+popt.add_option('-a', '--append',
+                action='store', dest='appendfile',
+                help='append to file')
+popt.add_option('--server',
+                action='store', dest='server', default='mastodon.gamedev.place',
+                help='Mastodon server')
 
 (opts, args) = popt.parse_args()
 
@@ -18,6 +25,10 @@ if len(args) != 1:
     print('usage: fetchfedithread.py [ URL ] [ -o outfile ]')
     sys.exit(-1)
 
+if opts.outfile and opts.appendfile:
+    print('cannot use both -o and -a')
+    sys.exit(-1)
+    
 threadurl = args[0]
 
 match = re.match('(?:.*/)?([0-9]+)$', threadurl)
@@ -27,9 +38,15 @@ if not match:
 
 threadid = match.group(1)
 
-fl = open('sample-fedi-thread.json')
-dat = fl.read()
-fl.close()
+fetchurl = 'https://'+opts.server+'/api/v1/statuses/'+threadid+'/context';
+print(fetchurl)
+
+try:
+    req = urllib.request.urlopen(fetchurl)
+    dat = req.read()
+except Exception as ex:
+    print(str(ex))
+    sys.exit(-1)
 
 sanitizer = Sanitizer({ 'add_nofollow': True })
 
@@ -105,10 +122,16 @@ def write_comments(obj, fl=sys.stdout):
         
     fl.write('---\n')
 
+    print('%d comments found' % (len(flatls),))
+
 obj = json.loads(dat)
 
 if opts.outfile:
     fl = open(opts.outfile, 'w')
+    write_comments(obj, fl)
+    fl.close()
+elif opts.appendfile:
+    fl = open(opts.appendfile, 'a')
     write_comments(obj, fl)
     fl.close()
 else:
