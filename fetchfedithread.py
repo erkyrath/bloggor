@@ -116,6 +116,7 @@ def write_comments(obj, fl=sys.stdout):
         if authoruri:
             fl.write('authoruri: %s\n' % (authoruri,))
         fl.write('format: html\n')
+        fl.write('source: mastodon\n')
         fl.write('---\n')
         writeescapedashes(fl, body)
         fl.write('\n')
