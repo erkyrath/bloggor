@@ -2,7 +2,11 @@
 
 //### https://mastodon.gamedev.place/@zarfeblong/110605586119723795
 
+// Liberally based on:
 // https://carlschwan.eu/2020/12/29/adding-comments-to-your-static-blog-with-mastodon/
+
+// Uses DOMPurify:
+// https://github.com/cure53/DOMPurify
 
 var server = 'mastodon.gamedev.place';
 
@@ -89,8 +93,8 @@ function handle_response(obj, fedipostid)
         // It's also browser-local time instead of Eastern.
         var date = new Date(el.created_at);
         el._longpublished = date.toLocaleString();
-        
-        //### sanitize content
+
+        el._body = DOMPurify.sanitize(el.content, {RETURN_DOM_FRAGMENT: true});
     }
 
     var flatls = [];
@@ -133,9 +137,7 @@ function handle_response(obj, fedipostid)
         nod.insertBefore(span, null);
         comnod.insertBefore(nod, null);
 
-        nod = document.createElement('div');
-        nod.innerHTML = el.content;
-        comnod.insertBefore(nod, null);
+        comnod.appendChild(el._body);
 
         parnod.insertBefore(comnod, null);
         index++;
