@@ -94,7 +94,10 @@ function handle_response(obj, fedipostid)
         var date = new Date(el.created_at);
         el._longpublished = date.toLocaleString();
 
-        el._body = DOMPurify.sanitize(el.content, {RETURN_DOM_FRAGMENT: true});
+        el._body = DOMPurify.sanitize(el.content, {
+            RETURN_DOM_FRAGMENT: true,
+            FORBID_TAGS: ['style'],
+        });
     }
 
     var flatls = [];
