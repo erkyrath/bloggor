@@ -54,6 +54,14 @@ function handle_response(obj, fedipostid)
         nod.setAttributeNode(anod);
     }
 
+    var depthstep = function(val) {
+        if (!val)
+            return '0';
+        var res = 2.54 * Math.atan(val);
+        res = ''+res;
+        return res.substring(0,5);
+    }
+
     for (var el of obj['descendants']) {
         var parid = el.in_reply_to_id;
         if (!idmap.has(parid)) {
@@ -105,7 +113,7 @@ function handle_response(obj, fedipostid)
         comnod.id = 'comment-live-' + index;
         comnod.className = 'Comment';
         setattr(comnod, 'role', 'comment');
-        var depth = ''+el._depth;
+        var depth = depthstep(el._depth);
         setattr(comnod, 'style', 'margin-left: '+depth+'em;');
         
         var nod = document.createElement('hr');
