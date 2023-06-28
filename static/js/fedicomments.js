@@ -52,12 +52,6 @@ function handle_response(obj, fedipostid)
         idmap.set(el.id, el);
     }
 
-    var setattr = function(nod, attr, val) {
-        var anod = document.createAttribute(attr);
-        anod.value = val;
-        nod.setAttributeNode(anod);
-    }
-
     var depthstep = function(val) {
         if (!val)
             return '0';
@@ -122,9 +116,9 @@ function handle_response(obj, fedipostid)
         var comnod = document.createElement('div');
         comnod.id = 'comment-live-' + index;
         comnod.className = 'Comment';
-        setattr(comnod, 'role', 'comment');
+        comnod.setAttribute('role', 'comment');
         var depth = depthstep(el._depth);
-        setattr(comnod, 'style', 'margin-left: '+depth+'em;');
+        comnod.setAttribute('style', 'margin-left: '+depth+'em;');
         
         var nod = document.createElement('hr');
         comnod.insertBefore(nod, null);
