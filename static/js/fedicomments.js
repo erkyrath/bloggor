@@ -135,7 +135,15 @@ function handle_response(obj, fedipostid)
 
         nod = document.createElement('div');
         nod.className = 'CommentHead';
-        var span = document.createElement('span');
+        var span;
+        if (el._authoruri) {
+            span = document.createElement('a');
+            span.setAttribute('rel', 'nofollow noopener noreferrer');
+            span.setAttribute('href', el._authoruri);
+        }
+        else {
+            span = document.createElement('span');
+        }
         span.className = 'CommentAuthor';
         span.textContent = el._authorname;
         nod.insertBefore(span, null);
