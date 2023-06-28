@@ -60,6 +60,12 @@ function handle_response(obj, fedipostid)
         return res.substring(0,5);
     }
 
+    DOMPurify.addHook('afterSanitizeAttributes', function (nod) {
+        if (nod.tagName.toLowerCase() == 'a' && nod.hasAttribute('href')) {
+            nod.setAttribute('rel', 'nofollow noopener noreferrer');
+        }
+    });
+
     for (var el of obj['descendants']) {
         var parid = el.in_reply_to_id;
         if (!idmap.has(parid)) {
@@ -94,6 +100,8 @@ function handle_response(obj, fedipostid)
         });
     }
 
+    DOMPurify.removeHook('afterSanitizeAttributes');
+    
     var flatls = [];
 
     function func(ls, depth) {
