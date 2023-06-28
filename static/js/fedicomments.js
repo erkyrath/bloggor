@@ -85,7 +85,10 @@ function handle_response(obj, fedipostid)
                 el._authoruri = el.account.url;
         }
 
-        el._longpublished = el.created_at; //### format
+        // This doesn't match the Python date output, sorry.
+        // It's also browser-local time instead of Eastern.
+        var date = new Date(el.created_at);
+        el._longpublished = date.toLocaleString();
         
         //### sanitize content
     }
