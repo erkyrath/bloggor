@@ -61,6 +61,19 @@ function handle_response(obj, fedipostid)
         else {
             par._replies.push(el);
         }
+
+        el._authorname = 'anonymous';
+        el._authoruri = null;
+        if (el.account != null) {
+            if (el.account.display_name != null)
+                el._authorname = el.account.display_name;
+            if (el.account.url)
+                el._authoruri = el.account.url;
+        }
+
+        el._longpublished = el.created_at; //### format
+        
+        //### sanitize content
     }
 
     var flatls = [];
@@ -77,6 +90,25 @@ function handle_response(obj, fedipostid)
 
     func(idmap.get(fedipostid)._replies, 0);
 
+    var parnod = document.getElementById('livecommentblock');
+    
     for (var el of flatls) {
+        var nod = document.createElement('hr');
+        parnod.insertBefore(nod, null);
+
+        nod = document.createElement('div');
+        nod.className = 'CommentHead';
+        var span = document.createElement('span');
+        span.className = 'CommentAuthor';
+        span.textContent = el._authorname;
+        nod.insertBefore(span, null);
+        var span = document.createElement('span');
+        span.textContent = ' ('+el._longpublished+')';
+        nod.insertBefore(span, null);
+        parnod.insertBefore(nod, null);
+
+        nod = document.createElement('div');
+        nod.innerHTML = el.content;
+        parnod.insertBefore(nod, null);
     }
 }
