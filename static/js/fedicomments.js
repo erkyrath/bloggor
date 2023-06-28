@@ -12,7 +12,7 @@ function handle_comments_button(ev, fedipostid)
     ev.preventDefault();
 
     console.log('### loading postid', fedipostid);
-    document.getElementById("loadcommentbutton").textContent = "Loading...";
+    document.getElementById("livecommentload").textContent = "Loading...";
 
     var url = 'https://'+server+'/api/v1/statuses/'+fedipostid+'/context';
     
@@ -46,6 +46,12 @@ function handle_response(obj, fedipostid)
               
     for (var el of obj['descendants']) {
         idmap.set(el.id, el);
+    }
+
+    var setattr = function(nod, attr, val) {
+        var anod = document.createAttribute(attr);
+        anod.value = val;
+        nod.setAttributeNode(anod);
     }
 
     for (var el of obj['descendants']) {
@@ -91,10 +97,19 @@ function handle_response(obj, fedipostid)
     func(idmap.get(fedipostid)._replies, 0);
 
     var parnod = document.getElementById('livecommentblock');
+
+    var index = 0;
     
     for (var el of flatls) {
+        var comnod = document.createElement('div');
+        comnod.id = 'comment-live-' + index;
+        comnod.className = 'Comment';
+        setattr(comnod, 'role', 'comment');
+        var depth = ''+el._depth;
+        setattr(comnod, 'style', 'margin-left: '+depth+'em;');
+        
         var nod = document.createElement('hr');
-        parnod.insertBefore(nod, null);
+        comnod.insertBefore(nod, null);
 
         nod = document.createElement('div');
         nod.className = 'CommentHead';
@@ -105,10 +120,13 @@ function handle_response(obj, fedipostid)
         var span = document.createElement('span');
         span.textContent = ' ('+el._longpublished+')';
         nod.insertBefore(span, null);
-        parnod.insertBefore(nod, null);
+        comnod.insertBefore(nod, null);
 
         nod = document.createElement('div');
         nod.innerHTML = el.content;
-        parnod.insertBefore(nod, null);
+        comnod.insertBefore(nod, null);
+
+        parnod.insertBefore(comnod, null);
+        index++;
     }
 }
