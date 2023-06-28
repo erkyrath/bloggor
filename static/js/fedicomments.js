@@ -16,7 +16,7 @@ function handle_comments_button(ev, fedipostid)
     ev.preventDefault();
 
     console.log('### loading postid', fedipostid);
-    document.getElementById("livecommentload").textContent = "Loading...";
+    document.getElementById('livecommentload').textContent = "Loading...";
 
     var url = 'https://'+server+'/api/v1/statuses/'+fedipostid+'/context';
     
@@ -28,7 +28,7 @@ function handle_comments_button(ev, fedipostid)
 function display_comment_status(msg)
 {
     console.log(msg); //###
-    document.getElementById("livecommentload").textContent = msg;
+    document.getElementById('livecommentload').textContent = msg;
 }
 
 function handle_failure(data)
@@ -116,6 +116,8 @@ function handle_response(obj, fedipostid)
 
     func(idmap.get(fedipostid)._replies, 0);
 
+    document.getElementById('livecommentload').textContent = '';
+    
     var parnod = document.getElementById('livecommentblock');
 
     var index = 0;
