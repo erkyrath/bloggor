@@ -177,6 +177,15 @@ function display_comment_status(msg)
     document.getElementById('livecommentload').textContent = msg;
 }
 
+function handle_comments_showreply(ev)
+{
+    ev.stopPropagation();
+    ev.preventDefault();
+    
+    var nod = document.getElementById('livereply');
+    nod.classList.remove('Hidden');
+}
+
 function handle_comments_copyurl(ev)
 {
     ev.stopPropagation();
