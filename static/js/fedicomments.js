@@ -161,8 +161,18 @@ function handle_response(obj)
         span.className = 'CommentAuthor';
         span.textContent = el._authorname;
         nod.appendChild(span);
-        var span = document.createElement('span');
-        span.textContent = ' ('+el._longpublished+')';
+        span = document.createElement('span');
+        span.textContent = ' ';
+        nod.appendChild(span);
+        if (el.url) {
+            span = document.createElement('a');
+            span.setAttribute('rel', 'nofollow noopener noreferrer');
+            span.setAttribute('href', el.url);
+        }
+        else {
+            span = document.createElement('span');
+        }
+        span.textContent = '('+el._longpublished+')';
         nod.appendChild(span);
         comnod.appendChild(nod);
 
