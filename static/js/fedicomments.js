@@ -30,6 +30,7 @@ function handle_comments_onload() {
 function handle_comments_doload()
 {
     var url = 'https://'+fediserver+'/api/v1/statuses/'+fedipostid+'/context';
+    console.log('Loading '+url);
     
     fetch(url).then(function(response) {
         return response.json();
