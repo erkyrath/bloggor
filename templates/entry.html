@@ -17,8 +17,18 @@
     <script src="/js/fedicomments.js" type="text/javascript"></script>
     <script src="/js/purify.min.js" type="text/javascript"></script>
     <script type="text/javascript">
+      var fediserver = '{{ fediserver }}';
+      var fediuser = '{{ fediuser }}';
       var fedipostid = '{{ entry.fedipostid }}';
     </script>
+    <style type="text/css">
+      #livereplyblock input {
+        width: 100%;
+        font-size: 16px;
+        padding: 4px 8px;
+        border: 1px solid #88F;
+      }
+    </style>
   {% endif %}
 {% endblock %}
 
@@ -89,9 +99,24 @@
       <h3 class="CommentDecl">Comments from Mastodon (live)</h3>
       <div id="livecommentload">
         <noscript>
-          <p>The Mastodon comment feature requires Javascript.</p>
+          <p>The <a href="/comments">Mastodon comment feature</a> requires Javascript.</p>
         </noscript>
         <p class="IfScript">Please wait...</p>
+      </div>
+    </div>
+    <div id="livereplyblock" class="XHidden">
+      <p>
+        <button id="replybutton" class="UtilButton">Reply via Mastodon</button>
+      </p>
+      <div class="XHidden">
+        <p>
+          This <a href="">comment thread</a> exists on Mastodon. To reply,
+          paste this URL into your Mastodon search bar:
+          <button class="UtilButton" onclick="handle_comments_copyurl(event);">Copy URL</button>
+        </p>
+        <p>
+          <input id="replycommenturl" type="text" readonly="" value="https://{{ fediserver }}/@{{ fediuser }}/{{ entry.fedipostid }}" onclick="handle_comments_copyurl(event);">
+        </p>
       </div>
     </div>
   {% endif %}

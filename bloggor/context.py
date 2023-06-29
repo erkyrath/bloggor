@@ -48,6 +48,8 @@ class Context:
             keep_trailing_newline = True,
         )
         self.jenv.globals['serverurl'] = opts.serverurl
+        self.jenv.globals['fediserver'] = 'mastodon.gamedev.place'
+        self.jenv.globals['fediuser'] = 'zarfeblong'
         self.jenv.globals['blogctx'] = self
 
         self.mdenv = markdown.Markdown(extensions=[

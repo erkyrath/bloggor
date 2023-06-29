@@ -6,9 +6,8 @@
 // Uses DOMPurify:
 // https://github.com/cure53/DOMPurify
 
-var server = 'mastodon.gamedev.place';
 var comments_loaddelay = 1000;
-// page must set the "fedipostid" global
+// page must set the "fediserver" and "fedipostid" globals
 
 if (window.onloadlist == undefined) {
     window.onloadlist = [ handle_comments_onload ];
@@ -30,16 +29,11 @@ function handle_comments_onload() {
 
 function handle_comments_doload()
 {
-    var url = 'https://'+server+'/api/v1/statuses/'+fedipostid+'/context';
+    var url = 'https://'+fediserver+'/api/v1/statuses/'+fedipostid+'/context';
     
     fetch(url).then(function(response) {
         return response.json();
     }).then(handle_response, handle_failure);
-}
-
-function display_comment_status(msg)
-{
-    document.getElementById('livecommentload').textContent = msg;
 }
 
 function handle_failure(data)
@@ -53,6 +47,9 @@ function handle_response(obj)
         display_comment_status('Unable to load: ' + obj['error']);
         return;
     }
+
+    var nod = document.getElementById('livereplyblock');
+    nod.classList.remove('Hidden');
 
     var idmap = new Map();
     idmap.set(fedipostid, { _replies: [] });
@@ -174,3 +171,19 @@ function handle_response(obj)
         index++;
     }
 }
+
+function display_comment_status(msg)
+{
+    document.getElementById('livecommentload').textContent = msg;
+}
+
+function handle_comments_copyurl(ev)
+{
+    ev.stopPropagation();
+    ev.preventDefault();
+    
+    var val = 'https://'+fediserver+'/@'+fediuser+'/'+fedipostid;
+    navigator.clipboard.writeText(val);
+    document.getElementById('replycommenturl').select();
+}
+

@@ -407,6 +407,10 @@ code {
     white-space: pre-wrap;
 }
 
+.Hidden {
+    display: none;
+}
+
 .IfScript {
     display: none;
 }
