@@ -95,9 +95,11 @@ def write_comments(obj, fl=sys.stdout):
     func(idmap[threadid]['_replies'])
     
     for el in flatls:
+        id = el['id']
         published = el['created_at']
         body = el['content']
         depth = el.get('_depth')
+        fediurl = el.get('url')
         authorname = None
         authoruri = None
         author = el.get('account')
@@ -108,6 +110,9 @@ def write_comments(obj, fl=sys.stdout):
         body = sanitizer.sanitize(body)
             
         fl.write('---\n')
+        fl.write('fediid: %s\n' % (id,))
+        if fediurl:
+            fl.write('fediurl: %s\n' % (fediurl,))
         fl.write('published: %s\n' % (published,))
         if depth:
             fl.write('depth: %d\n' % (depth,))
