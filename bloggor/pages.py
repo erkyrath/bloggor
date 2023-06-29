@@ -89,17 +89,29 @@ class StaticPage(Page):
         self.complete()
 
     def read(self):
-        fl = open(self.path)
-        dat = fl.read()
-        fl.close()
-        self.mdenv.reset()
-        self.body = self.mdenv.convert(dat)
-        self.metadata = self.mdenv.Meta
+        if self.type == constants.HTML:
+            mfl = MetaFile(self.path)
+            body, metadata = mfl.read()
+        elif self.type == constants.MD:
+            fl = open(self.path)
+            dat = fl.read()
+            fl.close()
+            self.mdenv.reset()
+            body = self.mdenv.convert(dat)
+            metadata = self.mdenv.Meta
+        else:
+            raise RuntimeException(self.path+': Unrecognized entry format: ' + self.type)
+
+        self.body = body
+        self.metadata = metadata
 
         self.title = None
         ls = self.metadata.get('title', None)
         if ls:
             self.title = ' '.join(ls)
+
+        if not self.title:
+            raise RuntimeException(self.path+': No title')
 
     def build(self):
         fl = self.openwrite()
