@@ -34,9 +34,13 @@
 
     {% if entry.comments %}
     <h4 class="Comments"><a href="#comments">Comments: {{ entry.comments|count }}</a>
+      {% if entry.fedipostid %} (plus live) {% endif %}
       {% if entry.commentthread.latestpublished %}
         &nbsp; (latest {{ entry.commentthread.longlatestpublished }})
       {% endif %}
+    </h4>
+    {% elif entry.fedipostid %}
+    <h4 class="Comments"><a href="#livecommentblock">Comments: (live)</a>
     </h4>
     {% endif %}
   
