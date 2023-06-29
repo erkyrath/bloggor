@@ -303,6 +303,13 @@ button.UtilButton:hover {
     background-color: #EEF;
 }
 
+#loadcommentbutton {
+    display: none;
+}
+.HasScript #loadcommentbutton {
+    display: inline;
+}
+
 .EntryBody h1, .EntryBody h2, .EntryBody h3, .EntryBody h4, .EntryBody h5 {
     font-family: "Alegreya", "Georgia", "Times New Roman", serif;
 }
