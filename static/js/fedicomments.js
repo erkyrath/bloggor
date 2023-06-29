@@ -123,7 +123,7 @@ function handle_response(obj, fedipostid)
     if (flatls.length == 0) {
         var nod = document.createElement('div');
         nod.textContent = '(No comments in this thread.)';
-        parnod.insertBefore(nod, null);
+        parnod.appendChild(nod);
         return;
     }
 
@@ -138,7 +138,7 @@ function handle_response(obj, fedipostid)
         comnod.setAttribute('style', 'margin-left: '+depth+'em;');
         
         var nod = document.createElement('hr');
-        comnod.insertBefore(nod, null);
+        comnod.appendChild(nod);
 
         nod = document.createElement('div');
         nod.className = 'CommentHead';
@@ -153,15 +153,15 @@ function handle_response(obj, fedipostid)
         }
         span.className = 'CommentAuthor';
         span.textContent = el._authorname;
-        nod.insertBefore(span, null);
+        nod.appendChild(span);
         var span = document.createElement('span');
         span.textContent = ' ('+el._longpublished+')';
-        nod.insertBefore(span, null);
-        comnod.insertBefore(nod, null);
+        nod.appendChild(span);
+        comnod.appendChild(nod);
 
         comnod.appendChild(el._body);
 
-        parnod.insertBefore(comnod, null);
+        parnod.appendChild(comnod);
         index++;
     }
 }
