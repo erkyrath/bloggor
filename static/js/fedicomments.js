@@ -1,7 +1,5 @@
 'use strict';
 
-//### https://mastodon.gamedev.place/@zarfeblong/110605586119723795
-
 // Liberally based on:
 // https://carlschwan.eu/2020/12/29/adding-comments-to-your-static-blog-with-mastodon/
 
