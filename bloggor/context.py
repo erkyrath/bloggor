@@ -7,7 +7,7 @@ from bloggor import constants
 from bloggor.excepts import RuntimeException
 from bloggor.util import MultiDict
 from bloggor.pages import FrontPage
-from bloggor.pages import EntryPage, GenTemplatePage, StaticMDPage
+from bloggor.pages import EntryPage, GenTemplatePage, StaticPage
 from bloggor.pages import TagListPage, TagListFreqPage, TagPage
 from bloggor.pages import RecentEntriesPage, YearEntriesPage
 from bloggor.pages import HistoryPage
@@ -20,6 +20,7 @@ class Context:
     def __init__(self, opts):
         self.opts = opts
         self.entriesdir = os.path.join(self.opts.srcdir, 'entries')
+        self.pagesdir = os.path.join(self.opts.srcdir, 'pages')
         
         self.pages = []
         self.entries = []
@@ -86,6 +87,22 @@ class Context:
                     print('Error: %s' % (ex,))
                     errors.append(ex)
 
+        for dirpath, dirnames, filenames in os.walk(self.pagesdir):
+            for filename in filenames:
+                if filename.startswith('.'):
+                    continue
+                if filename.endswith('~'):
+                    continue
+                try:
+                    if filename.endswith('.html') or filename.endswith('.md'):
+                        page = StaticPage(self, dirpath, filename)
+                        self.pages.append(page)
+                        continue
+                    raise RuntimeException('unrecognized file type: '+filename)
+                except RuntimeException as ex:
+                    print('Error: %s' % (ex,))
+                    errors.append(ex)
+
         if errors:
             return False
 
@@ -105,9 +122,6 @@ class Context:
         
         if errors:
             return False
-
-        page = StaticMDPage(self, 'about.md', 'about.html')
-        self.pages.append(page)
 
         page = GenTemplatePage(self, 'menu.html', 'menu.html')
         self.pages.append(page)

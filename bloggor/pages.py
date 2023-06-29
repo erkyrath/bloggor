@@ -66,15 +66,26 @@ class GenTemplatePage(Page):
         fl.close()
 
         
-class StaticMDPage(Page):
-    def __init__(self, ctx, filename, outpath):
+class StaticPage(Page):
+    def __init__(self, ctx, dirpath, filename):
         Page.__init__(self, ctx)
-        self.dirpath = os.path.join(ctx.opts.srcdir, 'pages')
+        self.dirpath = dirpath
         self.filename = filename
-        self.outpath = outpath
 
         self.path = os.path.join(self.dirpath, self.filename)
+        
+        if filename.endswith('.html'):
+            self.type = constants.HTML
+            outfile = filename
+        elif filename.endswith('.md'):
+            self.type = constants.MD
+            outfile = filename[ : -3 ] + '.html'
+        else:
+            raise RuntimeException(self.path+': Unrecognized entry format: ' + filename)
 
+        self.outpath = os.path.relpath(os.path.join(self.dirpath, outfile), start=ctx.pagesdir)
+        if self.outpath.startswith('..') or self.outpath.startswith('/'):
+            raise RuntimeException(self.path+': Bad outpath: ' + self.outpath)
         self.complete()
 
     def read(self):
