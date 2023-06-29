@@ -15,8 +15,8 @@ popt.add_option('-s', '--src',
 popt.add_option('-o', '--out',
                 action='store', dest='destdir', default='site',
                 help='destination directory')
-popt.add_option('--serverurl', ####
-                action='store', dest='serverurl', default='http://devblog.zarfhome.com/',
+popt.add_option('--serverurl',
+                action='store', dest='serverurl', default='https://blog.zarfhome.com/',
                 help='canonical server URL (ending with slash)')
 popt.add_option('--dry', '--dryrun',
                 action='store_true', dest='dryrun',
