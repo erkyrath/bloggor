@@ -9,25 +9,38 @@
 // https://github.com/cure53/DOMPurify
 
 var server = 'mastodon.gamedev.place';
+var comments_loaddelay = 1000;
+// page must set the "fedipostid" global
 
-function handle_comments_button(ev, fedipostid)
+if (window.onloadlist == undefined) {
+    window.onloadlist = [ handle_comments_onload ];
+}
+else {
+    window.onloadlist.push(handle_comments_onload);
+}
+
+function handle_comments_onload() {
+    if (window.fedipostid == undefined) {
+        display_comment_status('No fedipostid found!');
+        return;
+    }
+
+    display_comment_status('Loading...');
+
+    setTimeout(handle_comments_doload, comments_loaddelay);
+}
+
+function handle_comments_doload()
 {
-    ev.stopPropagation();
-    ev.preventDefault();
-
-    console.log('### loading postid', fedipostid);
-    document.getElementById('livecommentload').textContent = "Loading...";
-
     var url = 'https://'+server+'/api/v1/statuses/'+fedipostid+'/context';
     
     fetch(url).then(function(response) {
         return response.json();
-    }).then(obj => handle_response(obj, fedipostid), handle_failure);
+    }).then(handle_response, handle_failure);
 }
 
 function display_comment_status(msg)
 {
-    console.log(msg); //###
     document.getElementById('livecommentload').textContent = msg;
 }
 
@@ -36,14 +49,12 @@ function handle_failure(data)
     display_comment_status('Unable to load: ' + data.message);
 }
 
-function handle_response(obj, fedipostid)
+function handle_response(obj)
 {
     if (obj['error']) {
         display_comment_status('Unable to load: ' + obj['error']);
         return;
     }
-
-    console.log('### success with postid', fedipostid, 'count', obj['descendants'].length);
 
     var idmap = new Map();
     idmap.set(fedipostid, { _replies: [] });
