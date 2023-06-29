@@ -120,6 +120,13 @@ function handle_response(obj, fedipostid)
     
     var parnod = document.getElementById('livecommentblock');
 
+    if (flatls.length == 0) {
+        var nod = document.createElement('div');
+        nod.textContent = '(No comments in this thread.)';
+        parnod.insertBefore(nod, null);
+        return;
+    }
+
     var index = 0;
     
     for (var el of flatls) {
