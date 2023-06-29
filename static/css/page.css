@@ -41,12 +41,16 @@ body {
     height: 100%;
     border: 2px solid #89C;
     border-radius: 8px;
+    box-shadow: inset 0px 0px 4px #88F;
     background-color: white;
     font-size: 20px;
     margin: 0px;
     color: #8AF;
     text-align: center;
     text-decoration: none;
+}
+.MenuButton a:hover {
+    background-color: #EEF;
 }
 
 .MenuOpen .MenuButton a {
@@ -283,6 +287,20 @@ h3.CommentDecl {
 .UtilHead h3.Selector {
     font-size: 1em;
     font-style: italic;
+}
+
+button.UtilButton {
+    border: 2px solid #89C;
+    border-radius: 8px;
+    box-shadow: inset 0px 0px 4px #88F;
+    background-color: white;
+    font-size: 16px;
+    padding: 6px 10px;
+    margin-left: 20px;
+    cursor: pointer;
+}
+button.UtilButton:hover {
+    background-color: #EEF;
 }
 
 .EntryBody h1, .EntryBody h2, .EntryBody h3, .EntryBody h4, .EntryBody h5 {
