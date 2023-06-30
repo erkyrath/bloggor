@@ -2,6 +2,7 @@
 import sys
 import os
 import os.path
+import datetime
 import optparse
 
 import bloggor.context
@@ -35,6 +36,11 @@ if args:
     sys.exit()
 
 ctx = bloggor.context.Context(opts)
+
+tup = datetime.datetime.utcnow()
+val, _, _ = tup.isoformat().partition('.')
+val += 'Z'
+print('The time is', val)
 
 success = False
 
