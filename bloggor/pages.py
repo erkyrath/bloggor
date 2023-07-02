@@ -9,6 +9,7 @@ class Page:
         self.jenv = ctx.jenv
         self.mdenv = ctx.mdenv
 
+        self.path = None
         self.outpath = None
         self.tempoutpath = None
         self.outuri = None
