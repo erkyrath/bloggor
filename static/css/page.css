@@ -240,6 +240,23 @@ body {
     font-size: 0.85em;
 }
 
+form.UtilMenu input[type=search] {
+    width: 100%;
+    border: 1px solid #88F;
+    border-radius: 4px;
+}
+
+form.UtilMenu input[type=submit] {
+    border: 1px solid #89C;
+    border-radius: 6px;
+    box-shadow: inset 0px 0px 4px #88F;
+    background-color: white;
+    padding: 3px 6px;
+    margin-top: 4px;
+    margin-bottom: 4px;
+    font-size: 12px;
+}
+
 .EntryHead h2 {
     font-family: "Alegreya", "Georgia", "Times New Roman", serif;
     font-size: 1.66em;
