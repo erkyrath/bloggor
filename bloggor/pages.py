@@ -10,6 +10,8 @@ class Page:
         self.mdenv = ctx.mdenv
 
         self.path = None
+        self.inpath = None
+        self.inuri = None
         self.outpath = None
         self.tempoutpath = None
         self.outuri = None
@@ -28,8 +30,23 @@ class Page:
         else:
             self.tempoutpath = self.outpath
 
+        if self.path is not None:
+            self.inpath = os.path.relpath(self.path, start=self.opts.srcdir)
+            self.inuri, dot, _ = self.inpath.rpartition('.')
+
     def __repr__(self):
         return '<%s "%s">' % (self.__class__.__name__, self.outuri)
+
+    def match(self, specs):
+        for spec in specs:
+            if self.outpath == spec:
+                return True
+            if self.outuri == spec:
+                return True
+            if self.inpath is not None and self.inpath == spec:
+                return True
+            if self.inuri is not None and self.inuri == spec:
+                return True
 
     def openwrite(self):
         if self.outdir:
