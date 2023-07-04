@@ -325,9 +325,9 @@ class FeedPage(Page):
         return '<%s (%s) "%s">' % (self.__class__.__name__, self.format, self.outuri)
 
     def build(self):
-        if self.format == constants.ATOM:
+        if self.format == FeedType.ATOM:
             cla = feedgenerator.Atom1Feed
-        elif self.format == constants.RSS:
+        elif self.format == FeedType.RSS:
             cla = feedgenerator.Rss201rev2Feed
         else:
             raise RuntimeException('unknown feed format: '+self.format)
@@ -520,6 +520,7 @@ class EntryPage(Page):
 
 
 from bloggor import constants
+from bloggor.constants import FeedType
 from bloggor.excepts import RuntimeException
 from bloggor.metafile import MetaFile, ls_as_bool, ls_as_value
 from bloggor.util import tagfilename, parsedate, relativetime, excerpthtml, sortform

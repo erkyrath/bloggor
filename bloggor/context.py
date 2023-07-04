@@ -4,6 +4,7 @@ import markdown
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 from bloggor import constants
+from bloggor.constants import FeedType
 from bloggor.excepts import RuntimeException
 from bloggor.util import MultiDict
 from bloggor.pages import FrontPage
@@ -227,10 +228,10 @@ class Context:
             page = TagPage(self, tag)
             self.pages.append(page)
 
-        page = FeedPage(self, constants.ATOM, 'feeds/posts/default.xml')
+        page = FeedPage(self, FeedType.ATOM, 'feeds/posts/default.xml')
         self.pages.append(page)
 
-        page = FeedPage(self, constants.RSS, 'feeds/posts/default.rss', withsuffix=True)
+        page = FeedPage(self, FeedType.RSS, 'feeds/posts/default.rss', withsuffix=True)
         self.pages.append(page)
 
     def build(self, pagelist):
