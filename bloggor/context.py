@@ -33,7 +33,7 @@ class Context:
         self.draftentries = []
         
         # These are only live entries.
-        self.entriesbytag = {}
+        self.entriesbytag = MultiDict()
         self.entriesbyyear = MultiDict()
         self.entriesbymonth = MultiDict()
         self.recentyears = []
@@ -191,10 +191,7 @@ class Context:
             self.entriesbyyear.add(entry.year, entry)
             self.entriesbymonth.add(entry.shortmonth, entry)
             for tag in entry.tags:
-                if tag not in self.entriesbytag:
-                    self.entriesbytag[tag] = [ entry ]
-                else:
-                    self.entriesbytag[tag].append(entry)
+                self.entriesbytag.add(tag, entry)
 
         ls = list(self.entriesbyyear.keys())
         ls.sort(reverse=True)
