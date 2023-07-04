@@ -12,11 +12,12 @@ class FeedType(Enum):
     ATOM = 'atom'
 
 class Depend(IntFlag):
-    TITLE    = 1
-    BODY     = 2
-    TAGS     = 4
-    PUBDATE  = 8
-    UPDATE   = 16
-    COMMENTS = 32
+    EXIST    = 1
+    TITLE    = 2
+    BODY     = 4
+    TAGS     = 8
+    PUBDATE  = 16
+    UPDATE   = 32
+    COMMENTS = 64
     
 eastern_tz = pytz.timezone('US/Eastern')
