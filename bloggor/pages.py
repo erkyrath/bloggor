@@ -1,6 +1,7 @@
 import os.path
 import datetime
 import feedgenerator
+from fnmatch import fnmatch
 
 class Page:
     def __init__(self, ctx):
@@ -39,6 +40,9 @@ class Page:
 
     def match(self, specs):
         for spec in specs:
+            if '*' in spec:
+                return fnmatch(self.outuri, spec)
+            
             if self.outpath == spec:
                 return True
             if self.outuri == spec:
