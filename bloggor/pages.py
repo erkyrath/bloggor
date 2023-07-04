@@ -258,6 +258,7 @@ class TagListPage(Page):
         Page.__init__(self, ctx)
         self.outpath = 'tags.html'
         self.frequent = True
+        self.backdependpages = [ (page, Depend.TAGS) for page in ctx.liveentries ]
         self.complete()
 
     def build(self):
@@ -279,6 +280,7 @@ class TagListFreqPage(Page):
         Page.__init__(self, ctx)
         self.outpath = 'tags-freq.html'
         self.frequent = True
+        self.backdependpages = [ (page, Depend.TAGS) for page in ctx.liveentries ]
         self.complete()
 
     def build(self):
