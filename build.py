@@ -42,7 +42,7 @@ print('The time is', val)
 success = False
 
 try:
-    success = ctx.build(args)
+    success = ctx.run(args)
 except RuntimeException as ex:
     print('Error: %s' % (ex,))
     sys.exit()

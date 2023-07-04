@@ -62,7 +62,7 @@ class Context:
             bloggor.mdextension.LocalLinkExtension(),
         ])
 
-    def build(self, pagespecs=None):
+    def run(self, pagespecs=None):
         self.errors = []
 
         self.readsrc()
@@ -76,27 +76,7 @@ class Context:
         if self.opts.dryrun:
             return True
 
-        print('Building %d pages...' % (len(self.pages),))
-        for page in self.pages:
-            page.build()
-
-        ls = [ page.outpath for page in self.pages ]
-        assert len(ls) == len(set(ls))
-
-        if self.opts.notemp:
-            pass
-        elif self.opts.nocommit:
-            print('Skipping commit')   
-        else:
-            ls = [ page.tempoutpath for page in self.pages ]
-            assert len(ls) == len(set(ls))
-            
-            print('Committing %d pages...' % (len(self.pages),))
-            for page in self.pages:
-                page.commit()
-
-        for page in self.draftentries:
-            print('Draft: %s%s' % (self.opts.serverurl, page.outuri,))
+        self.build(pagespecs)
 
         return True
 
@@ -243,3 +223,26 @@ class Context:
 
         page = FeedPage(self, constants.RSS, 'feeds/posts/default.rss', withsuffix=True)
         self.pages.append(page)
+
+    def build(self, pagespecs):
+        print('Building %d pages...' % (len(self.pages),))
+        for page in self.pages:
+            page.build()
+
+        ls = [ page.outpath for page in self.pages ]
+        assert len(ls) == len(set(ls))
+
+        if self.opts.notemp:
+            pass
+        elif self.opts.nocommit:
+            print('Skipping commit')   
+        else:
+            ls = [ page.tempoutpath for page in self.pages ]
+            assert len(ls) == len(set(ls))
+            
+            print('Committing %d pages...' % (len(self.pages),))
+            for page in self.pages:
+                page.commit()
+
+        for page in self.draftentries:
+            print('Draft: %s%s' % (self.opts.serverurl, page.outuri,))
