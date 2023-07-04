@@ -181,7 +181,7 @@ class RecentEntriesPage(Page):
         self.outpath = 'recent.html'
         self.frequent = True
         entries = self.ctx.liveentries[ self.livepos : ]
-        self.backdependpages = [ (page, Depend.ALL) for page in entries ]
+        self.backdependpages = [ (page, Depend.ALLBUTBODY) for page in entries ]
         self.complete()
 
     def build(self):
@@ -206,7 +206,7 @@ class YearEntriesPage(Page):
         Page.__init__(self, ctx)
         self.year = year
         self.outpath = '%d/index.html' % (self.year,)
-        self.backdependpages = [ (page, Depend.PUBDATE) for page in pagels ]
+        self.backdependpages = [ (page, Depend.ALLBUTBODY) for page in pagels ]
         self.complete()
 
     def build(self):
