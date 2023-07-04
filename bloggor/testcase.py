@@ -2,6 +2,7 @@ import unittest
 import datetime
 import io
 
+from constants import FileType, parse_filetype
 from util import tagfilename
 from util import parsedate
 from util import relativetime
@@ -11,6 +12,18 @@ from metafile import MultiMetaFile
 # Run me with:
 #    python3 bloggor/testcase.py
 
+class TestFileType(unittest.TestCase):
+    def test(self):
+        self.assertEqual(parse_filetype('txt'), FileType.TXT)
+        self.assertEqual(parse_filetype('TXT'), FileType.TXT)
+        self.assertEqual(parse_filetype('Txt'), FileType.TXT)
+        self.assertEqual(parse_filetype('text'), FileType.TXT)
+        self.assertEqual(parse_filetype('TEXT'), FileType.TXT)
+
+        self.assertEqual(parse_filetype('md'), FileType.MD)
+        self.assertEqual(parse_filetype('html'), FileType.HTML)
+        self.assertEqual(parse_filetype('whtml'), FileType.WHTML)
+        
 class TestTagFilename(unittest.TestCase):
     def test(self):
         self.assertEqual(tagfilename(''), '==')
