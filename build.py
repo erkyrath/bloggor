@@ -31,9 +31,6 @@ popt.add_option('--notemp',
 
 (opts, args) = popt.parse_args()
 
-if args:
-    print('usage: build.py [ options ]')
-    sys.exit()
 
 ctx = bloggor.context.Context(opts)
 
@@ -45,7 +42,7 @@ print('The time is', val)
 success = False
 
 try:
-    success = ctx.build()
+    success = ctx.build(args)
 except RuntimeException as ex:
     print('Error: %s' % (ex,))
     sys.exit()

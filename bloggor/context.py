@@ -60,9 +60,9 @@ class Context:
             bloggor.mdextension.LocalLinkExtension(),
         ])
 
-    def build(self):
+    def build(self, pagespecs=None):
         errors = []
-        
+
         for dirpath, dirnames, filenames in os.walk(self.entriesdir):
             for filename in filenames:
                 if filename.startswith('.'):
@@ -209,7 +209,7 @@ class Context:
 
         if self.opts.dryrun:
             return True
-    
+
         print('Building %d pages...' % (len(self.pages),))
         for page in self.pages:
             page.build()
