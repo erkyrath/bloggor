@@ -76,7 +76,16 @@ class Context:
         if self.opts.dryrun:
             return True
 
-        self.build(pagespecs)
+        if not pagespecs:
+            pagelist = list(self.pages)
+        else:
+            pagespecs = [ spec[1:] if spec.startswith('/') else spec for spec in pagespecs ]
+            pagelist = [ page for page in self.pages if page.match(pagespecs) ]
+            if not pagelist:
+                print('No pages match')
+                return False
+    
+        self.build(pagelist)
 
         return True
 
@@ -224,12 +233,16 @@ class Context:
         page = FeedPage(self, constants.RSS, 'feeds/posts/default.rss', withsuffix=True)
         self.pages.append(page)
 
-    def build(self, pagespecs):
-        print('Building %d pages...' % (len(self.pages),))
-        for page in self.pages:
+    def build(self, pagelist):
+        print('Building %d pages...' % (len(pagelist),))
+        if len(pagelist) < 20:
+            for page in pagelist:
+                print('  .../'+page.outpath)
+                
+        for page in pagelist:
             page.build()
 
-        ls = [ page.outpath for page in self.pages ]
+        ls = [ page.outpath for page in pagelist ]
         assert len(ls) == len(set(ls))
 
         if self.opts.notemp:
@@ -237,11 +250,11 @@ class Context:
         elif self.opts.nocommit:
             print('Skipping commit')   
         else:
-            ls = [ page.tempoutpath for page in self.pages ]
+            ls = [ page.tempoutpath for page in pagelist ]
             assert len(ls) == len(set(ls))
             
-            print('Committing %d pages...' % (len(self.pages),))
-            for page in self.pages:
+            print('Committing %d pages...' % (len(pagelist),))
+            for page in pagelist:
                 page.commit()
 
         for page in self.draftentries:
