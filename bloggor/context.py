@@ -21,6 +21,8 @@ class Context:
         self.opts = opts
         self.entriesdir = os.path.join(self.opts.srcdir, 'entries')
         self.pagesdir = os.path.join(self.opts.srcdir, 'pages')
+
+        self.errors = None
         
         self.pages = []
         self.entries = []
@@ -61,7 +63,7 @@ class Context:
         ])
 
     def build(self, pagespecs=None):
-        errors = []
+        self.errors = []
 
         for dirpath, dirnames, filenames in os.walk(self.entriesdir):
             for filename in filenames:
@@ -85,7 +87,7 @@ class Context:
                     raise RuntimeException('unrecognized file type: '+filename)
                 except RuntimeException as ex:
                     print('Error: %s' % (ex,))
-                    errors.append(ex)
+                    self.errors.append(ex)
 
         for dirpath, dirnames, filenames in os.walk(self.pagesdir):
             for filename in filenames:
@@ -101,9 +103,9 @@ class Context:
                     raise RuntimeException('unrecognized file type: '+filename)
                 except RuntimeException as ex:
                     print('Error: %s' % (ex,))
-                    errors.append(ex)
+                    self.errors.append(ex)
 
-        if errors:
+        if self.errors:
             return False
 
         # Preliminary, we'll resort when we have all the data
@@ -118,9 +120,9 @@ class Context:
                 comt.entry = ent
             except RuntimeException as ex:
                 print('Error: %s' % (ex,))
-                errors.append(ex)
+                self.errors.append(ex)
         
-        if errors:
+        if self.errors:
             return False
 
         page = GenTemplatePage(self, 'menu.html', 'menu.html')
@@ -132,7 +134,7 @@ class Context:
                 page.read()
             except RuntimeException as ex:
                 print('Error: %s' % (ex,))
-                errors.append(ex)
+                self.errors.append(ex)
 
         print('Reading %d comment threads...' % (len(self.commentthreads),))
         for comt in self.commentthreads:
@@ -140,9 +142,9 @@ class Context:
                 comt.read()
             except RuntimeException as ex:
                 print('Error: %s' % (ex,))
-                errors.append(ex)
+                self.errors.append(ex)
 
-        if errors:
+        if self.errors:
             return False
 
         for page in self.entries:
