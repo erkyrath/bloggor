@@ -3,6 +3,7 @@ import datetime
 import io
 
 from constants import FileType, parse_filetype
+from constants import Depend, parse_depend
 from util import tagfilename
 from util import parsedate
 from util import relativetime
@@ -23,7 +24,22 @@ class TestFileType(unittest.TestCase):
         self.assertEqual(parse_filetype('md'), FileType.MD)
         self.assertEqual(parse_filetype('html'), FileType.HTML)
         self.assertEqual(parse_filetype('whtml'), FileType.WHTML)
+
+
+class TestDepend(unittest.TestCase):
+    def test(self):
+        self.assertEqual(parse_depend('body'), Depend.BODY)
+        self.assertEqual(parse_depend('BODY'), Depend.BODY)
+
+        self.assertEqual(parse_depend('tag'), Depend.TAGS)
+        self.assertEqual(parse_depend('tags'), Depend.TAGS)
+
+        self.assertEqual(parse_depend('all'), Depend.ALL)
+        self.assertEqual(parse_depend('none'), Depend.NONE)
         
+        self.assertEqual(parse_depend('body,title,pubdate'), Depend.BODY|Depend.TITLE|Depend.PUBDATE)
+
+
 class TestTagFilename(unittest.TestCase):
     def test(self):
         self.assertEqual(tagfilename(''), '==')
