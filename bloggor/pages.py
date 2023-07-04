@@ -230,7 +230,7 @@ class HistoryPage(Page):
         Page.__init__(self, ctx)
         self.outpath = 'history.html'
         self.frequent = True
-        self.backdependpages = [ (page, Depend.EXIST) for page in ctx.liveentries ]
+        self.backdependpages = [ (page, Depend.CREATED) for page in ctx.liveentries ]
         self.complete()
 
     def build(self):

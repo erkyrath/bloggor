@@ -12,7 +12,7 @@ class FeedType(Enum):
     ATOM = 'atom'
 
 class Depend(IntFlag):
-    EXIST    = 1
+    CREATED  = 1
     TITLE    = 2
     BODY     = 4
     TAGS     = 8
