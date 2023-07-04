@@ -152,6 +152,7 @@ class FrontPage(Page):
         Page.__init__(self, ctx)
         self.outpath = 'index.html'
         self.frequent = True
+        self.backdependpages = [ (page, Depend.TITLE|Depend.BODY|Depend.TAGS|Depend.PUBDATE|Depend.UPDATE|Depend.COMMENTS) for page in ctx.recententries ]
         self.complete()
 
     def build(self):
@@ -167,11 +168,7 @@ class FrontPage(Page):
 class RecentEntriesPage(Page):
     def __init__(self, ctx):
         Page.__init__(self, ctx)
-        self.outpath = 'recent.html'
-        self.frequent = True
-        self.complete()
 
-    def build(self):
         # 20 recent entries, plus enough to round out the first month
         pos = len(self.ctx.liveentries) - 20
         if pos < 0:
@@ -179,7 +176,16 @@ class RecentEntriesPage(Page):
         else:
             while pos > 0 and self.ctx.liveentries[pos-1].shortmonth == self.ctx.liveentries[pos].shortmonth:
                 pos -= 1
-        entries = self.ctx.liveentries[ pos : ]
+        self.livepos = pos
+        
+        self.outpath = 'recent.html'
+        self.frequent = True
+        entries = self.ctx.liveentries[ self.livepos : ]
+        self.backdependpages = [ (page, Depend.TITLE|Depend.BODY|Depend.TAGS|Depend.PUBDATE|Depend.UPDATE|Depend.COMMENTS) for page in entries ]
+        self.complete()
+
+    def build(self):
+        entries = self.ctx.liveentries[ self.livepos : ]
         entries.reverse()
         
         yearls = list(self.ctx.entriesbyyear.keys())
