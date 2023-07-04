@@ -485,7 +485,7 @@ class EntryPage(Page):
             self.updatedraw = self.publishedraw
             self.updated = self.published
 
-        publocal = self.published.astimezone(constants.eastern_tz)
+        publocal = self.published.astimezone(eastern_tz)
         self.longpublished = publocal.strftime('%A, %B %d, %Y').replace(' 0', ' ')
         self.year = publocal.year
         self.month = publocal.month
@@ -519,8 +519,7 @@ class EntryPage(Page):
         fl.close()
 
 
-from bloggor import constants
-from bloggor.constants import FileType, FeedType
+from bloggor.constants import FileType, FeedType, eastern_tz
 from bloggor.excepts import RuntimeException
 from bloggor.metafile import MetaFile, ls_as_bool, ls_as_value
 from bloggor.util import tagfilename, parsedate, relativetime, excerpthtml, sortform

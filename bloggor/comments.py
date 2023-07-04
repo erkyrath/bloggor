@@ -115,15 +115,14 @@ class Comment:
         else:
             self.sourcename = None
 
-        publocal = self.published.astimezone(constants.eastern_tz)
+        publocal = self.published.astimezone(eastern_tz)
         self.longpublished = publocal.strftime('%B %d, %Y at %I:%M %p').replace(' 0', ' ')
 
     def __repr__(self):
         return '<%s "%s">' % (self.__class__.__name__, self.id)
 
 
-from bloggor import constants
-from bloggor.constants import FileType
+from bloggor.constants import FileType, eastern_tz
 from bloggor.metafile import MultiMetaFile, ls_as_value
 from bloggor.excepts import RuntimeException
 from bloggor.util import parsedate, relativetime
