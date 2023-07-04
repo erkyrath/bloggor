@@ -65,6 +65,42 @@ class Context:
     def build(self, pagespecs=None):
         self.errors = []
 
+        self.readsrc()
+        if self.errors:
+            return False
+
+        self.addnonsrc()
+        if self.errors:
+            return False
+
+        if self.opts.dryrun:
+            return True
+
+        print('Building %d pages...' % (len(self.pages),))
+        for page in self.pages:
+            page.build()
+
+        ls = [ page.outpath for page in self.pages ]
+        assert len(ls) == len(set(ls))
+
+        if self.opts.notemp:
+            pass
+        elif self.opts.nocommit:
+            print('Skipping commit')   
+        else:
+            ls = [ page.tempoutpath for page in self.pages ]
+            assert len(ls) == len(set(ls))
+            
+            print('Committing %d pages...' % (len(self.pages),))
+            for page in self.pages:
+                page.commit()
+
+        for page in self.draftentries:
+            print('Draft: %s%s' % (self.opts.serverurl, page.outuri,))
+
+        return True
+
+    def readsrc(self):
         for dirpath, dirnames, filenames in os.walk(self.entriesdir):
             for filename in filenames:
                 if filename.startswith('.'):
@@ -106,7 +142,7 @@ class Context:
                     self.errors.append(ex)
 
         if self.errors:
-            return False
+            return
 
         # Preliminary, we'll resort when we have all the data
         self.entries.sort(key=lambda entry:(entry.path))
@@ -123,10 +159,7 @@ class Context:
                 self.errors.append(ex)
         
         if self.errors:
-            return False
-
-        page = GenTemplatePage(self, 'menu.html', 'menu.html')
-        self.pages.append(page)
+            return
 
         print('Reading %d pages...' % (len(self.pages),))
         for page in self.pages:
@@ -145,7 +178,7 @@ class Context:
                 self.errors.append(ex)
 
         if self.errors:
-            return False
+            return
 
         for page in self.entries:
             if page.live:
@@ -177,10 +210,12 @@ class Context:
         ls = list(self.entriesbyyear.keys())
         ls.sort(reverse=True)
         self.recentyears = ls[ : 5 ]
-
-        # Done processing our entry pages.
         
+    def addnonsrc(self):
         page = FrontPage(self)
+        self.pages.append(page)
+
+        page = GenTemplatePage(self, 'menu.html', 'menu.html')
         self.pages.append(page)
 
         page = HistoryPage(self)
@@ -208,30 +243,3 @@ class Context:
 
         page = FeedPage(self, constants.RSS, 'feeds/posts/default.rss', withsuffix=True)
         self.pages.append(page)
-
-        if self.opts.dryrun:
-            return True
-
-        print('Building %d pages...' % (len(self.pages),))
-        for page in self.pages:
-            page.build()
-
-        ls = [ page.outpath for page in self.pages ]
-        assert len(ls) == len(set(ls))
-
-        if self.opts.notemp:
-            pass
-        elif self.opts.nocommit:
-            print('Skipping commit')   
-        else:
-            ls = [ page.tempoutpath for page in self.pages ]
-            assert len(ls) == len(set(ls))
-            
-            print('Committing %d pages...' % (len(self.pages),))
-            for page in self.pages:
-                page.commit()
-
-        for page in self.draftentries:
-            print('Draft: %s%s' % (self.opts.serverurl, page.outuri,))
-
-        return True
