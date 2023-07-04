@@ -19,5 +19,7 @@ class Depend(IntFlag):
     PUBDATE  = 16
     UPDATE   = 32
     COMMENTS = 64
+
+    ALL = CREATED|TITLE|BODY|TAGS|PUBDATE|UPDATE|COMMENTS
     
 eastern_tz = pytz.timezone('US/Eastern')

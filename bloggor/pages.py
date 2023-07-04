@@ -152,7 +152,7 @@ class FrontPage(Page):
         Page.__init__(self, ctx)
         self.outpath = 'index.html'
         self.frequent = True
-        self.backdependpages = [ (page, Depend.TITLE|Depend.BODY|Depend.TAGS|Depend.PUBDATE|Depend.UPDATE|Depend.COMMENTS) for page in ctx.recententries ]
+        self.backdependpages = [ (page, Depend.ALL) for page in ctx.recententries ]
         self.complete()
 
     def build(self):
@@ -181,7 +181,7 @@ class RecentEntriesPage(Page):
         self.outpath = 'recent.html'
         self.frequent = True
         entries = self.ctx.liveentries[ self.livepos : ]
-        self.backdependpages = [ (page, Depend.TITLE|Depend.BODY|Depend.TAGS|Depend.PUBDATE|Depend.UPDATE|Depend.COMMENTS) for page in entries ]
+        self.backdependpages = [ (page, Depend.ALL) for page in entries ]
         self.complete()
 
     def build(self):
@@ -329,7 +329,7 @@ class FeedPage(Page):
         self.outpath = outpath
         self.format = format
         entries = self.ctx.liveentries[ -25 : ]
-        self.backdependpages = [ (page, Depend.TITLE|Depend.BODY|Depend.TAGS|Depend.PUBDATE|Depend.UPDATE|Depend.COMMENTS) for page in entries ]
+        self.backdependpages = [ (page, Depend.ALL) for page in entries ]
         self.complete()
 
         self.feed_url = self.opts.serverurl+outpath
