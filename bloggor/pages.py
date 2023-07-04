@@ -230,6 +230,7 @@ class HistoryPage(Page):
         Page.__init__(self, ctx)
         self.outpath = 'history.html'
         self.frequent = True
+        self.backdependpages = [ (page, Depend.EXIST) for page in ctx.liveentries ]
         self.complete()
 
     def build(self):
@@ -327,6 +328,8 @@ class FeedPage(Page):
         Page.__init__(self, ctx)
         self.outpath = outpath
         self.format = format
+        entries = self.ctx.liveentries[ -25 : ]
+        self.backdependpages = [ (page, Depend.TITLE|Depend.BODY|Depend.TAGS|Depend.PUBDATE|Depend.UPDATE|Depend.COMMENTS) for page in entries ]
         self.complete()
 
         self.feed_url = self.opts.serverurl+outpath
