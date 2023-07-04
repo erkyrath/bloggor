@@ -19,6 +19,8 @@ class Page:
         self.outdir = None
         self.frequent = False
 
+        self.backdependpages = None
+
     def complete(self):
         self.outuri, dot, suffix = self.outpath.rpartition('.')
         if suffix not in ('html', 'rss', 'xml'):
@@ -287,9 +289,10 @@ class TagListFreqPage(Page):
 
 
 class TagPage(Page):
-    def __init__(self, ctx, tag):
+    def __init__(self, ctx, tag, pagels):
         Page.__init__(self, ctx)
         self.tag = tag
+        self.backdependpages = [ (page, Depend.TAGS) for page in pagels ]
         self.outpath = os.path.join('tag', tagfilename(tag)+'.html')
         self.complete()
 
@@ -519,7 +522,8 @@ class EntryPage(Page):
         fl.close()
 
 
-from bloggor.constants import FileType, FeedType, eastern_tz
+from bloggor.constants import FileType, FeedType, Depend
+from bloggor.constants import eastern_tz
 from bloggor.excepts import RuntimeException
 from bloggor.metafile import MetaFile, ls_as_bool, ls_as_value
 from bloggor.util import tagfilename, parsedate, relativetime, excerpthtml, sortform

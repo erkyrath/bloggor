@@ -220,8 +220,8 @@ class Context:
         page = TagListFreqPage(self)
         self.pages.append(page)
 
-        for tag in self.entriesbytag:
-            page = TagPage(self, tag)
+        for tag, ls in self.entriesbytag.items():
+            page = TagPage(self, tag, ls)
             self.pages.append(page)
 
         page = FeedPage(self, FeedType.ATOM, 'feeds/posts/default.xml')
