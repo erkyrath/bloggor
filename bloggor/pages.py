@@ -17,6 +17,7 @@ class Page:
         self.tempoutpath = None
         self.outuri = None
         self.outdir = None
+        self.frequent = False
 
     def complete(self):
         self.outuri, dot, suffix = self.outpath.rpartition('.')
@@ -148,6 +149,7 @@ class FrontPage(Page):
     def __init__(self, ctx):
         Page.__init__(self, ctx)
         self.outpath = 'index.html'
+        self.frequent = True
         self.complete()
 
     def build(self):
@@ -164,6 +166,7 @@ class RecentEntriesPage(Page):
     def __init__(self, ctx):
         Page.__init__(self, ctx)
         self.outpath = 'recent.html'
+        self.frequent = True
         self.complete()
 
     def build(self):
@@ -217,6 +220,7 @@ class HistoryPage(Page):
     def __init__(self, ctx):
         Page.__init__(self, ctx)
         self.outpath = 'history.html'
+        self.frequent = True
         self.complete()
 
     def build(self):
@@ -244,6 +248,7 @@ class TagListPage(Page):
     def __init__(self, ctx):
         Page.__init__(self, ctx)
         self.outpath = 'tags.html'
+        self.frequent = True
         self.complete()
 
     def build(self):
@@ -264,6 +269,7 @@ class TagListFreqPage(Page):
     def __init__(self, ctx):
         Page.__init__(self, ctx)
         self.outpath = 'tags-freq.html'
+        self.frequent = True
         self.complete()
 
     def build(self):
