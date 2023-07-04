@@ -205,8 +205,8 @@ class YearEntriesPage(Page):
     def __init__(self, ctx, year, pagels):
         Page.__init__(self, ctx)
         self.year = year
-        self.backdependpages = [ (page, Depend.PUBDATE) for page in pagels ]
         self.outpath = '%d/index.html' % (self.year,)
+        self.backdependpages = [ (page, Depend.PUBDATE) for page in pagels ]
         self.complete()
 
     def build(self):
@@ -299,8 +299,8 @@ class TagPage(Page):
     def __init__(self, ctx, tag, pagels):
         Page.__init__(self, ctx)
         self.tag = tag
-        self.backdependpages = [ (page, Depend.TAGS) for page in pagels ]
         self.outpath = os.path.join('tag', tagfilename(tag)+'.html')
+        self.backdependpages = [ (page, Depend.TAGS) for page in pagels ]
         self.complete()
 
     def __repr__(self):
