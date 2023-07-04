@@ -46,22 +46,24 @@ class Comment:
 
         body = body.rstrip() + '\n'
 
-        format = meta.get('format')
-        if not format:
-            format = constants.TXT
+        ls = meta.get('format')
+        if not ls:
+            format = FileType.TXT
         else:
-            format = ''.join(format)
-            if format == 'text':
-                format = constants.TXT
+            val = ''.join(ls).lower()
+            if val == 'text':
+                format = FileType.TXT
+            else:
+                format = FileType(val)
             
-        if format == constants.TXT:
+        if format == FileType.TXT:
             val = str(markupsafe.escape(body))
             self.body = '<div class="PreWrapAll">\n%s</div>' % (val,)
-        elif format == constants.HTML:
+        elif format == FileType.HTML:
             self.body = body
-        elif format == constants.WHTML:
+        elif format == FileType.WHTML:
             self.body = '<div class="PreWrapAll">\n%s</div>' % (body,)
-        elif format == constants.MD:
+        elif format == FileType.MD:
             ctx.mdenv.reset()
             self.body = ctx.mdenv.convert(body)
         else:
@@ -121,6 +123,7 @@ class Comment:
 
 
 from bloggor import constants
+from bloggor.constants import FileType
 from bloggor.metafile import MultiMetaFile, ls_as_value
 from bloggor.excepts import RuntimeException
 from bloggor.util import parsedate, relativetime

@@ -3,7 +3,6 @@ import os.path
 import markdown
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
-from bloggor import constants
 from bloggor.constants import FeedType
 from bloggor.excepts import RuntimeException
 from bloggor.util import MultiDict

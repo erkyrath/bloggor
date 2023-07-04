@@ -98,10 +98,10 @@ class StaticPage(Page):
         self.path = os.path.join(self.dirpath, self.filename)
         
         if filename.endswith('.html'):
-            self.type = constants.HTML
+            self.type = FileType.HTML
             outfile = filename
         elif filename.endswith('.md'):
-            self.type = constants.MD
+            self.type = FileType.MD
             outfile = filename[ : -3 ] + '.html'
         else:
             raise RuntimeException(self.path+': Unrecognized entry format: ' + filename)
@@ -112,10 +112,10 @@ class StaticPage(Page):
         self.complete()
 
     def read(self):
-        if self.type == constants.HTML:
+        if self.type == FileType.HTML:
             mfl = MetaFile(self.path)
             body, metadata = mfl.read()
-        elif self.type == constants.MD:
+        elif self.type == FileType.MD:
             fl = open(self.path)
             dat = fl.read()
             fl.close()
@@ -374,10 +374,10 @@ class EntryPage(Page):
         self.path = os.path.join(self.dirpath, self.filename)
         
         if filename.endswith('.html'):
-            self.type = constants.HTML
+            self.type = FileType.HTML
             outfile = filename
         elif filename.endswith('.md'):
-            self.type = constants.MD
+            self.type = FileType.MD
             outfile = filename[ : -3 ] + '.html'
         else:
             raise RuntimeException(self.path+': Unrecognized entry format: ' + filename)
@@ -406,10 +406,10 @@ class EntryPage(Page):
         return '<%s%s "%s">' % (self.__class__.__name__, val, self.outuri)
 
     def read(self):
-        if self.type == constants.HTML:
+        if self.type == FileType.HTML:
             mfl = MetaFile(self.path)
             body, metadata = mfl.read()
-        elif self.type == constants.MD:
+        elif self.type == FileType.MD:
             fl = open(self.path)
             dat = fl.read()
             fl.close()
@@ -520,7 +520,7 @@ class EntryPage(Page):
 
 
 from bloggor import constants
-from bloggor.constants import FeedType
+from bloggor.constants import FileType, FeedType
 from bloggor.excepts import RuntimeException
 from bloggor.metafile import MetaFile, ls_as_bool, ls_as_value
 from bloggor.util import tagfilename, parsedate, relativetime, excerpthtml, sortform

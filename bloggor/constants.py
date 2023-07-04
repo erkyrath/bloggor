@@ -1,10 +1,11 @@
 from enum import Enum
 import pytz
 
-HTML = 'html'
-MD = 'md'
-WHTML = 'whtml'
-TXT = 'txt'
+class FileType(Enum):
+    HTML = 'html'
+    MD = 'md'
+    WHTML = 'whtml'
+    TXT = 'txt'
 
 class FeedType(Enum):
     RSS = 'rss'
