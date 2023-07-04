@@ -25,6 +25,9 @@ class TestFileType(unittest.TestCase):
         self.assertEqual(parse_filetype('html'), FileType.HTML)
         self.assertEqual(parse_filetype('whtml'), FileType.WHTML)
 
+    def test_bad(self):
+        self.assertRaises(ValueError, parse_filetype, 'foo')
+        
 
 class TestDepend(unittest.TestCase):
     def test(self):
@@ -39,6 +42,9 @@ class TestDepend(unittest.TestCase):
         
         self.assertEqual(parse_depend('body,title,pubdate'), Depend.BODY|Depend.TITLE|Depend.PUBDATE)
 
+    def test_bad(self):
+        self.assertRaises(ValueError, parse_depend, 'foo')
+        
 
 class TestTagFilename(unittest.TestCase):
     def test(self):
