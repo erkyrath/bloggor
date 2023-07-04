@@ -210,8 +210,8 @@ class Context:
         page = RecentEntriesPage(self)
         self.pages.append(page)
 
-        for year in self.entriesbyyear:
-            page = YearEntriesPage(self, year)
+        for year, ls in self.entriesbyyear.items():
+            page = YearEntriesPage(self, year, ls)
             self.pages.append(page)
         
         page = TagListPage(self)

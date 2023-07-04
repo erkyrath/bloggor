@@ -196,9 +196,10 @@ class RecentEntriesPage(Page):
         
     
 class YearEntriesPage(Page):
-    def __init__(self, ctx, year):
+    def __init__(self, ctx, year, pagels):
         Page.__init__(self, ctx)
         self.year = year
+        self.backdependpages = [ (page, Depend.PUBDATE) for page in pagels ]
         self.outpath = '%d/index.html' % (self.year,)
         self.complete()
 
