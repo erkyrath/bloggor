@@ -50,11 +50,11 @@ class Comment:
         if not ls:
             format = FileType.TXT
         else:
-            val = ''.join(ls).lower()
-            if val == 'text':
-                format = FileType.TXT
-            else:
-                format = FileType(val)
+            try:
+                val = ''.join(ls)
+                format = parse_filetype(val)
+            except ValueError:
+                raise RuntimeException(self.id+': unknown comment format: '+val)
             
         if format == FileType.TXT:
             val = str(markupsafe.escape(body))
@@ -122,7 +122,7 @@ class Comment:
         return '<%s "%s">' % (self.__class__.__name__, self.id)
 
 
-from bloggor.constants import FileType, eastern_tz
+from bloggor.constants import FileType, parse_filetype, eastern_tz
 from bloggor.metafile import MultiMetaFile, ls_as_value
 from bloggor.excepts import RuntimeException
 from bloggor.util import parsedate, relativetime

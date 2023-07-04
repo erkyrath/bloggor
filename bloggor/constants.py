@@ -7,6 +7,11 @@ class FileType(Enum):
     WHTML = 'whtml'
     TXT = 'txt'
 
+def parse_filetype(val):
+    if val == 'text':
+        return FileType.TXT
+    return FileType(val.lower())
+    
 class FeedType(Enum):
     RSS = 'rss'
     ATOM = 'atom'
