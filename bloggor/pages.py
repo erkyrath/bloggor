@@ -20,6 +20,7 @@ class Page:
         self.frequent = False
 
         self.backdependpages = None
+        self.dependpages = None
 
     def complete(self):
         self.outuri, dot, suffix = self.outpath.rpartition('.')
@@ -244,7 +245,7 @@ class HistoryPage(Page):
         Page.__init__(self, ctx)
         self.outpath = 'history.html'
         self.frequent = True
-        self.backdependpages = [ (page, Depend.CREATED) for page in ctx.liveentries ]
+        self.backdependpages = [ (page, Depend.CREATED|Depend.PUBDATE) for page in ctx.liveentries ]
         self.complete()
 
     def build(self):
@@ -273,7 +274,7 @@ class TagListPage(Page):
         Page.__init__(self, ctx)
         self.outpath = 'tags.html'
         self.frequent = True
-        self.backdependpages = [ (page, Depend.TAGS) for page in ctx.liveentries ]
+        self.backdependpages = [ (page, Depend.TAGS|Depend.CREATED) for page in ctx.liveentries ]
         self.complete()
 
     def build(self):
@@ -295,7 +296,7 @@ class TagListFreqPage(Page):
         Page.__init__(self, ctx)
         self.outpath = 'tags-freq.html'
         self.frequent = True
-        self.backdependpages = [ (page, Depend.TAGS) for page in ctx.liveentries ]
+        self.backdependpages = [ (page, Depend.TAGS|Depend.CREATED) for page in ctx.liveentries ]
         self.complete()
 
     def build(self):
@@ -317,7 +318,7 @@ class TagPage(Page):
         Page.__init__(self, ctx)
         self.tag = tag
         self.outpath = os.path.join('tag', tagfilename(tag)+'.html')
-        self.backdependpages = [ (page, Depend.TAGS) for page in pagels ]
+        self.backdependpages = [ (page, Depend.TAGS|Depend.PUBDATE|Depend.TITLE) for page in pagels ]
         self.complete()
 
     def __repr__(self):

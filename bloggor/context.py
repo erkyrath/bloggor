@@ -242,6 +242,12 @@ class Context:
             if self.opts.buildonly:
                 pagelist = [ page for page in self.pages if page.matchspecs(pagespecs) is not None ]
             else:
+                for page in self.pages:
+                    if page.backdependpages:
+                        for backdep, dep in page.backdependpages:
+                            if backdep.dependpages is None:
+                                backdep.dependpages = []
+                            backdep.dependpages.append( (page, dep) )
                 pagelist = [ page for page in self.pages if page.matchspecs(pagespecs) is not None ] ###
                 
             if not pagelist:
