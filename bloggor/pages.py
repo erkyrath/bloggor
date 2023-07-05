@@ -41,19 +41,33 @@ class Page:
     def __repr__(self):
         return '<%s "%s">' % (self.__class__.__name__, self.outuri)
 
-    def match(self, specs):
-        for spec in specs:
-            if '*' in spec:
-                return fnmatch(self.outuri, spec)
-            
+    def matchspecs(self, specs):
+        res = None
+        
+        for (spec, dep) in specs:
+            if self.match(spec):
+                if res is None:
+                    res = dep
+                else:
+                    res |= dep
+                if res == Depend.ALL:
+                    return Depend.ALL
+
+        return res
+
+    def match(self, spec):
+        if '*' in spec:
+            if fnmatch(self.outuri, spec):
+                return True
+        else:
             if self.outpath == spec:
                 return True
             if self.outuri == spec:
                 return True
-            if self.inpath is not None and self.inpath == spec:
-                return True
-            if self.inuri is not None and self.inuri == spec:
-                return True
+            if '.' in spec:
+                if self.inpath is not None and self.inpath.endswith(spec):
+                    return True
+        return False
 
     def openwrite(self):
         if self.outdir:
