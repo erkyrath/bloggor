@@ -16,6 +16,12 @@ popt.add_option('-s', '--src',
 popt.add_option('-o', '--out',
                 action='store', dest='destdir', default='site',
                 help='destination directory')
+popt.add_option('-a', '--all',
+                action='store_true', dest='buildall',
+                help='build all files')
+popt.add_option('--only',
+                action='store_true', dest='buildonly',
+                help='build only named files (no dependencies)')
 popt.add_option('--serverurl',
                 action='store', dest='serverurl', default='https://blog.zarfhome.com/',
                 help='canonical server URL (ending with slash)')

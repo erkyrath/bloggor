@@ -6,6 +6,7 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 from bloggor.constants import FeedType
 from bloggor.excepts import RuntimeException
 from bloggor.util import MultiDict
+from bloggor.util import parsespecs
 from bloggor.pages import FrontPage
 from bloggor.pages import EntryPage, GenTemplatePage, StaticPage
 from bloggor.pages import TagListPage, TagListFreqPage, TagPage
@@ -76,11 +77,20 @@ class Context:
         if self.opts.dryrun:
             return True
 
-        if not pagespecs:
+        if self.opts.buildall:
+            if pagespecs:
+                print('Ignoring pagespecs, building --all')
             pagelist = list(self.pages)
+        elif not pagespecs:
+            print('No pages requested')
+            return True
         else:
-            pagespecs = [ spec[1:] if spec.startswith('/') else spec for spec in pagespecs ]
-            pagelist = [ page for page in self.pages if page.match(pagespecs) ]
+            pagespecs = parsespecs(pagespecs)
+            if self.opts.buildonly:
+                pagelist = [ page for page in self.pages if page.matchspecs(pagespecs) is not None ]
+            else:
+                pagelist = [ page for page in self.pages if page.matchspecs(pagespecs) is not None ] ###
+                
             if not pagelist:
                 print('No pages match')
                 return False
