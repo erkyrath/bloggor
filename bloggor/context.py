@@ -7,6 +7,7 @@ from bloggor.constants import FeedType
 from bloggor.excepts import RuntimeException
 from bloggor.util import MultiDict
 from bloggor.util import parsespecs
+from bloggor.util import xofypages
 from bloggor.pages import FrontPage
 from bloggor.pages import EntryPage, GenTemplatePage, StaticPage
 from bloggor.pages import TagListPage, TagListFreqPage, TagPage
@@ -270,7 +271,7 @@ class Context:
             return pagelist
 
     def build(self, pagelist):
-        print('Building %d pages...' % (len(pagelist),))
+        print('Building %s...' % (xofypages(len(pagelist), len(self.pages)),))
         if len(pagelist) < 20:
             for page in pagelist:
                 print('  .../'+page.outpath)
@@ -289,7 +290,7 @@ class Context:
             ls = [ page.tempoutpath for page in pagelist ]
             assert len(ls) == len(set(ls))
             
-            print('Committing %d pages...' % (len(pagelist),))
+            print('Committing %s...' % (xofypages(len(pagelist), len(self.pages)),))
             for page in pagelist:
                 page.commit()
 

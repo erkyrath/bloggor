@@ -156,6 +156,20 @@ def relativetime(after, before, english=True):
 
     return 'straightaway'
 
+
+def xofypages(val, total):
+    if val == 0:
+        res = 'none of %d' % (total,)
+    elif val == total:
+        res = 'all %d' % (val,)
+    else:
+        res = '%d of %d' % (val, total,)
+    if total == 1:
+        return res+' page'
+    else:
+        return res+' pages'
+
+
 pat_htmltag = re.compile('<[^>]*>')
 pat_whitespace = re.compile('[ \t\n\r]+')
 
