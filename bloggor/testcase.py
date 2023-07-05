@@ -49,6 +49,9 @@ class TestDepend(unittest.TestCase):
 
 class TestParseSpecs(unittest.TestCase):
     def test(self):
+        ls = parsespecs([])
+        self.assertEqual(ls, [])
+        
         ls = parsespecs(['one', 'two', 'three'])
         self.assertEqual(ls, [('one', Depend.ALL), ('two', Depend.ALL), ('three', Depend.ALL)])
         
@@ -60,6 +63,9 @@ class TestParseSpecs(unittest.TestCase):
 
         ls = parsespecs(['one:title,body', 'two:all'])
         self.assertEqual(ls, [('one', Depend.TITLE|Depend.BODY), ('two', Depend.ALL)])
+        
+    def test_bad(self):
+        self.assertRaises(ValueError, parsespecs, ['/'])
         
     
 class TestTagFilename(unittest.TestCase):
