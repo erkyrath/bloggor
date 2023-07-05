@@ -78,9 +78,7 @@ class Context:
             return True
 
         pagelist = self.filterpages(pagespecs)
-        if pagelist is None:
-            return False
-        elif not pagelist:
+        if not pagelist:
             return True
     
         self.build(pagelist)
@@ -244,8 +242,8 @@ class Context:
                 pagelist = [ page for page in self.pages if page.matchspecs(pagespecs) is not None ] ###
                 
             if not pagelist:
-                print('No pages match')
-                return None
+                val = ', '.join([ spec for spec, dep in pagespecs ])
+                raise RuntimeException('No pages match ' + val)
             return pagelist
 
     def build(self, pagelist):
