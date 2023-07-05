@@ -160,7 +160,7 @@ class Context:
         if self.errors:
             return
 
-        print('Reading %d pages...' % (len(self.pages),))
+        print('Reading %d entries plus %d pages...' % (len(self.entries), len(self.pages)-len(self.entries),))
         for page in self.pages:
             try:
                 page.read()
