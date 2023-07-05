@@ -3,6 +3,20 @@ import datetime
 import feedgenerator
 from fnmatch import fnmatch
 
+class PageSet:
+    def __init__(self):
+        self.ls = []
+        self.pathset = set()
+
+    def __iter__(self):
+        return self.ls.__iter__()
+
+    def add(self, page):
+        if page.outpath not in self.pathset:
+            self.pathset.add(page.outpath)
+            self.ls.append(page)
+
+
 class Page:
     def __init__(self, ctx):
         self.ctx = ctx
