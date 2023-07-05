@@ -24,8 +24,8 @@ class Context:
     def __init__(self, opts):
         self.opts = opts
         
-        config = self.readconfig()
-        self.serverurl = config['serverurl']
+        self.config = self.readconfig()
+        self.serverurl = self.config['serverurl']
         
         self.entriesdir = os.path.join(self.opts.srcdir, 'entries')
         self.pagesdir = os.path.join(self.opts.srcdir, 'pages')
@@ -60,8 +60,8 @@ class Context:
         )
         self.jenv.globals['blogctx'] = self
         self.jenv.globals['serverurl'] = self.serverurl
-        self.jenv.globals['fediserver'] = config['fediserver']
-        self.jenv.globals['fediuser'] = config['fediuser']
+        self.jenv.globals['fediserver'] = self.config['fediserver']
+        self.jenv.globals['fediuser'] = self.config['fediuser']
 
         self.mdenv = markdown.Markdown(extensions=[
             'meta', 'attr_list', 'def_list', 'fenced_code', 'tables',
@@ -76,6 +76,8 @@ class Context:
             configpath = os.path.join(self.opts.srcdir, 'bloggor.cfg')
 
         defaults = {
+            'title': 'Blog',
+            'ownername': 'Owner',
             'serverurl': 'https://blog.example.com/',
             'fediuser': 'username',
             'fediserver': 'mastodon.example.com',

@@ -110,8 +110,8 @@ class Comment:
             self.sourcename = 'imported from Blogger'
         elif self.source == 'mastodon':
             self.sourcename = 'from Mastodon'
-        elif self.source == 'zarf':
-            self.sourcename = 'from Zarf'
+        elif self.source == 'self':
+            self.sourcename = 'from ' + ctx.config['ownername']
         else:
             self.sourcename = None
 
