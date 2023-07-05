@@ -52,7 +52,16 @@ class TestParseSpecs(unittest.TestCase):
         ls = parsespecs(['one', 'two', 'three'])
         self.assertEqual(ls, [('one', Depend.ALL), ('two', Depend.ALL), ('three', Depend.ALL)])
         
+        ls = parsespecs(['/one/two', '/three'])
+        self.assertEqual(ls, [('one/two', Depend.ALL), ('three', Depend.ALL)])
         
+        ls = parsespecs(['one:title', 'two:TAG'])
+        self.assertEqual(ls, [('one', Depend.TITLE), ('two', Depend.TAGS)])
+
+        ls = parsespecs(['one:title,body', 'two:all'])
+        self.assertEqual(ls, [('one', Depend.TITLE|Depend.BODY), ('two', Depend.ALL)])
+        
+    
 class TestTagFilename(unittest.TestCase):
     def test(self):
         self.assertEqual(tagfilename(''), '==')
