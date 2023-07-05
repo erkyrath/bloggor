@@ -233,42 +233,43 @@ class Context:
             if pagespecs:
                 print('Ignoring pagespecs, building --all')
             return list(self.pages)
-        elif not pagespecs:
+        
+        if not pagespecs:
             print('No pages requested')
             return []
+        
+        try:
+            pagespecs = parsespecs(pagespecs)
+        except ValueError as ex:
+            raise RuntimeException(str(ex))
+        if self.opts.buildonly:
+            pagelist = [ page for page in self.pages if page.matchspecs(pagespecs) is not None ]
         else:
-            try:
-                pagespecs = parsespecs(pagespecs)
-            except ValueError as ex:
-                raise RuntimeException(str(ex))
-            if self.opts.buildonly:
-                pagelist = [ page for page in self.pages if page.matchspecs(pagespecs) is not None ]
-            else:
-                for page in self.pages:
-                    if page.backdependpages:
-                        for backdep, dep in page.backdependpages:
-                            if backdep.dependpages is None:
-                                backdep.dependpages = []
-                            backdep.dependpages.append( (page, dep) )
-                pagedeps = []
-                for page in self.pages:
-                    dep = page.matchspecs(pagespecs)
-                    if dep is not None:
-                        pagedeps.append( (page, dep) )
-                pageset = PageSet()
-                for page, dep in pagedeps:
-                    pageset.add(page)
-                for page, dep in pagedeps:
-                    if page.dependpages:
-                        for page2, dep2 in page.dependpages:
-                            if dep & dep2:
-                                pageset.add(page2)
-                pagelist = list(pageset)
-                
-            if not pagelist:
-                val = ', '.join([ spec for spec, dep in pagespecs ])
-                raise RuntimeException('No pages match ' + val)
-            return pagelist
+            for page in self.pages:
+                if page.backdependpages:
+                    for backdep, dep in page.backdependpages:
+                        if backdep.dependpages is None:
+                            backdep.dependpages = []
+                        backdep.dependpages.append( (page, dep) )
+            pagedeps = []
+            for page in self.pages:
+                dep = page.matchspecs(pagespecs)
+                if dep is not None:
+                    pagedeps.append( (page, dep) )
+            pageset = PageSet()
+            for page, dep in pagedeps:
+                pageset.add(page)
+            for page, dep in pagedeps:
+                if page.dependpages:
+                    for page2, dep2 in page.dependpages:
+                        if dep & dep2:
+                            pageset.add(page2)
+            pagelist = list(pageset)
+            
+        if not pagelist:
+            val = ', '.join([ spec for spec, dep in pagespecs ])
+            raise RuntimeException('No pages match ' + val)
+        return pagelist
 
     def build(self, pagelist):
         print('Building %s...' % (xofypages(len(pagelist), len(self.pages)),))
