@@ -4,6 +4,7 @@ import io
 
 from .constants import FileType, parse_filetype
 from .constants import Depend, parse_depend
+from .util import parsespecs
 from .util import tagfilename
 from .util import parsedate
 from .util import relativetime
@@ -46,6 +47,12 @@ class TestDepend(unittest.TestCase):
         self.assertRaises(ValueError, parse_depend, 'foo')
         
 
+class TestParseSpecs(unittest.TestCase):
+    def test(self):
+        ls = parsespecs(['one', 'two', 'three'])
+        self.assertEqual(ls, [('one', Depend.ALL), ('two', Depend.ALL), ('three', Depend.ALL)])
+        
+        
 class TestTagFilename(unittest.TestCase):
     def test(self):
         self.assertEqual(tagfilename(''), '==')
