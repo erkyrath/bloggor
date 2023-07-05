@@ -11,6 +11,9 @@ class PageSet:
     def __iter__(self):
         return self.ls.__iter__()
 
+    def __len__(self):
+        return len(self.ls)
+
     def add(self, page):
         if page.outpath not in self.pathset:
             self.pathset.add(page.outpath)

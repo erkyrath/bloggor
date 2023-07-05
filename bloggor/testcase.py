@@ -10,6 +10,7 @@ from .util import parsedate
 from .util import relativetime
 from .metafile import MetaFile
 from .metafile import MultiMetaFile
+from .pages import PageSet
 
 # Run me with:
 #    python3 -m bloggor.testcase
@@ -397,6 +398,37 @@ class TestMultiMetaFile(unittest.TestCase):
             ])
 
 
+class TestPageSet(unittest.TestCase):
+    class MockPage:
+        def __init__(self, outpath):
+            self.outpath = outpath
+        def __repr__(self):
+            return '<MockPage "%s">' % (self.outpath,)
+        
+    def test(self):
+        ps = PageSet()
+        self.assertEqual(list(ps), [])
+        self.assertEqual(len(ps), 0)
+        
+        pfoo = TestPageSet.MockPage('foo')
+        pbar = TestPageSet.MockPage('bar')
+        pfoobar = TestPageSet.MockPage('foo/bar')
+
+        ps.add(pfoo)
+        self.assertEqual(list(ps), [ pfoo ])
+        
+        ps.add(pfoo)
+        self.assertEqual(list(ps), [ pfoo ])
+        
+        ps.add(pbar)
+        self.assertEqual(list(ps), [ pfoo, pbar ])
+        
+        ps.add(pfoo)
+        self.assertEqual(list(ps), [ pfoo, pbar ])
+        
+        ps.add(pfoobar)
+        self.assertEqual(list(ps), [ pfoo, pbar, pfoobar ])
+        self.assertEqual(len(ps), 3)
 
 if __name__ == '__main__':
     unittest.main()
