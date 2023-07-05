@@ -242,6 +242,7 @@ class Context:
             pagespecs = parsespecs(pagespecs)
         except ValueError as ex:
             raise RuntimeException(str(ex))
+        
         if self.opts.buildonly:
             pagelist = [ page for page in self.pages if page.matchspecs(pagespecs) is not None ]
         else:
