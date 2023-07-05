@@ -248,7 +248,20 @@ class Context:
                             if backdep.dependpages is None:
                                 backdep.dependpages = []
                             backdep.dependpages.append( (page, dep) )
-                pagelist = [ page for page in self.pages if page.matchspecs(pagespecs) is not None ] ###
+                pagedeps = []
+                for page in self.pages:
+                    dep = page.matchspecs(pagespecs)
+                    if dep is not None:
+                        pagedeps.append( (page, dep) )
+                pagelist = [ page for page, dep in pagedeps ]
+                depset = set()
+                for page, dep in pagedeps:
+                    if page.dependpages:
+                        for page2, dep2 in page.dependpages:
+                            if dep & dep2:
+                                if page2.outuri not in depset:
+                                    depset.add(page2.outuri)
+                                    pagelist.append(page2)
                 
             if not pagelist:
                 val = ', '.join([ spec for spec, dep in pagespecs ])
