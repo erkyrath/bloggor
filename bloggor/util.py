@@ -71,6 +71,23 @@ def tagfilename(val):
     return pat_fancychar.sub(escapefancy, val)
 
 
+def parsespecs(ls):
+    specs = []
+    for origval in ls:
+        val = origval
+        if val.startswith('/'):
+            val = val[1:]
+        spec, _, depstr = val.partition(':')
+        if not spec:
+            raise ValueError('bad filespec: '+origval)
+        if not depstr:
+            dep = Depend.ALL
+        else:
+            dep = parse_depend(depstr)
+        specs.append( (spec, dep) )
+    return specs
+
+
 pat_simpledate = re.compile('^[0-9]{4}-[0-9]{2}-[0-9]{2}$')
 pat_fulldate = re.compile('^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}([.][0-9]+)?(Z|[+]00:00)?$')
 
@@ -170,4 +187,7 @@ def depthstep(val):
         return '0'
     val = 2.54 * math.atan(val)
     return '%.3f' % (val,)
+
+
+from bloggor.constants import Depend, parse_depend
 
