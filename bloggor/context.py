@@ -77,23 +77,11 @@ class Context:
         if self.opts.dryrun:
             return True
 
-        if self.opts.buildall:
-            if pagespecs:
-                print('Ignoring pagespecs, building --all')
-            pagelist = list(self.pages)
-        elif not pagespecs:
-            print('No pages requested')
+        pagelist = self.filterpages(pagespecs)
+        if pagelist is None:
+            return False
+        elif not pagelist:
             return True
-        else:
-            pagespecs = parsespecs(pagespecs)
-            if self.opts.buildonly:
-                pagelist = [ page for page in self.pages if page.matchspecs(pagespecs) is not None ]
-            else:
-                pagelist = [ page for page in self.pages if page.matchspecs(pagespecs) is not None ] ###
-                
-            if not pagelist:
-                print('No pages match')
-                return False
     
         self.build(pagelist)
 
@@ -239,6 +227,26 @@ class Context:
 
         page = FeedPage(self, FeedType.RSS, 'feeds/posts/default.rss', withsuffix=True)
         self.pages.append(page)
+
+    def filterpages(self, pagespecs):
+        if self.opts.buildall:
+            if pagespecs:
+                print('Ignoring pagespecs, building --all')
+            return list(self.pages)
+        elif not pagespecs:
+            print('No pages requested')
+            return []
+        else:
+            pagespecs = parsespecs(pagespecs)
+            if self.opts.buildonly:
+                pagelist = [ page for page in self.pages if page.matchspecs(pagespecs) is not None ]
+            else:
+                pagelist = [ page for page in self.pages if page.matchspecs(pagespecs) is not None ] ###
+                
+            if not pagelist:
+                print('No pages match')
+                return None
+            return pagelist
 
     def build(self, pagelist):
         print('Building %d pages...' % (len(pagelist),))
