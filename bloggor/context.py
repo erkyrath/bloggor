@@ -13,6 +13,7 @@ from bloggor.pages import TagListPage, TagListFreqPage, TagPage
 from bloggor.pages import RecentEntriesPage, YearEntriesPage
 from bloggor.pages import HistoryPage
 from bloggor.pages import FeedPage
+from bloggor.pages import PageSet
 from bloggor.comments import CommentThread
 import bloggor.jextension
 import bloggor.mdextension
@@ -253,19 +254,15 @@ class Context:
                     dep = page.matchspecs(pagespecs)
                     if dep is not None:
                         pagedeps.append( (page, dep) )
-                depset = set()
-                pagelist = []
+                pageset = PageSet()
                 for page, dep in pagedeps:
-                    if page.outpath not in depset:
-                        depset.add(page.outpath)
-                        pagelist.append(page)
+                    pageset.add(page)
                 for page, dep in pagedeps:
                     if page.dependpages:
                         for page2, dep2 in page.dependpages:
                             if dep & dep2:
-                                if page2.outpath not in depset:
-                                    depset.add(page2.outpath)
-                                    pagelist.append(page2)
+                                pageset.add(page2)
+                pagelist = list(pageset)
                 
             if not pagelist:
                 val = ', '.join([ spec for spec, dep in pagespecs ])
