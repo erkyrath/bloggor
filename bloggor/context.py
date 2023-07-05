@@ -253,8 +253,12 @@ class Context:
                     dep = page.matchspecs(pagespecs)
                     if dep is not None:
                         pagedeps.append( (page, dep) )
-                pagelist = [ page for page, dep in pagedeps ]
                 depset = set()
+                pagelist = []
+                for page, dep in pagedeps:
+                    if page.outuri not in depset:
+                        depset.add(page.outuri)
+                        pagelist.append(page)
                 for page, dep in pagedeps:
                     if page.dependpages:
                         for page2, dep2 in page.dependpages:
