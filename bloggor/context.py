@@ -1,5 +1,6 @@
 import os
 import os.path
+import configparser
 import markdown
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
@@ -22,6 +23,10 @@ import bloggor.mdextension
 class Context:
     def __init__(self, opts):
         self.opts = opts
+        
+        config = self.readconfig()
+        self.serverurl = config['serverurl']
+        
         self.entriesdir = os.path.join(self.opts.srcdir, 'entries')
         self.pagesdir = os.path.join(self.opts.srcdir, 'pages')
 
@@ -53,10 +58,10 @@ class Context:
             autoescape = select_autoescape(),
             keep_trailing_newline = True,
         )
-        self.jenv.globals['serverurl'] = opts.serverurl
-        self.jenv.globals['fediserver'] = 'mastodon.gamedev.place'
-        self.jenv.globals['fediuser'] = 'zarfeblong'
         self.jenv.globals['blogctx'] = self
+        self.jenv.globals['serverurl'] = self.serverurl
+        self.jenv.globals['fediserver'] = config['fediserver']
+        self.jenv.globals['fediuser'] = config['fediuser']
 
         self.mdenv = markdown.Markdown(extensions=[
             'meta', 'attr_list', 'def_list', 'fenced_code', 'tables',
@@ -64,6 +69,24 @@ class Context:
             bloggor.mdextension.UnwrapExtension(),
             bloggor.mdextension.LocalLinkExtension(),
         ])
+
+    def readconfig(self):
+        configpath = self.opts.configfile
+        if not configpath:
+            configpath = os.path.join(self.opts.srcdir, 'bloggor.cfg')
+
+        defaults = {
+            'serverurl': 'https://blog.example.com/',
+            'fediuser': 'username',
+            'fediserver': 'mastodon.example.com',
+        }
+        config = configparser.ConfigParser(defaults=defaults)
+
+        config.read(configpath)
+        if 'bloggor' in config:
+            return config['bloggor']
+        else:
+            return config['DEFAULT']
 
     def run(self, pagespecs=None):
         self.errors = []
@@ -297,4 +320,4 @@ class Context:
                 page.commit()
 
         for page in self.draftentries:
-            print('Draft: %s%s' % (self.opts.serverurl, page.outuri,))
+            print('Draft: %s%s' % (self.serverurl, page.outuri,))

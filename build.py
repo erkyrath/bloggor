@@ -13,6 +13,9 @@ popt = optparse.OptionParser()
 popt.add_option('-s', '--src',
                 action='store', dest='srcdir', default='src',
                 help='source directory')
+popt.add_option('--config',
+                action='store', dest='configfile',
+                help='config file (default: srcdir/bloggor.cfg)')
 popt.add_option('-o', '--out',
                 action='store', dest='destdir', default='site',
                 help='destination directory')
@@ -22,9 +25,6 @@ popt.add_option('-a', '--all',
 popt.add_option('--only',
                 action='store_true', dest='buildonly',
                 help='build only named files (no dependencies)')
-popt.add_option('--serverurl',
-                action='store', dest='serverurl', default='https://blog.zarfhome.com/',
-                help='canonical server URL (ending with slash)')
 popt.add_option('--dry', '--dryrun',
                 action='store_true', dest='dryrun',
                 help='read source but do not generate')

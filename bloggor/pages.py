@@ -364,7 +364,7 @@ class FeedPage(Page):
         self.backdependpages = [ (page, Depend.ALL) for page in entries ]
         self.complete()
 
-        self.feed_url = self.opts.serverurl+outpath
+        self.feed_url = self.ctx.serverurl+outpath
         if not withsuffix:
             self.feed_url, _, _ = self.feed_url.rpartition('.')
 
@@ -384,7 +384,7 @@ class FeedPage(Page):
         
         feed = cla(
             title = 'Zarf Updates',
-            link = self.opts.serverurl,
+            link = self.ctx.serverurl,
             author_name = 'Andrew Plotkin',
             description = 'Interactive fiction, narrative in games, and so on',
             feed_url = self.feed_url,
@@ -400,7 +400,7 @@ class FeedPage(Page):
                 title = entry.title,
                 description = entry.excerpt,
                 content = entry.body,
-                link = self.opts.serverurl+entry.outuri,
+                link = self.ctx.serverurl+entry.outuri,
                 author_name = 'Andrew Plotkin',
                 categories = entry.tags,
                 pubdate = entry.published,
