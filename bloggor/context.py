@@ -256,15 +256,15 @@ class Context:
                 depset = set()
                 pagelist = []
                 for page, dep in pagedeps:
-                    if page.outuri not in depset:
-                        depset.add(page.outuri)
+                    if page.outpath not in depset:
+                        depset.add(page.outpath)
                         pagelist.append(page)
                 for page, dep in pagedeps:
                     if page.dependpages:
                         for page2, dep2 in page.dependpages:
                             if dep & dep2:
-                                if page2.outuri not in depset:
-                                    depset.add(page2.outuri)
+                                if page2.outpath not in depset:
+                                    depset.add(page2.outpath)
                                     pagelist.append(page2)
                 
             if not pagelist:
