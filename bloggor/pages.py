@@ -383,7 +383,7 @@ class FeedPage(Page):
         commontags.sort()
         
         feed = cla(
-            title = 'Zarf Updates',
+            title = self.ctx.config['blogtitle'],
             link = self.ctx.serverurl,
             author_name = 'Andrew Plotkin',
             description = 'Interactive fiction, narrative in games, and so on',

@@ -76,7 +76,7 @@ class Context:
             configpath = os.path.join(self.opts.srcdir, 'bloggor.cfg')
 
         defaults = {
-            'title': 'Blog',
+            'blogtitle': 'Blog',
             'ownername': 'Owner',
             'serverurl': 'https://blog.example.com/',
             'fediuser': 'username',
