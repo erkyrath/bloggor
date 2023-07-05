@@ -77,6 +77,7 @@ class Context:
 
         defaults = {
             'blogtitle': 'Blog',
+            'blogsubtitle': 'Some words',
             'ownername': 'Owner',
             'serverurl': 'https://blog.example.com/',
             'fediuser': 'username',
