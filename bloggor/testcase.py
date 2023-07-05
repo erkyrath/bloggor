@@ -2,16 +2,16 @@ import unittest
 import datetime
 import io
 
-from constants import FileType, parse_filetype
-from constants import Depend, parse_depend
-from util import tagfilename
-from util import parsedate
-from util import relativetime
-from metafile import MetaFile
-from metafile import MultiMetaFile
+from .constants import FileType, parse_filetype
+from .constants import Depend, parse_depend
+from .util import tagfilename
+from .util import parsedate
+from .util import relativetime
+from .metafile import MetaFile
+from .metafile import MultiMetaFile
 
 # Run me with:
-#    python3 bloggor/testcase.py
+#    python3 -m bloggor.testcase
 
 class TestFileType(unittest.TestCase):
     def test(self):
