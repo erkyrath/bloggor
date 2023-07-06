@@ -98,15 +98,16 @@ class UnwrapExtension(Extension):
 
 
 class LocalLinkProcessor(Treeprocessor):
-    RE_BLOGURL = re.compile('^https?://blog.zarfhome.com', flags=re.IGNORECASE)
+    def __init__(self, md=None, prefixes=[]):
+        Treeprocessor.__init__(self, md=md)
+        self.prefixes = prefixes
     
     def run(self, root):
         # Iterate over <a> elements
         for el in root.iter('a'):
             if 'href' in el.attrib:
-                match = self.RE_BLOGURL.match(el.attrib['href'])
-                if match:
-                    href = el.attrib['href'][ match.end() : ]
+                href = removeprefixes(el.attrib['href'], self.prefixes)
+                if href is not None:
                     if href.endswith('.html'):
                         href = href[ : -5 ]
                     if not href.startswith('/'):
@@ -115,14 +116,25 @@ class LocalLinkProcessor(Treeprocessor):
         # Iterate over <img> elements
         for el in root.iter('img'):
             if 'src' in el.attrib:
-                match = self.RE_BLOGURL.match(el.attrib['src'])
-                if match:
-                    src = el.attrib['src'][ match.end() : ]
+                src = removeprefixes(el.attrib['src'], self.prefixes)
+                if src is not None:
                     if not src.startswith('/'):
                         src = '/'+src
                     el.attrib['src'] = src
                     
 class LocalLinkExtension(Extension):
-    def extendMarkdown(self, md):
-        md.treeprocessors.register(LocalLinkProcessor(md), 'locallink', 15)
+    def __init__(self, serverurl):
+        Extension.__init__(self)
 
+        val = serverurl.lower()
+        if val.endswith('/'):
+            val = val[ : -1 ]
+        match = re.match('^https?://', val)
+        val = val[ match.end() : ]
+        self.prefixes = [ 'http://'+val, 'https://'+val ]
+    
+    def extendMarkdown(self, md):
+        md.treeprocessors.register(LocalLinkProcessor(md, self.prefixes), 'locallink', 15)
+
+
+from bloggor.util import removeprefixes

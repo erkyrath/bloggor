@@ -67,7 +67,7 @@ class Context:
             'meta', 'attr_list', 'def_list', 'fenced_code', 'tables',
             bloggor.mdextension.MoreBreakExtension(),
             bloggor.mdextension.UnwrapExtension(),
-            bloggor.mdextension.LocalLinkExtension(),
+            bloggor.mdextension.LocalLinkExtension(self.serverurl),
         ])
 
     def readconfig(self):

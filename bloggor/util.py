@@ -47,6 +47,15 @@ def sortform(val):
         return val[2:]    
     return val
 
+
+def removeprefixes(val, prefixes):
+    lval = val.lower()
+    for prefix in prefixes:
+        if lval.startswith(prefix):
+            return val[ len(prefix) : ]
+    return None
+
+
 pat_basictag = re.compile('^[a-z0-9 -]*$')
 pat_fancychar = re.compile('[^a-z0-9-]')
 
