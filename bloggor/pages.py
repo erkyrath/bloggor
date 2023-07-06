@@ -399,7 +399,7 @@ class FeedPage(Page):
             feed.add_item(
                 title = entry.title,
                 description = entry.excerpt,
-                content = entry.body,
+                content = absolutizeurls(entry.body, serverurl=self.ctx.serverurl),
                 link = self.ctx.serverurl+entry.outuri,
                 author_name = self.ctx.config['ownername'],
                 categories = entry.tags,
@@ -570,4 +570,4 @@ from bloggor.constants import FileType, FeedType, Depend
 from bloggor.constants import eastern_tz
 from bloggor.excepts import RuntimeException
 from bloggor.metafile import MetaFile, ls_as_bool, ls_as_value
-from bloggor.util import tagfilename, parsedate, relativetime, excerpthtml, sortform
+from bloggor.util import tagfilename, parsedate, relativetime, excerpthtml, sortform, absolutizeurls

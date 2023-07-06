@@ -181,6 +181,8 @@ def xofypages(val, total):
 
 pat_htmltag = re.compile('<[^>]*>')
 pat_whitespace = re.compile('[ \t\n\r]+')
+pat_tagahref = re.compile('^<a .*href="(/[^"]*)"')
+pat_tagimgsrc = re.compile('^<img .*src="(/[^"]*)"')
 
 def excerpthtml(text, maxlen=240):
     """Strip tags and line breaks, and take the first N characters or so.
@@ -193,6 +195,24 @@ def excerpthtml(text, maxlen=240):
     text = pat_whitespace.sub(' ', text)
     return text
 
+def absolutizeattr(val, serverurl):
+    match = pat_tagahref.match(val)
+    if match:
+        pos = match.start(1)
+        return val[ : pos ] + serverurl + val[ pos : ]
+    match = pat_tagimgsrc.match(val)
+    if match:
+        pos = match.start(1)
+        return val[ : pos ] + serverurl + val[ pos : ]
+    return val
+
+def absolutizeurls(text, serverurl):
+    """Convert relative post and image URLs to absolute.
+    """
+    if serverurl.endswith('/'):
+        serverurl = serverurl[ : -1 ]
+    text = pat_htmltag.sub(lambda match:absolutizeattr(match.group(0), serverurl), text)
+    return text
 
 def splitatmore(val):
     """Locate the convention break-here comment. Return the part before it.
