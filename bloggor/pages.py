@@ -446,6 +446,8 @@ class EntryPage(Page):
         self.updatedraw = None
         self.updated = None
 
+        self.backdependpages = []
+
         self.complete()
 
     def __repr__(self):

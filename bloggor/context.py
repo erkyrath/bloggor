@@ -204,6 +204,10 @@ class Context:
         self.liveentries.sort(key=lambda entry:(entry.published, entry.title))
         for ix in range(len(self.liveentries)):
             self.liveentries[ix].index = ix
+            if ix > 0:
+                self.liveentries[ix-1].backdependpages.append(self.liveentries[ix])
+            if ix < len(self.liveentries)-1:
+                self.liveentries[ix+1].backdependpages.append(self.liveentries[ix])
 
         self.recentfew = self.liveentries[ -4 : ]
         self.recentfew.reverse()
