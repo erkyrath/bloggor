@@ -128,7 +128,8 @@ def write_comments(obj, fl=sys.stdout):
         
     fl.write('---\n')
 
-    print('%d comments found' % (len(flatls),))
+    idls = [ el['id'] for el in flatls ]
+    print('%d comments found: %s' % (len(flatls), ', '.join(idls)))
 
 obj = json.loads(dat)
 
