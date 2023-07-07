@@ -4,7 +4,7 @@ import configparser
 import markdown
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
-from bloggor.constants import FeedType
+from bloggor.constants import FeedType, Depend
 from bloggor.excepts import RuntimeException
 from bloggor.util import MultiDict
 from bloggor.util import parsespecs
@@ -202,12 +202,12 @@ class Context:
         self.draftentries.sort(key=lambda entry:entry.outuri)
                 
         self.liveentries.sort(key=lambda entry:(entry.published, entry.title))
-        for ix in range(len(self.liveentries)):
-            self.liveentries[ix].index = ix
+        for ix, page in enumerate(self.liveentries):
+            page.index = ix
             if ix > 0:
-                self.liveentries[ix-1].backdependpages.append(self.liveentries[ix])
+                self.liveentries[ix-1].backdependpages.append( (page, Depend.TITLE|Depend.CREATED) )
             if ix < len(self.liveentries)-1:
-                self.liveentries[ix+1].backdependpages.append(self.liveentries[ix])
+                self.liveentries[ix+1].backdependpages.append( (page, Depend.TITLE|Depend.CREATED) )
 
         self.recentfew = self.liveentries[ -4 : ]
         self.recentfew.reverse()
