@@ -102,13 +102,17 @@ class Context:
         if self.errors:
             return False
 
-        if self.opts.dryrun:
-            return True
-
         pagelist = self.filterpages(pagespecs)
         if not pagelist:
             return True
     
+        if self.opts.dryrun:
+            print('Not building %s...' % (xofypages(len(pagelist), len(self.pages)),))
+            if len(pagelist) < 20:
+                for page in pagelist:
+                    print('  .../'+page.outpath)
+            return True
+
         self.build(pagelist)
 
         return True
