@@ -16,6 +16,7 @@ class CommentThread:
         self.outuri = self.outpath[ : -9]
         self.entry = None
         self.comments = []
+        self.fediids = None
         self.latestpublished = None
         self.longlatestpublished = None
         self.shortlatestpublished = None
@@ -30,6 +31,10 @@ class CommentThread:
         for ix, mf in enumerate(ls):
             body, meta = mf.read()
             self.comments.append(Comment(self.ctx, self, ix, body, meta))
+
+        idls = [ com.fediid for com in self.comments if com.fediid ]
+        if idls:
+            self.fediids = idls
 
         publs = [ com.published for com in self.comments if com.published ]
         if publs and self.entry.published:
@@ -70,6 +75,7 @@ class Comment:
             raise RuntimeException(self.id+': unknown comment format: '+format)
 
         self.source = None
+        self.fediid = None
         self.authorname = None
         self.authoruri = None
         self.depth = 0
@@ -84,6 +90,10 @@ class Comment:
         ls = meta.get('source', None)
         if ls:
             self.source = ''.join(ls)
+
+        ls = meta.get('fediid', None)
+        if ls:
+            self.fediid = ''.join(ls)
             
         ls = meta.get('authorname', None)
         if ls:
