@@ -488,6 +488,11 @@ class EntryPage(Page):
         if not self.title:
             raise RuntimeException(self.path+': No title')
 
+        self.csslines = None
+        ls = metadata.get('cssline', None)
+        if ls:
+            self.csslines = '\n'.join(ls)
+        
         # self.index is set after all posts are read and sorted
         # same goes for self.comments
 
