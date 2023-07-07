@@ -267,6 +267,7 @@ class HistoryPage(Page):
 
     def build(self):
         yearls = list(self.ctx.entriesbyyear.keys())
+        yearls = [ (key, len(ls)) for key, ls in self.ctx.entriesbyyear.items() ]
         yearls.sort()
 
         monthls = [
