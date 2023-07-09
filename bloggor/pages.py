@@ -243,6 +243,7 @@ class YearEntriesPage(Page):
 
     def build(self):
         entries = self.ctx.entriesbyyear[self.year]
+        entries.reverse()
 
         yearls = list(self.ctx.entriesbyyear.keys())
         yearls.sort(reverse=True)
