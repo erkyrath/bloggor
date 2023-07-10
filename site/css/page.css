@@ -1,7 +1,7 @@
 
 body {
     margin: 0px;
-    font-family: "Open Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+    font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
     font-size: 0.95em;
     line-height: 1.4em;
     overflow-wrap: anywhere;
@@ -9,8 +9,6 @@ body {
 
 .Head {
     background-color: #CCDFF6;
-    background-image: url("/pic/zarfhome-stripe-alpha.png");
-    background-position: top right;
     background-repeat: no-repeat;
     min-height: 120px;
     margin: 0px;
@@ -85,14 +83,8 @@ body {
     background-color: #CCF;
 }
 
-@media (max-width: 720px) {
-    .Head {
-        background-position: top left;
-    }
-}
-
 .Head h1 {
-    font-family: "Alegreya", "Georgia", "Times New Roman", serif;
+    font-family: "Georgia", "Times New Roman", serif;
     font-size: 40px;
     line-height: 40px;
     margin-top: 0px;
@@ -109,7 +101,7 @@ body {
 }
 
 .Head h3 {
-    font-family: "Alegreya", "Georgia", "Times New Roman", serif;
+    font-family: "Georgia", "Times New Roman", serif;
     font-size: 20px;
     font-weight: normal;
     line-height: 20px;
@@ -262,7 +254,7 @@ form.UtilMenu input[type=submit]:hover {
 }
 
 .EntryHead h2 {
-    font-family: "Alegreya", "Georgia", "Times New Roman", serif;
+    font-family: "Georgia", "Times New Roman", serif;
     font-size: 1.66em;
     margin-bottom: 6px;
 }
@@ -325,7 +317,7 @@ button.UtilButton:hover {
 }
 
 .EntryBody h1, .EntryBody h2, .EntryBody h3, .EntryBody h4, .EntryBody h5 {
-    font-family: "Alegreya", "Georgia", "Times New Roman", serif;
+    font-family: "Georgia", "Times New Roman", serif;
 }
 
 h1 {
@@ -416,7 +408,7 @@ pre {
 
 code {
     white-space: pre-wrap;
-    font-family: "Source Code Pro", monospace;
+    font-family: monospace;
     font-size: 0.9em;
 }
 
