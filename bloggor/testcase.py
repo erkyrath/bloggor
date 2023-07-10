@@ -9,6 +9,7 @@ from .util import tagfilename
 from .util import parsedate
 from .util import relativetime
 from .util import xofypages
+from .util import absolutizeurls
 from .metafile import MetaFile
 from .metafile import MultiMetaFile
 from .pages import PageSet
@@ -407,6 +408,67 @@ class TestMultiMetaFile(unittest.TestCase):
                 ('Line.\nLines.\n', { 'key':['val1', 'val2'], 'long':['this', 'is more', 'stuff'] }),
                 ('Test.\n---\nOther.\n', { 'foo':['bar'] } ),
             ])
+
+
+class TestAbsolutize(unittest.TestCase):
+    def test(self):
+        server = 'https://server/'
+
+        self.assertEqual(absolutizeurls(
+            '',
+            serverurl=server),
+            ''
+        )
+        self.assertEqual(absolutizeurls(
+            'Plain text.\nWith line.\n',
+            serverurl=server),
+            'Plain text.\nWith line.\n'
+        )
+        self.assertEqual(absolutizeurls(
+            'https://example.com/foo',
+            serverurl=server),
+            'https://example.com/foo'
+        )
+        self.assertEqual(absolutizeurls(
+            '-<a href="https://example.com/foo">link</a>-',
+            serverurl=server),
+            '-<a href="https://example.com/foo">link</a>-'
+        )
+        self.assertEqual(absolutizeurls(
+            '-<a href="/foo">link</a>-',
+            serverurl=server),
+            '-<a href="https://server/foo">link</a>-'
+        )
+        self.assertEqual(absolutizeurls(
+            '-<a href="/foo">link</a>-<a href="/">link</a>-',
+            serverurl=server),
+            '-<a href="https://server/foo">link</a>-<a href="https://server/">link</a>-'
+        )
+        self.assertEqual(absolutizeurls(
+            '<a rel="none" href="/foo">link</a>',
+            serverurl=server),
+            '<a rel="none" href="https://server/foo">link</a>'
+        )
+        self.assertEqual(absolutizeurls(
+            '<a name="/foo">link</a>',
+            serverurl=server),
+            '<a name="/foo">link</a>'
+        )
+        self.assertEqual(absolutizeurls(
+            '-<a href="/foo/bar">link</a>-<img src="/bar.png">-',
+            serverurl=server),
+            '-<a href="https://server/foo/bar">link</a>-<img src="https://server/bar.png">-'
+        )
+        self.assertEqual(absolutizeurls(
+            '<img class="What" src="/bar.png" width="100">',
+            serverurl=server),
+            '<img class="What" src="https://server/bar.png" width="100">'
+        )
+        self.assertEqual(absolutizeurls(
+            '<img href="/bar.png">',
+            serverurl=server),
+            '<img href="/bar.png">'
+        )
 
 
 class TestPageSet(unittest.TestCase):
