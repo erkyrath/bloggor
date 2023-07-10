@@ -61,6 +61,7 @@ class Context:
         self.jenv.globals['blogctx'] = self
         self.jenv.globals['serverurl'] = self.serverurl
         self.jenv.globals['blogtitle'] = self.config['blogtitle']
+        self.jenv.globals['blogsubtitle'] = self.config['blogsubtitle']
         self.jenv.globals['ownername'] = self.config['ownername']
         self.jenv.globals['fediserver'] = self.config['fediserver']
         self.jenv.globals['fediuser'] = self.config['fediuser']
