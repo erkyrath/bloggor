@@ -6,13 +6,11 @@
   <title>
     {%- if not title %}{{ blogtitle }}{% else %}{{ blogtitle }}: {{ title }}{% endif -%}
   </title>
-  <link href="/pic/zarfmask-32.png" rel="icon">
   <meta property="og:site_name" content="{{ blogtitle }}">
   {% block ogmetadata %}
     <meta property="og:title" content="{{ blogtitle }}">
     <meta property="og:description" content="Interactive fiction, narrative in games, and so on">
   {% endblock %}
-  <link rel="me" href="https://mastodon.gamedev.place/@zarfeblong">
   <link rel="alternate" type="application/atom+xml" title="{{ blogtitle }} - Atom" href="{{ serverurl }}feeds/posts/default">
   <link rel="alternate" type="application/rss+xml" title="{{ blogtitle }} - RSS" href="{{ serverurl }}feeds/posts/default.rss">
   <link rel="stylesheet" href="/css/page.css" type="text/css">
@@ -25,7 +23,7 @@
   <div id="header" class="Head" role="banner">
     <div class="HeadCol">
       <h1><a href="/">{{ blogtitle }}</a></h1>
-      <h3><span class="Subtitle">Interactive fiction, narrative in games</span><span class="SubtitleExtra">, and so on</span></h3>
+      <h3><span class="Subtitle">{{ blogsubtitle }}</h3>
     </div>
     <div class="MenuButton"><a href="/menu" id="menubutton" onclick="return handle_menu_button(event);"><span class="GlyphDown">&#x25BC;</span><span class="GlyphUp">&#x25B2;</span></a></div>
   </div>
@@ -43,10 +41,7 @@
   </div></div>
   <div id="footer" class="Foot" role="contentinfo">
     <div class="FootCol">
-      <p>All posts copyright by {{ ownername }}.
-      Hosted by <a href="https://zarfhome.com/">Zarfhome</a>
-      and Pair.com.
-      </p>
+      <p>All posts copyright by {{ ownername }}.</p>
     </div>
   </div>
   <div id="menucolumn" class="MenuCol"></div>
