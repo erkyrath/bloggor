@@ -8,6 +8,7 @@ from .util import parsespecs
 from .util import tagfilename
 from .util import parsedate
 from .util import relativetime
+from .util import xofypages
 from .metafile import MetaFile
 from .metafile import MultiMetaFile
 from .pages import PageSet
@@ -183,6 +184,16 @@ class TestRelativeTime(unittest.TestCase):
 
         d2 = fromiso('2024-05-09T12:00:00+00:00')
         self.assertEqual(relativetime(d2, d1, english=False), '2024-05-09')
+
+
+class TestXOfYPages(unittest.TestCase):
+    def test(self):
+        self.assertEqual(xofypages(0, 5), 'none of 5 pages')
+        self.assertEqual(xofypages(1, 5), '1 of 5 pages')
+        self.assertEqual(xofypages(4, 5), '4 of 5 pages')
+        self.assertEqual(xofypages(5, 5), 'all 5 pages')
+        self.assertEqual(xofypages(0, 1), 'none of 1 page')
+        self.assertEqual(xofypages(1, 1), 'all 1 page')
 
 
 testnomap1 = '''key: value
