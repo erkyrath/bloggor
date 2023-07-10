@@ -1,0 +1,145 @@
+{% extends "page.html" %}
+
+{% block ogmetadata %}
+  <meta property="og:title" content="{{ title }}">
+  <meta property="og:url" content="{{ serverurl }}{{ entry.outuri }}">
+  <meta property="og:description" content="{{ entry.excerpt }}">
+  <meta property="og:type" content="article">
+  <meta property="og:article:author" content="{{ ownername }}">
+  <meta property="og:article:published_time" content="{{ entry.publishedraw }}">
+  {% for tag in entry.tags -%}
+    <meta property="og:article:tag" content="{{ tag }}">
+  {% endfor %}
+{% endblock %}
+
+{% block exthead %}
+  {% if entry.fedipostid %}
+    <script src="/js/fedicomments.js" type="text/javascript"></script>
+    <script src="/js/purify.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+      var fediserver = '{{ fediserver }}';
+      var fediuser = '{{ fediuser }}';
+      var fedipostid = '{{ entry.fedipostid }}';
+      {% if entry.commentthread.fediids -%}
+        var fedicommentids = [
+          {%- set comma = joiner() -%}
+          {%- for val in entry.commentthread.fediids -%}
+            {{ comma() }}'{{ val }}'
+          {%- endfor -%}
+        ];
+      {%- else -%}
+        var fedicommentids = null;
+      {%- endif %}
+    </script>
+    <style type="text/css">
+      #livereplyblock input {
+        width: 100%;
+        font-size: 16px;
+        padding: 4px 8px;
+        border: 1px solid #88F;
+      }
+    </style>
+  {% endif %}
+  {% if entry.csslines %}
+    <style type="text/css">
+      {{ entry.csslines }}
+    </style>
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+
+<div id="post" role="article">
+
+  <div class="EntryHead">
+    <h2>{{ title }}</h2>
+    <h4 class="Date">{{ entry.longpublished }}
+    {% if entry.longupdated %}&nbsp; (updated {{ entry.longupdated }}){% endif %}
+    </h4>
+
+    {% if entry.comments %}
+    <h4 class="Comments"><a href="#comments">Comments: {{ entry.comments|count }}</a>
+      {% if entry.fedipostid %} (plus live) {% endif %}
+      {% if entry.commentthread.latestpublished %}
+        &nbsp; (latest {{ entry.commentthread.longlatestpublished }})
+      {% endif %}
+    </h4>
+    {% elif entry.fedipostid %}
+    <h4 class="Comments"><a href="#livecommentblock">Comments: (live)</a>
+    </h4>
+    {% endif %}
+  
+    {% if entry.tags %}
+    <h4 class="Tags">Tagged:
+      {% set comma = joiner(", ") %}
+      {% for tag in entry.tags -%}
+        {{ comma() }}<a href="/tag/{{ tag|tagfilename|urlencode }}">{{ tag }}</a>
+      {%- endfor %}
+    </h4>
+    {% endif %}
+  </div>
+
+  <div class="EntryBody">
+    {% autoescape false %}
+    {{ entry.body }}
+    {% endautoescape %}
+  </div>
+
+  {% if entry.comments %}
+    {% for com in entry.comments %}
+      {% if loop.first or loop.previtem.sourcename != com.sourcename %}
+      <hr {% if loop.first %}id="comments"{% endif %} class="CommentDecl">
+      <h3 class="CommentDecl">Comments {% if com.sourcename %}{{ com.sourcename }}{% endif %}</h3>
+      {% endif %}
+      <div id="comment-{{ loop.index }}" class="Comment" role="comment" {% if com.depth %}style="margin-left: {{ com.depth|depthstep }}em;"{% endif %}>
+        <hr>
+        <div class="CommentHead">
+          {% if com.authoruri %}
+            <a class="CommentAuthor" rel="nofollow noopener noreferrer" href="{{ com.authoruri }}">{% if com.authorname %}{{ com.authorname }}{% else %}anonymous{% endif %}</a>
+          {% else %}
+            <span class="CommentAuthor">{% if com.authorname %}{{ com.authorname }}{% else %}anonymous{% endif %}</span>
+          {% endif %}
+          ({{ com.longpublished }}):
+        </div>
+        {% autoescape false %}
+        {{ com.body }}
+        {% endautoescape %}
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  {% if entry.fedipostid %}
+    <div id="livecommentblock">
+      <hr class="CommentDecl">
+      <h3 class="CommentDecl">Comments from Mastodon (live)</h3>
+      <div id="livecommentload">
+        <noscript>
+          <p>The <a href="/comments">Mastodon comment feature</a> requires Javascript.</p>
+        </noscript>
+        <p class="IfScript">Please wait...</p>
+      </div>
+    </div>
+    <div id="livereplyblock" class="Hidden">
+      <hr>
+      <p>
+        <button id="replybutton" class="UtilButton" onclick="handle_comments_showreply(event);">Reply via Mastodon</button>
+      </p>
+      <div id="livereply" class="Hidden">
+        <p>
+          This comment thread exists on Mastodon.
+          (<a href="/comments">Why is this</a>?)
+          To reply, paste
+          <a href="https://{{ fediserver }}/@{{ fediuser }}/{{ entry.fedipostid }}">this URL</a>
+          into your Mastodon search bar:
+          <button class="UtilButton" onclick="handle_comments_copyurl(event);">Copy URL</button>
+        </p>
+        <p>
+          <input id="replycommenturl" type="text" readonly="" value="https://{{ fediserver }}/@{{ fediuser }}/{{ entry.fedipostid }}" onclick="handle_comments_copyurl(event);">
+        </p>
+      </div>
+    </div>
+  {% endif %}
+
+</div>
+
+{% endblock %}
