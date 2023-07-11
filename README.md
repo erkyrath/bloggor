@@ -32,10 +32,46 @@ state. You can view the draft post at
 `http://localhost:8001/2023/07/unfinished`, but it is not listed
 on the blog's front page (or in the feeds).
 
+## Usage
+
+```
+python3 build.py [ OPTIONS ] [ FILES TO BUILD ]
+```
+
+- `-s DIR`, `--src DIR` : The source directory. Default is `src`.
+`sample` in this repository is an example of a working source directory.
+- `-o DIR`, `--out DIR` : The output directory. Default is `site`.
+Will be created if it does not exist.
+- `--config CONFIGFILE` : The configuration file. Default is
+`SRCDIR/bloggor.cfg`.
+- `-a`, `--all` : Build all files.
+- `--only` : Build only the named files, not dependencies.
+- `--dry` : Read the source files but do not write anything.
+
+To rebuild the whole site, use `-a`. To rebuild only specific pages,
+name them. For example:
+
+```
+python build.py -s sample unfinished.md
+python build.py -s sample history tags
+python build.py -s sample '2023/07/*'
+```
+
+The format for naming pages is flexible, and even supports wildcards
+(as shown).
+
+When you rebuild a page, the script automatically rebuilds pages that
+mention it as well. So the indexes should always be correct.
+
+However, this dependency feature only looks at files that exist. It can't
+tell if you *delete* a page, or delete tags from a page. So if you do
+anything like that, re-run it with `-a` just in case.
+
 ## How it works
 
-All the files that define the blog are in the `sample` directory.
-When you ran the `build.py` script, `-s sample` told it to look there.
+All the files that define the blog are in the source directory.
+When you ran the `build.py` script, `-s sample` told it to look in
+the `sample` directory for these files.
 
 Then it wrote all the output to the `site` directory. This already
 contains some files needed for proper browsing: `site/css` and `site/js`.
