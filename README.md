@@ -83,7 +83,7 @@ contains some files needed for proper browsing: `site/css` and `site/js`.
 The `servesite.py` runs a simple ad-hoc web server which makes the
 `site` directory available as `http://localhost:8001/`.
 
-### The sample directory
+### The source directory
 
 The `bloggor.cfg` config file defines the blog's title, server name,
 and other such stuff.
