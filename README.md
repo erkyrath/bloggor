@@ -88,7 +88,7 @@ feature (for Apache servers).
 [Multiviews]: https://httpd.apache.org/docs/2.4/content-negotiation.html
 
 Because I never do anything the easy way, my blog is set up with this
-`.htaccess` file instead:
+`.htaccess` file:
 
 ```
 RewriteEngine On
