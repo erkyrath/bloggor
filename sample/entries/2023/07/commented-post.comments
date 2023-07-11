@@ -1,0 +1,17 @@
+---
+published: 2023-07-06T12:00:00Z
+authorname: Perennial Commentor
+format: md
+---
+This comment is in [Markdown][].
+
+[Markdown]: https://daringfireball.net/projects/markdown/syntax
+
+---
+published: 2023-07-06T12:30:00Z
+authorname: Drive-By Visitor
+depth: 1
+---
+This comment is *plain text*. It's a reply to the previous comment.
+
+---
