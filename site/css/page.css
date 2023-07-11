@@ -402,7 +402,7 @@ pre {
 
 code {
     white-space: pre-wrap;
-    font-family: monospace;
+    font-family: "Courier", monospace;
     font-size: 0.9em;
 }
 
