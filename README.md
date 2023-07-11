@@ -48,6 +48,13 @@ The `servesite.py` runs a simple ad-hoc web server which makes the
 The `bloggor.cfg` config file defines the blog's title, server name,
 and other such stuff.
 
+The `templates` directory contains [Jinja][] template files. These
+define the format of all the blog pages. (Except the RSS/Atom feeds, which
+atom built with [feedgenerator][].)
+
+[Jinja]: https://jinja.palletsprojects.com/en/3.1.x/
+[feedgenerator]: https://pypi.org/project/feedgenerator/
+
 The `pages` directory contains static pages which appear at the blog's
 top level. Currently this is `http://localhost:8001/about` and
 `http://localhost:8001/comments`.
@@ -55,3 +62,6 @@ top level. Currently this is `http://localhost:8001/about` and
 The `entries` directory contains blog entries, organized by date.
 Look in `sample/entries/2023/07`, for example.
 
+Entry files can be HTML (`.html`), Markdown (`.md`), or plain text (`.txt`).
+Note that HTML (and HTML in Markdown) is not sanitized! Keeping it clean
+and safe is up to you.
