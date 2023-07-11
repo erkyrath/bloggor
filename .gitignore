@@ -1,3 +1,5 @@
 __pycache__
-static/font
-static/pic
+site/*.html
+site/2023
+site/feeds
+site/tag
