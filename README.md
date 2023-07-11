@@ -45,6 +45,7 @@ Will be created if it does not exist.
 - `--config CONFIGFILE` : The configuration file. Default is
 `SRCDIR/bloggor.cfg`.
 - `-a`, `--all` : Build all files.
+- `-l`, `--long` : List all files built, even if there's lots of them.
 - `--only` : Build only the named files, not dependencies.
 - `--dry` : Read the source files but do not write anything.
 
