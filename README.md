@@ -62,11 +62,14 @@ The format for naming pages is flexible, and even supports wildcards
 (as shown).
 
 When you rebuild a page, the script automatically rebuilds pages that
-mention it as well. So the indexes should always be correct.
+mention it. So if you rebuild an entry page, the tags, history,
+and RSS feed pages will be updated as well. This ensures that the
+blog indexes are always complete.
 
 However, this dependency feature only looks at files that exist. It can't
 tell if you *delete* a page, or delete tags from a page. So if you do
-anything like that, re-run it with `-a` just in case.
+anything like that, re-run the script with `-a`. You might want to run
+with `-a` once a month just in case.
 
 ## How it works
 
@@ -147,3 +150,10 @@ Also, in the `feeds/posts` directory:
 RewriteEngine On
 RewriteRule ^default$ default.xml [last]
 ```
+
+## How to customize Bloggor
+
+First, edit `bloggor.cfg` and fill in your info.
+
+Then get into the `templates` and `site/css/page.css`. Go wild.
+
