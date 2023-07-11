@@ -154,7 +154,7 @@ class Context:
                 if filename.endswith('~'):
                     continue
                 try:
-                    if filename.endswith('.html') or filename.endswith('.md'):
+                    if filename.endswith('.html') or filename.endswith('.md') or filename.endswith('.txt'):
                         page = StaticPage(self, dirpath, filename)
                         self.pages.append(page)
                         continue
