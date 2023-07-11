@@ -27,7 +27,7 @@ python servesite.py
 
 Then visit `http://localhost:8001/` in your web browser. Lookit! Blog!
 
-The sample site has three posts, plus one more which is in a draft
+The sample site has four posts, plus one more which is in a draft
 state. You can view the draft post at
 `http://localhost:8001/2023/07/unfinished`, but it is not listed
 on the blog's front page (or in the feeds).
@@ -56,8 +56,8 @@ atom built with [feedgenerator][].)
 [feedgenerator]: https://pypi.org/project/feedgenerator/
 
 The `pages` directory contains static pages which appear at the blog's
-top level. Currently this is `http://localhost:8001/about` and
-`http://localhost:8001/comments`.
+top level. Currently there are two of these:
+`http://localhost:8001/about` and `http://localhost:8001/comments`.
 
 The `entries` directory contains blog entries, organized by date.
 Look in `sample/entries/2023/07`, for example.
@@ -70,3 +70,38 @@ All entry files start with a metadata section (delimited by dashes) which
 give the entry's title, tags, publication date, and so on. The metadata
 must include `live: yes` for the post to be live! Without that line, the
 post is only a draft, and will not be indexed or listed.
+
+A file with the `.comments` extension is a list of comments to be displayed
+as part of an entry page.
+
+### On tidy URLs
+
+The static site generator writes `.html` files. However, all the blog
+links use unsuffixed URLs. (`http://localhost:8001/2023/07/welcome` rather
+than `http://localhost:8001/2023/07/welcome.html`.) The `welcome.html`
+version of the URL works, but we prefer the plain `welcome` version.
+
+Therefore, *your web server must be configured to accept unsuffixed
+URLs*. The easiest way to do this is to turn on the [Multiviews][]
+feature (for Apache servers).
+
+[Multiviews]: https://httpd.apache.org/docs/2.4/content-negotiation.html
+
+Because I never do anything the easy way, my blog is set up with this
+`.htaccess` file instead:
+
+```
+RewriteEngine On
+RewriteCond %{REQUEST_URI} [^/]$
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}\.html -f
+RewriteRule ^(.+)$ $1\.html [last]
+```
+
+Also, in the `feeds/posts` directory:
+
+```
+RewriteEngine On
+RewriteRule ^default$ default.xml [last]
+```
