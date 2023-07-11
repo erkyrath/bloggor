@@ -6,13 +6,15 @@ This is a very simple blog generator tool. I use it to maintain
 [my personal blog](https://blog.zarfhome.com/).
 
 If you want a static site generator, you probably don't want this one.
-Have you considered...
+Bloggor is uncommented, undocumented, and supported only in that I
+keep tweaking it to suit my whims.
+Have you instead considered...
 
 - [Zola](https://www.getzola.org/)?
 - [Pelican](https://getpelican.com/)?
 - [Metalsmith](https://metalsmith.io/)?
 
-But if you want to mess around with this one, feel free!
+But if you want to mess around with Bloggor, feel free!
 
 ## Try it out
 
