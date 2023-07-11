@@ -1,0 +1,10 @@
+---
+title: This post is plain text
+tags: examples, text
+live: yes
+published: 2023-07-11T08:30:00Z
+---
+This post is plain, unformatted text.
+
+If I put in *asterisks* or <em>HTML tags</em> they appear literally
+on the page.
