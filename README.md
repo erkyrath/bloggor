@@ -50,7 +50,7 @@ and other such stuff.
 
 The `templates` directory contains [Jinja][] template files. These
 define the format of all the blog pages. (Except the RSS/Atom feeds, which
-atom built with [feedgenerator][].)
+are built with [feedgenerator][].)
 
 [Jinja]: https://jinja.palletsprojects.com/en/3.1.x/
 [feedgenerator]: https://pypi.org/project/feedgenerator/
@@ -72,7 +72,8 @@ must include `live: yes` for the post to be live! Without that line, the
 post is only a draft, and will not be indexed or listed.
 
 A file with the `.comments` extension is a list of comments to be displayed
-as part of an entry page.
+as part of an entry page. This is a list of metadata/body sections, again
+delimited by dashes. See `sample/entries/2023/07/commented-post.comments`.
 
 ### On tidy URLs
 
@@ -82,8 +83,12 @@ than `http://localhost:8001/2023/07/welcome.html`.) The `welcome.html`
 version of the URL works, but we prefer the plain `welcome` version.
 
 Therefore, *your web server must be configured to accept unsuffixed
-URLs*. The easiest way to do this is to turn on the [Multiviews][]
-feature (for Apache servers).
+URLs*. Otherwise all the blog links will yell 404.
+
+The `servesite.py` script is configured this way for local testing.
+
+On an Apache server, the easiest way to make this work is to turn on the
+[Multiviews][] feature.
 
 [Multiviews]: https://httpd.apache.org/docs/2.4/content-negotiation.html
 
