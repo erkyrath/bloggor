@@ -97,7 +97,6 @@ body {
 }
 .Head h1 a:hover {
     text-decoration: underline;
-    text-decoration-color: #66F;
 }
 
 .Head h3 {
@@ -361,11 +360,6 @@ hr {
 
 a {
     color: #2020B0;
-    text-decoration-color: #DDF;
-}
-
-a:hover {
-    text-decoration-color: #2020B0;
 }
 
 blockquote {
