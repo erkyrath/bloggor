@@ -113,7 +113,7 @@ class Context:
     
         if self.opts.dryrun:
             print('Not building %s...' % (xofypages(len(pagelist), len(self.pages)),))
-            if len(pagelist) < 20:
+            if len(pagelist) < 20 or self.opts.longlist:
                 for page in pagelist:
                     print('  .../'+page.outpath)
             return True
@@ -313,7 +313,7 @@ class Context:
 
     def build(self, pagelist):
         print('Building %s...' % (xofypages(len(pagelist), len(self.pages)),))
-        if len(pagelist) < 20:
+        if len(pagelist) < 20 or self.opts.longlist:
             for page in pagelist:
                 print('  .../'+page.outpath)
                 

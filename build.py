@@ -26,6 +26,9 @@ popt.add_option('-a', '--all',
 popt.add_option('--only',
                 action='store_true', dest='buildonly',
                 help='build only named files (no dependencies)')
+popt.add_option('-l', '--long',
+                action='store_true', dest='longlist',
+                help='list all pages built, even if there\'s lots')
 popt.add_option('--dry', '--dryrun',
                 action='store_true', dest='dryrun',
                 help='read source but do not generate')
