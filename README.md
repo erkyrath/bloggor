@@ -65,3 +65,8 @@ Look in `sample/entries/2023/07`, for example.
 Entry files can be HTML (`.html`), Markdown (`.md`), or plain text (`.txt`).
 Note that HTML (and HTML in Markdown) is not sanitized! Keeping it clean
 and safe is up to you.
+
+All entry files start with a metadata section (delimited by dashes) which
+give the entry's title, tags, publication date, and so on. The metadata
+must include `live: yes` for the post to be live! Without that line, the
+post is only a draft, and will not be indexed or listed.
