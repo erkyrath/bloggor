@@ -179,6 +179,15 @@ def xofypages(val, total):
         return res+' pages'
 
 
+pat_urlhost = re.compile('^https?://([^/]*)')
+
+def urltohost(val):
+    match = pat_urlhost.match(val)
+    if not match:
+        return None
+    return match.group(1)
+
+    
 pat_htmltag = re.compile('<[^>]*>')
 pat_whitespace = re.compile('[ \t\n\r]+')
 pat_tagahref = re.compile('^<a .*href="(/[^"]*)"')

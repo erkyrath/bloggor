@@ -9,6 +9,7 @@ from bloggor.excepts import RuntimeException
 from bloggor.util import MultiDict
 from bloggor.util import parsespecs
 from bloggor.util import xofypages
+from bloggor.util import urltohost
 from bloggor.pages import FrontPage
 from bloggor.pages import EntryPage, GenTemplatePage, StaticPage
 from bloggor.pages import TagListPage, TagListFreqPage, TagPage
@@ -60,6 +61,7 @@ class Context:
         )
         self.jenv.globals['blogctx'] = self
         self.jenv.globals['serverurl'] = self.serverurl
+        self.jenv.globals['servername'] = urltohost(self.serverurl)
         self.jenv.globals['blogtitle'] = self.config['blogtitle']
         self.jenv.globals['blogsubtitle'] = self.config['blogsubtitle']
         self.jenv.globals['ownername'] = self.config['ownername']
