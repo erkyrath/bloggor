@@ -151,6 +151,41 @@ RewriteEngine On
 RewriteRule ^default$ default.xml [last]
 ```
 
+### On Markdown
+
+Markdown has never exactly been *standardized*, so I did not hesitate
+to customize the Markdown flavor used by Bloggor.
+
+The [metadata][meta], [attribute list][attr_list],
+[definition list][def_list], [fenced code][fenced], and [tables][tables]
+extensions are turned on.
+
+[attr_list]: https://python-markdown.github.io/extensions/attr_list/
+[meta]: https://python-markdown.github.io/extensions/meta_data/
+[def_list]: https://python-markdown.github.io/extensions/definition_lists/
+[fenced]: https://python-markdown.github.io/extensions/fenced_code_blocks/
+[tables]: https://python-markdown.github.io/extensions/tables/
+
+A line that looks like `- - -` (spaced dashes) indicates the "fold".
+Text below this will not appear on the blog's front page; instead there
+will be a "Read the rest..." link.
+
+A block in triple braces will retain line breaks:
+
+```
+{{{
+Four short lines
+Iambic pace
+It's like haiku
+But for your face
+BURMA SHAVE
+}}}
+```
+
+Links (including image links) that start with your blog URL will be
+changed to server-relative links. (Except in the RSS feed, of course.)
+This aids site portability.
+
 ## How to customize Bloggor
 
 First, edit `bloggor.cfg` and fill in your info.
