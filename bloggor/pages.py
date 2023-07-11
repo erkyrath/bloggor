@@ -1,6 +1,7 @@
 import os.path
 import datetime
 import feedgenerator
+import markupsafe
 from fnmatch import fnmatch
 
 class PageSet:
@@ -428,6 +429,9 @@ class EntryPage(Page):
         elif filename.endswith('.md'):
             self.type = FileType.MD
             outfile = filename[ : -3 ] + '.html'
+        elif filename.endswith('.txt'):
+            self.type = FileType.TXT
+            outfile = filename[ : -4 ] + '.html'
         else:
             raise RuntimeException(self.path+': Unrecognized entry format: ' + filename)
 
@@ -460,6 +464,11 @@ class EntryPage(Page):
         if self.type == FileType.HTML:
             mfl = MetaFile(self.path)
             body, metadata = mfl.read()
+        elif self.type == FileType.TXT:
+            mfl = MetaFile(self.path)
+            body, metadata = mfl.read()
+            val = str(markupsafe.escape(body))
+            body = '<div class="PreWrapAll">\n%s</div>' % (val,)
         elif self.type == FileType.MD:
             fl = open(self.path)
             dat = fl.read()

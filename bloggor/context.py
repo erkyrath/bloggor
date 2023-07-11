@@ -132,7 +132,7 @@ class Context:
                 if filename.endswith('.json'):
                     continue
                 try:
-                    if filename.endswith('.html') or filename.endswith('.md'):
+                    if filename.endswith('.html') or filename.endswith('.md') or filename.endswith('.txt'):
                         page = EntryPage(self, dirpath, filename)
                         self.pages.append(page)
                         self.entries.append(page)
