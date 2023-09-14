@@ -86,6 +86,7 @@ def write_comments(obj, fl=sys.stdout):
     flatls = []
 
     def func(ls, depth=0):
+        ls.sort(key=lambda el:el['created_at'])
         for el in ls:
             flatls.append(el)
             el['_depth'] = depth
