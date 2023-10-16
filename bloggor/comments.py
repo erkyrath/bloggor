@@ -30,7 +30,8 @@ class CommentThread:
 
         for ix, mf in enumerate(ls):
             body, meta = mf.read()
-            self.comments.append(Comment(self.ctx, self, ix, body, meta))
+            com = Comment(self.ctx, self, ix, body, meta)
+            self.comments.append(com)
 
         idls = [ com.fediid for com in self.comments if com.fediid ]
         if idls:
@@ -103,6 +104,11 @@ class Comment:
             self.authoruri = ' '.join(ls)
 
         try:
+            self.hidden = ls_as_bool(meta.get('hidden'))
+        except ValueError as ex:
+            raise RuntimeException(self.id+': Invalid hidden value: '+str(ex))
+        
+        try:
             val = ls_as_value(meta.get('published'))
         except ValueError as ex:
             raise RuntimeException(self.id+': Invalid published date: '+str(ex))
@@ -133,7 +139,7 @@ class Comment:
 
 
 from bloggor.constants import FileType, parse_filetype, eastern_tz
-from bloggor.metafile import MultiMetaFile, ls_as_value
+from bloggor.metafile import MultiMetaFile, ls_as_value, ls_as_bool
 from bloggor.excepts import RuntimeException
 from bloggor.util import parsedate, relativetime
 
