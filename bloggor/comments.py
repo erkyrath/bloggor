@@ -28,12 +28,17 @@ class CommentThread:
         mfl = MultiMetaFile(self.path)
         ls = mfl.read()
 
+        # Note that hidden comments will appear in self.fediids but not in self.comments.
+        idls = []
+        
         for ix, mf in enumerate(ls):
             body, meta = mf.read()
             com = Comment(self.ctx, self, ix, body, meta)
-            self.comments.append(com)
+            if com.fediid:
+                idls.append(com.fediid)
+            if not com.hidden:
+                self.comments.append(com)
 
-        idls = [ com.fediid for com in self.comments if com.fediid ]
         if idls:
             self.fediids = idls
 
