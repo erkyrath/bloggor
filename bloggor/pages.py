@@ -31,6 +31,7 @@ class Page:
         self.path = None
         self.inpath = None
         self.inuri = None
+        self.inmodtime = None
         self.outpath = None
         self.tempoutpath = None
         self.outuri = None
@@ -150,6 +151,9 @@ class StaticPage(Page):
         self.complete()
 
     def read(self):
+        stat = os.stat(self.path)
+        self.inmodtime = stat.st_mtime
+        
         if self.type == FileType.HTML:
             mfl = MetaFile(self.path)
             body, metadata = mfl.read()
@@ -469,6 +473,9 @@ class EntryPage(Page):
         return '<%s%s "%s">' % (self.__class__.__name__, val, self.outuri)
 
     def read(self):
+        stat = os.stat(self.path)
+        self.inmodtime = stat.st_mtime
+        
         if self.type == FileType.HTML:
             mfl = MetaFile(self.path)
             body, metadata = mfl.read()
