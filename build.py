@@ -9,7 +9,7 @@ import optparse
 import bloggor.context
 from bloggor.excepts import RuntimeException
 
-popt = optparse.OptionParser()
+popt = optparse.OptionParser(usage='build.py [options] [pages...]')
 
 popt.add_option('-s', '--src',
                 action='store', dest='srcdir', default='src',
