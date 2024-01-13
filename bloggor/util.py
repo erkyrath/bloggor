@@ -123,6 +123,26 @@ def parsedate(val):
             return val + '+00:00'
     raise ValueError()
 
+pat_interval = re.compile('^([0-9]+)([wdhms]?)$', re.IGNORECASE)
+interval_suffixes = {
+    's': 1, 'm': 60, 'h': 3600, 'd': 86400, 'w': 604800
+}
+
+def parseinterval(val):
+    """Accept a time interval: 1d, 2h, 20m, 30s. With no suffix, we
+    assume seconds.
+    Return the duration in seconds.
+    If not recognized, raise ValueError.
+    """
+    if not val:
+        raise ValueError()
+    match = pat_interval.match(val)
+    if match:
+        count = int(match.group(1))
+        suffix = match.group(2).lower() or 's'
+        return count * interval_suffixes[suffix]
+    raise ValueError()
+    
 
 def relativetime(after, before, english=True):
     """Say (in English) how far apart two datetimes are.
