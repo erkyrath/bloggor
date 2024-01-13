@@ -23,6 +23,9 @@ popt.add_option('-o', '--out',
 popt.add_option('-a', '--all',
                 action='store_true', dest='buildall',
                 help='build all files')
+popt.add_option('-r', '--recent',
+                action='store', dest='recent', metavar='INTERVAL',
+                help='only consider files newer than this ("15m", "1h", etc)')
 popt.add_option('--only',
                 action='store_true', dest='buildonly',
                 help='build only named files (no dependencies)')

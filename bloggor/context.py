@@ -1,5 +1,6 @@
 import os
 import os.path
+import time
 import configparser
 import markdown
 from jinja2 import Environment, FileSystemLoader, select_autoescape
@@ -7,7 +8,7 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 from bloggor.constants import FeedType, Depend
 from bloggor.excepts import RuntimeException
 from bloggor.util import MultiDict
-from bloggor.util import parsespecs
+from bloggor.util import parsespecs, parsedate, parseinterval
 from bloggor.util import xofypages
 from bloggor.util import urltohost
 from bloggor.pages import FrontPage
@@ -268,12 +269,22 @@ class Context:
         self.pages.append(page)
 
     def filterpages(self, pagespecs):
+        recentlimit = None
+        if self.opts.recent:
+            try:
+                val = parseinterval(self.opts.recent)
+                recentlimit = int(time.time() - val)
+            except:
+                raise RuntimeException('--recent must be a time interval')
+            
         if self.opts.buildall:
             if pagespecs:
                 print('Ignoring pagespecs, building --all')
+            if recentlimit is not None:
+                print('Ignoring --recent, building --all')
             return list(self.pages)
         
-        if not pagespecs:
+        if not pagespecs and recentlimit is None:
             print('No pages requested')
             return []
         
@@ -283,7 +294,7 @@ class Context:
             raise RuntimeException(str(ex))
         
         if self.opts.buildonly:
-            pagelist = [ page for page in self.pages if page.matchspecs(pagespecs) is not None ]
+            pagelist = [ page for page in self.pages if page.matchspecs(pagespecs, recentlimit) is not None ]
         else:
             for page in self.pages:
                 if page.backdependpages:
@@ -293,7 +304,7 @@ class Context:
                         backdep.dependpages.append( (page, dep) )
             pagedeps = []
             for page in self.pages:
-                dep = page.matchspecs(pagespecs)
+                dep = page.matchspecs(pagespecs, recentlimit)
                 if dep is not None:
                     pagedeps.append( (page, dep) )
             pageset = PageSet()
@@ -307,7 +318,10 @@ class Context:
             pagelist = list(pageset)
             
         if not pagelist:
-            val = ', '.join([ spec for spec, dep in pagespecs ])
+            showls = [ spec for spec, dep in pagespecs ]
+            if recentlimit is not None:
+                showls.append('(recent %s)' % (self.opts.recent,))
+            val = ', '.join(showls)
             raise RuntimeException('No pages match ' + val)
         return pagelist
 

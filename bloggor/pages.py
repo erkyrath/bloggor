@@ -61,8 +61,12 @@ class Page:
     def __repr__(self):
         return '<%s "%s">' % (self.__class__.__name__, self.outuri)
 
-    def matchspecs(self, specs):
+    def matchspecs(self, specs, recentlimit=None):
         res = None
+
+        if recentlimit is not None and self.inmodtime is not None:
+            if self.inmodtime >= recentlimit:
+                return Depend.ALL
         
         for (spec, dep) in specs:
             if self.match(spec):
