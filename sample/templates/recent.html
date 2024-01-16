@@ -37,6 +37,7 @@ li div.Comments {
   <div class="UtilHead">
     <h1>{{ title }}</h1>
 
+    {% if years %}
     <h3 class="Selector">
       {% if not year %}
         (See posts from:
@@ -45,6 +46,7 @@ li div.Comments {
       {% endif %}
       {% for yr in years %} <a href="/{{ yr }}/">{{ yr }}</a>{% endfor -%})
     </h3>
+    {% endif %}
   </div>
   
   <ul class="PlainList">
