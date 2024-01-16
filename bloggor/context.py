@@ -14,7 +14,7 @@ from bloggor.util import urltohost
 from bloggor.pages import FrontPage
 from bloggor.pages import EntryPage, GenTemplatePage, StaticPage
 from bloggor.pages import TagListPage, TagListFreqPage, TagPage
-from bloggor.pages import RecentEntriesPage, YearEntriesPage
+from bloggor.pages import RecentEntriesPage, YearEntriesPage, MonthEntriesPage
 from bloggor.pages import HistoryPage
 from bloggor.pages import FeedPage
 from bloggor.pages import PageSet
@@ -250,6 +250,10 @@ class Context:
 
         for year, ls in self.entriesbyyear.items():
             page = YearEntriesPage(self, year, ls)
+            self.pages.append(page)
+        
+        for month, ls in self.entriesbymonth.items():
+            page = MonthEntriesPage(self, month, ls)
             self.pages.append(page)
         
         page = TagListPage(self)

@@ -275,6 +275,27 @@ class YearEntriesPage(Page):
         fl.close()
         
     
+class MonthEntriesPage(Page):
+    def __init__(self, ctx, month, pagels):
+        Page.__init__(self, ctx)
+        self.month = month
+        pathel = '/'.join(self.month.split('-'))
+        self.outpath = '%s/index.html' % (pathel,)
+        self.backdependpages = [ (page, Depend.ALLBUTBODY) for page in pagels ]
+        self.complete()
+
+    def build(self):
+        entries = self.ctx.entriesbymonth[self.month]
+        entries.reverse()
+
+        fl = self.openwrite()
+        template = self.jenv.get_template('recent.html')
+        fl.write(template.render(
+            title='Posts From %s' % (self.month,),
+            entries=entries))
+        fl.close()
+        
+    
 class HistoryPage(Page):
     def __init__(self, ctx):
         Page.__init__(self, ctx)
