@@ -14,6 +14,7 @@
 // Also fedicommentids, which should be null or an array of strings.
 
 var comments_loaddelay = 500;
+var image_thumbsize = 200;
 
 // window.onloadlist isn't a real thing; it's just a hack I use elsewhere on this site. If you copy this script, use a load eventListener.
 if (window.onloadlist == undefined) {
@@ -214,6 +215,38 @@ function handle_response(obj)
         comnod.appendChild(nod);
 
         comnod.appendChild(el._body);
+
+        if (el.media_attachments && el.media_attachments.length) {
+	    for (var atel of el.media_attachments) {
+		var nod = document.createElement('div');
+		var imgnod = document.createElement('img');
+		if (!atel.preview_url || !atel.url) {
+		    continue;
+		}
+		imgnod.setAttribute('src', atel.preview_url);
+		if (atel.description) {
+		    imgnod.setAttribute('alt', atel.description);
+		}
+		var aspect = atel.meta.original.aspect;
+		if (aspect) {
+		    if (aspect > 1.0) {
+			imgnod.setAttribute('width', ''+image_thumbsize);
+			imgnod.setAttribute('height', ''+Math.floor(image_thumbsize/aspect));
+		    }
+		    else {
+			imgnod.setAttribute('width', ''+Math.floor(image_thumbsize*aspect));
+			imgnod.setAttribute('height', ''+image_thumbsize);
+		    }
+		}
+		var anod = document.createElement('a');
+		anod.setAttribute('rel', 'nofollow noopener noreferrer');
+		anod.setAttribute('target', '_blank');
+		anod.setAttribute('href', atel.url);
+		anod.appendChild(imgnod);
+		nod.appendChild(anod);
+		comnod.appendChild(nod);
+	    }
+        }
 
         parnod.appendChild(comnod);
         index++;
