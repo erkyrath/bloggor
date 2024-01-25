@@ -14,6 +14,7 @@
 // Also fedicommentids, which should be null or an array of strings.
 
 var comments_loaddelay = 500;
+var show_images = true;
 var image_thumbsize = 200;
 
 // window.onloadlist isn't a real thing; it's just a hack I use elsewhere on this site. If you copy this script, use a load eventListener.
@@ -216,7 +217,7 @@ function handle_response(obj)
 
         comnod.appendChild(el._body);
 
-        if (el.media_attachments && el.media_attachments.length) {
+        if (show_images && el.media_attachments && el.media_attachments.length) {
             var nod = document.createElement('div');
             for (var atel of el.media_attachments) {
                 var imgnod = document.createElement('img');
