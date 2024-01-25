@@ -244,6 +244,10 @@ function handle_response(obj)
                 anod.setAttribute('href', atel.url);
                 anod.appendChild(imgnod);
                 nod.appendChild(anod);
+
+                var span = document.createElement('span');
+                span.textContent = ' ';
+                nod.appendChild(span);
             }
             comnod.appendChild(nod);
         }
