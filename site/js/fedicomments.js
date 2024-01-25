@@ -13,7 +13,7 @@
 // The page must set the "fediserver", "fediuser", and "fedipostid" globals.
 // Also fedicommentids, which should be null or an array of strings.
 
-var comments_loaddelay = 1000;
+var comments_loaddelay = 500;
 
 // window.onloadlist isn't a real thing; it's just a hack I use elsewhere on this site. If you copy this script, use a load eventListener.
 if (window.onloadlist == undefined) {
@@ -23,7 +23,7 @@ else {
     window.onloadlist.push(handle_comments_onload);
 }
 
-// Begin the loading process one second from now.
+// Begin the loading process half a second from now.
 function handle_comments_onload() {
     if (window.fedipostid == undefined) {
         display_comment_status('No fedipostid found!');
