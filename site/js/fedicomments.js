@@ -137,6 +137,13 @@ function handle_response(obj)
     var flatls = [];
 
     function func(ls, depth) {
+        ls.sort((el1, el2) => {
+            if (el1.created_at < el2.created_at)
+                return -1;
+            if (el1.created_at > el2.created_at)
+                return 1;
+            return 0;
+        })
         for (var el of ls) {
             flatls.push(el);
             el._depth = depth;
