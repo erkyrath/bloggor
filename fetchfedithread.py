@@ -109,6 +109,23 @@ def write_comments(obj, fl=sys.stdout):
             authoruri = author.get('url')
 
         body = sanitizer.sanitize(body)
+
+        attachls = []
+        if el.get('media_attachments'):
+            for atel in el.get('media_attachments'):
+                at = {
+                    'url': atel.get('url'),
+                    'preview_url': atel.get('preview_url'),
+                    'description': atel.get('description'),
+                }
+                aspect = None
+                if atel.get('meta') and atel['meta'].get('original'):
+                    aspect = atel['meta']['original'].get('aspect')
+                if atel.get('meta') and atel['meta'].get('small'):
+                    aspect = atel['meta']['small'].get('aspect')
+                at['aspect'] = aspect
+                if at.get('url'):
+                    attachls.append(at)
             
         fl.write('---\n')
         fl.write('fediid: %s\n' % (id,))
@@ -121,6 +138,16 @@ def write_comments(obj, fl=sys.stdout):
             fl.write('authorname: %s\n' % (authorname,))
         if authoruri:
             fl.write('authoruri: %s\n' % (authoruri,))
+        if attachls:
+            fl.write('attachcount: %s\n' % (len(attachls),))
+            for ix, at in enumerate(attachls):
+                fl.write('attach_%s_url: %s\n' % (ix, at['url'],))
+                if at.get('preview_url'):
+                    fl.write('attach_%s_previewurl: %s\n' % (ix, at['preview_url'],))
+                if at.get('description'):
+                    fl.write('attach_%s_description: %s\n' % (ix, at['description'],))
+                if at.get('aspect'):
+                    fl.write('attach_%s_aspect: %s\n' % (ix, at['aspect'],))
         fl.write('format: html\n')
         fl.write('source: mastodon\n')
         fl.write('---\n')
