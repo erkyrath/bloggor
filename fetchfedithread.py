@@ -142,6 +142,8 @@ def write_comments(obj, fl=sys.stdout):
             fl.write('attachcount: %s\n' % (len(attachls),))
             for ix, at in enumerate(attachls):
                 fl.write('attach_%s_url: %s\n' % (ix, at['url'],))
+                _, _, val = at['url'].rpartition('.')
+                fl.write('attach_%s_localfile: attach_%s_%s.%s\n' % (ix, id, ix, val,))
                 if at.get('preview_url'):
                     fl.write('attach_%s_previewurl: %s\n' % (ix, at['preview_url'],))
                 if at.get('description'):
