@@ -85,6 +85,7 @@ class Comment:
         self.authorname = None
         self.authoruri = None
         self.depth = 0
+        self.attachments = []
 
         ls = meta.get('depth', None)
         if ls:
@@ -139,8 +140,29 @@ class Comment:
         publocal = self.published.astimezone(eastern_tz)
         self.longpublished = publocal.strftime('%B %d, %Y at %I:%M %p').replace(' 0', ' ')
 
+        attachcount = ls_as_value(meta.get('attachcount'))
+        if attachcount:
+            attachcount = int(attachcount)
+        if attachcount:
+            for ix in range(attachcount):
+                val = 'attach_%s_' % (ix,)
+                attach = Attachment(meta, val)
+                if attach.url:
+                    self.attachments.append(attach)
+
     def __repr__(self):
         return '<%s "%s">' % (self.__class__.__name__, self.id)
+
+class Attachment:
+    def __init__(self, meta, prefix):
+        self.url = ls_as_value(meta.get(prefix+'url'))
+        self.previewurl = ls_as_value(meta.get(prefix+'previewurl'))
+        self.localfile = ls_as_value(meta.get(prefix+'localfile'))
+        self.description = ls_as_value(meta.get(prefix+'description'))
+        self.aspect = 1.0
+        aspect = ls_as_value(meta.get(prefix+'aspect'))
+        if aspect:
+            self.aspect = float(aspect)
 
 
 from bloggor.constants import FileType, parse_filetype, eastern_tz
