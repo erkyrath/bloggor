@@ -154,6 +154,8 @@ class Comment:
         return '<%s "%s">' % (self.__class__.__name__, self.id)
 
 class Attachment:
+    THUMBSIZE = 200
+    
     def __init__(self, meta, prefix):
         self.url = ls_as_value(meta.get(prefix+'url'))
         self.previewurl = ls_as_value(meta.get(prefix+'previewurl'))
@@ -163,6 +165,12 @@ class Attachment:
         aspect = ls_as_value(meta.get(prefix+'aspect'))
         if aspect:
             self.aspect = float(aspect)
+        if self.aspect > 1.0:
+            self.previewwidth = self.THUMBSIZE
+            self.previewheight = int(self.THUMBSIZE/self.aspect)
+        else:
+            self.previewwidth = int(self.THUMBSIZE*self.aspect)
+            self.previewheight = self.THUMBSIZE
 
     def __repr__(self):
         return '<%s "%s">' % (self.__class__.__name__, self.url)
