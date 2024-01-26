@@ -164,6 +164,9 @@ class Attachment:
         if aspect:
             self.aspect = float(aspect)
 
+    def __repr__(self):
+        return '<%s "%s">' % (self.__class__.__name__, self.url)
+
 
 from bloggor.constants import FileType, parse_filetype, eastern_tz
 from bloggor.metafile import MultiMetaFile, ls_as_value, ls_as_bool
