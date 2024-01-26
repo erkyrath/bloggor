@@ -108,11 +108,11 @@
           <div>
             {% for at in com.attachments %}
               <a rel="nofollow noopener noreferrer" target="_blank" href="{{ at.url }}">
-              {% if at.previewurl %}
+              {%- if at.previewurl -%}
                 <img src="{{ at.previewurl }}" width="{{ at.previewwidth }}" height="{{ at.previewheight }}" {% if at.description %} alt="{{ at.description }}" {% endif %}>
-              {% else %}
+              {%- else -%}
                 <em>(attachment)</em>
-              {% endif %}
+              {%- endif -%}
               </a>
             {% endfor %}
           </div>
