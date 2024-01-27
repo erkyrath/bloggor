@@ -111,14 +111,19 @@ def write_comments(obj, fl=sys.stdout):
         body = sanitizer.sanitize(body)
 
         attachls = []
-        if el.get('media_attachments'):
-            for ix, atel in enumerate(el.get('media_attachments')):
+        atells = el.get('media_attachments')
+        if atells:
+            atells = [ atel for atel in atells if atel.get('url') ]
+        if atells:
+            for ix, atel in enumerate(atells):
                 at = {
                     'index': ix,
-                    'url': atel.get('url'),
+                    'url': atel['url'],
                     'preview_url': atel.get('preview_url'),
                     'description': atel.get('description'),
                 }
+                _, _, val = at['url'].rpartition('.')
+                at['localfile'] = 'attach_%s_%s.%s' % (id, ix, val,)
                 aspect = None
                 if atel.get('meta') and atel['meta'].get('original'):
                     aspect = atel['meta']['original'].get('aspect')
@@ -145,8 +150,7 @@ def write_comments(obj, fl=sys.stdout):
             for at in attachls:
                 ix = at['index']
                 fl.write('attach_%s_url: %s\n' % (ix, at['url'],))
-                _, _, val = at['url'].rpartition('.')
-                fl.write('attach_%s_localfile: attach_%s_%s.%s\n' % (ix, id, ix, val,))
+                fl.write('attach_%s_localfile: %s\n' % (ix, at['localfile'],))
                 if at.get('preview_url'):
                     fl.write('attach_%s_previewurl: %s\n' % (ix, at['preview_url'],))
                 if at.get('description'):
