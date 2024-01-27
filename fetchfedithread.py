@@ -118,6 +118,7 @@ def write_comments(obj, fl=sys.stdout):
             for ix, atel in enumerate(atells):
                 at = {
                     'index': ix,
+                    'id': '%s_%s' % (id, ix,),
                     'url': atel['url'],
                     'preview_url': atel.get('preview_url'),
                     'description': atel.get('description'),
@@ -166,10 +167,9 @@ def write_comments(obj, fl=sys.stdout):
 
     idls = [ el['id'] for el in flatls ]
     print('%d comments found: %s' % (len(flatls), ', '.join(idls)))
-    attachcounts = [ len(el['_attachls']) for el in flatls ]
-    val = sum(attachcounts)
-    if val:
-        print('%d total attachments' % (val,))
+    attachids = [ at['id'] for el in flatls for at in el['_attachls'] ]
+    if attachids:
+        print('%d total attachments: %s' % (len(attachids), ', '.join(attachids)))
 
 obj = json.loads(dat)
 
