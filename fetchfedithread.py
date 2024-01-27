@@ -112,8 +112,9 @@ def write_comments(obj, fl=sys.stdout):
 
         attachls = []
         if el.get('media_attachments'):
-            for atel in el.get('media_attachments'):
+            for ix, atel in enumerate(el.get('media_attachments')):
                 at = {
+                    'index': ix,
                     'url': atel.get('url'),
                     'preview_url': atel.get('preview_url'),
                     'description': atel.get('description'),
@@ -126,6 +127,7 @@ def write_comments(obj, fl=sys.stdout):
                 at['aspect'] = aspect
                 if at.get('url'):
                     attachls.append(at)
+        el['_attachls'] = attachls
             
         fl.write('---\n')
         fl.write('fediid: %s\n' % (id,))
@@ -140,7 +142,8 @@ def write_comments(obj, fl=sys.stdout):
             fl.write('authoruri: %s\n' % (authoruri,))
         if attachls:
             fl.write('attachcount: %s\n' % (len(attachls),))
-            for ix, at in enumerate(attachls):
+            for at in attachls:
+                ix = at['index']
                 fl.write('attach_%s_url: %s\n' % (ix, at['url'],))
                 _, _, val = at['url'].rpartition('.')
                 fl.write('attach_%s_localfile: attach_%s_%s.%s\n' % (ix, id, ix, val,))
@@ -160,6 +163,10 @@ def write_comments(obj, fl=sys.stdout):
 
     idls = [ el['id'] for el in flatls ]
     print('%d comments found: %s' % (len(flatls), ', '.join(idls)))
+    attachcounts = [ len(el['_attachls']) for el in flatls ]
+    val = sum(attachcounts)
+    if val:
+        print('%d total attachments' % (val,))
 
 obj = json.loads(dat)
 
