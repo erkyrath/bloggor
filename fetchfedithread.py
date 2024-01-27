@@ -130,8 +130,7 @@ def write_comments(obj, fl=sys.stdout):
                 if atel.get('meta') and atel['meta'].get('small'):
                     aspect = atel['meta']['small'].get('aspect')
                 at['aspect'] = aspect
-                if at.get('url'):
-                    attachls.append(at)
+                attachls.append(at)
         el['_attachls'] = attachls
             
         fl.write('---\n')
