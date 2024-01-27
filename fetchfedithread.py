@@ -169,7 +169,7 @@ def write_comments(obj, fl=sys.stdout):
     print('%d comments found: %s' % (len(flatls), ', '.join(idls)))
     attachids = [ at['id'] for el in flatls for at in el['_attachls'] ]
     if attachids:
-        print('%d total attachments: %s' % (len(attachids), ', '.join(attachids)))
+        print('%d attachments found: %s' % (len(attachids), ', '.join(attachids)))
 
 obj = json.loads(dat)
 
