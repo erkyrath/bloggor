@@ -173,6 +173,21 @@ def write_comments(obj, fl=sys.stdout):
         
     fl.write('---\n')
 
+    for el in flatls:
+        for at in el['_attachls']:
+            prevurl = at.get('preview_url')
+            locpath = at.get('localpath')
+            if prevurl and locpath:
+                try:
+                    req = urllib.request.urlopen(prevurl)
+                    dat = req.read()
+                    atfl = open(locpath, 'wb')
+                    atfl.write(dat)
+                    atfl.close()
+                    print('Fetched %s to %s' % (at['id'], locpath,))
+                except Exception as ex:
+                    print(str(ex))
+    
     idls = [ el['id'] for el in flatls ]
     attachids = [ at['id'] for el in flatls for at in el['_attachls'] ]
     print('%d comments found: %s' % (len(flatls), ', '.join(idls)))
