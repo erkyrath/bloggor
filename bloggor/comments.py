@@ -160,6 +160,7 @@ class Attachment:
         self.url = ls_as_value(meta.get(prefix+'url'))
         self.previewurl = ls_as_value(meta.get(prefix+'previewurl'))
         self.localfile = ls_as_value(meta.get(prefix+'localfile'))
+        self.localpath = ls_as_value(meta.get(prefix+'localpath'))
         self.description = ls_as_value(meta.get(prefix+'description'))
         self.aspect = 1.0
         aspect = ls_as_value(meta.get(prefix+'aspect'))
