@@ -2,6 +2,7 @@
 
 import sys
 import optparse
+import os, os.path
 import re
 import json
 import urllib.request
@@ -15,6 +16,9 @@ popt.add_option('-o', '--out',
 popt.add_option('-a', '--append',
                 action='store', dest='appendfile',
                 help='append to file')
+popt.add_option('--attach', '--attachdir',
+                action='store', dest='attachdir',
+                help='fetch attachments to this dir')
 popt.add_option('--server',
                 action='store', dest='server', default='mastodon.gamedev.place',
                 help='Mastodon server')
@@ -125,6 +129,8 @@ def write_comments(obj, fl=sys.stdout):
                 }
                 _, _, val = at['url'].rpartition('.')
                 at['localfile'] = 'attach_%s_%s.%s' % (id, ix, val,)
+                if opts.attachdir:
+                    at['localpath'] = os.path.join(opts.attachdir, at['localfile'])
                 aspect = None
                 if atel.get('meta') and atel['meta'].get('original'):
                     aspect = atel['meta']['original'].get('aspect')
@@ -151,6 +157,8 @@ def write_comments(obj, fl=sys.stdout):
                 ix = at['index']
                 fl.write('attach_%s_url: %s\n' % (ix, at['url'],))
                 fl.write('attach_%s_localfile: %s\n' % (ix, at['localfile'],))
+                if at.get('localpath'):
+                    fl.write('attach_%s_localpath: %s\n' % (ix, at['localpath'],))
                 if at.get('preview_url'):
                     fl.write('attach_%s_previewurl: %s\n' % (ix, at['preview_url'],))
                 if at.get('description'):
@@ -166,8 +174,8 @@ def write_comments(obj, fl=sys.stdout):
     fl.write('---\n')
 
     idls = [ el['id'] for el in flatls ]
-    print('%d comments found: %s' % (len(flatls), ', '.join(idls)))
     attachids = [ at['id'] for el in flatls for at in el['_attachls'] ]
+    print('%d comments found: %s' % (len(flatls), ', '.join(idls)))
     if attachids:
         print('%d attachments found: %s' % (len(attachids), ', '.join(attachids)))
 
