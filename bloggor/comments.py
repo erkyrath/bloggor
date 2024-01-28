@@ -162,16 +162,20 @@ class Attachment:
         self.localfile = ls_as_value(meta.get(prefix+'localfile'))
         self.localpath = ls_as_value(meta.get(prefix+'localpath'))
         self.description = ls_as_value(meta.get(prefix+'description'))
+        self.thumbsize = self.THUMBSIZE
+        thumbsize = ls_as_value(meta.get(prefix+'thumbsize'))
+        if thumbsize:
+            self.thumbsize = int(thumbsize)
         self.aspect = 1.0
         aspect = ls_as_value(meta.get(prefix+'aspect'))
         if aspect:
             self.aspect = float(aspect)
         if self.aspect > 1.0:
-            self.previewwidth = self.THUMBSIZE
-            self.previewheight = int(self.THUMBSIZE/self.aspect)
+            self.previewwidth = self.thumbsize
+            self.previewheight = int(self.thumbsize/self.aspect)
         else:
-            self.previewwidth = int(self.THUMBSIZE*self.aspect)
-            self.previewheight = self.THUMBSIZE
+            self.previewwidth = int(self.thumbsize*self.aspect)
+            self.previewheight = self.thumbsize
 
     def __repr__(self):
         return '<%s "%s">' % (self.__class__.__name__, self.url)
