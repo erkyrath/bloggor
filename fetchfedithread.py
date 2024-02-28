@@ -110,6 +110,8 @@ def write_comments(obj, fl=sys.stdout):
         author = el.get('account')
         if author:
             authorname = author.get('display_name')
+            if not authorname:
+                authorname = author.get('username')
             authoruri = author.get('url')
 
         body = sanitizer.sanitize(body)
