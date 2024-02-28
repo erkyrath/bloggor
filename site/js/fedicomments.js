@@ -117,8 +117,10 @@ function handle_response(obj)
         el._authorname = 'anonymous';
         el._authoruri = null;
         if (el.account != null) {
-            if (el.account.display_name != null)
+            if (el.account.display_name)
                 el._authorname = el.account.display_name;
+            else if (el.account.username)
+                el._authorname = el.account.username;
             if (el.account.url)
                 el._authoruri = el.account.url;
         }
