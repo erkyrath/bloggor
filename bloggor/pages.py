@@ -605,6 +605,10 @@ class EntryPage(Page):
 
         # shortdate doesn't always match outdir, so we don't check that.
 
+    def addcomments(self, comt):
+        self.comments = comt.comments
+        if comt.inmodtime is not None and comt.inmodtime > self.inmodtime:
+            self.inmodtime = comt.inmodtime
         
     def build(self):
         preventry = None

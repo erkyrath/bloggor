@@ -49,10 +49,10 @@ class CommentThread:
             self.longlatestpublished = relativetime(self.latestpublished, self.entry.published)
             self.shortlatestpublished = relativetime(self.latestpublished, self.entry.published, english=False)
 
-        self.entry.comments = self.comments
-
         stat = os.stat(self.path)
         self.inmodtime = stat.st_mtime
+
+        self.entry.addcomments(self)
         
 class Comment:
     def __init__(self, ctx, thread, index, body, meta):
