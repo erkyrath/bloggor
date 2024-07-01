@@ -47,7 +47,7 @@ popt.add_option('--notemp',
 
 ctx = bloggor.context.Context(opts)
 
-tup = datetime.datetime.utcnow()
+tup = datetime.datetime.now(datetime.timezone.utc)
 val, _, _ = tup.isoformat().partition('.')
 val += 'Z'
 print('The time is', val)
