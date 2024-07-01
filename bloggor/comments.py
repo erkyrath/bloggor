@@ -20,6 +20,7 @@ class CommentThread:
         self.latestpublished = None
         self.longlatestpublished = None
         self.shortlatestpublished = None
+        self.inmodtime = None
         
     def __repr__(self):
         return '<%s "%s" (%d)>' % (self.__class__.__name__, self.outuri, len(self.comments))
@@ -50,6 +51,9 @@ class CommentThread:
 
         self.entry.comments = self.comments
 
+        stat = os.stat(self.path)
+        self.inmodtime = stat.st_mtime
+        
 class Comment:
     def __init__(self, ctx, thread, index, body, meta):
         self.thread = thread
