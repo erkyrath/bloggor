@@ -74,15 +74,12 @@ def writeescapedashes(fl, text, delim=3):
 def write_comments(ells, fl=sys.stdout):
     idmap = {}
 
-    if not opts.inclusive:
-        idmap[threadid] = { '_replies':[] }
-    
     for el in ells:
         id = el['id']
         idmap[id] = el
 
     for el in ells:
-        parid = el['in_reply_to_id']
+        parid = el.get('in_reply_to_id')
         if parid is None:
             continue
         if parid not in idmap:
@@ -96,20 +93,21 @@ def write_comments(ells, fl=sys.stdout):
     flatls = []
 
     def func(ls, depth=0):
-        ls.sort(key=lambda el:el['created_at'])
+        ls.sort(key=lambda el:el.get('created_at', 0))
         for el in ls:
             flatls.append(el)
             el['_depth'] = depth
             if '_replies' in el:
-                func(el['_replies'], depth+1)
+                newdepth = (depth+1) if 'content' in el else depth
+                func(el['_replies'], newdepth)
 
-    if not opts.inclusive:
-        func(idmap[threadid]['_replies'])
-    else:
-        func([ idmap[threadid] ])
+    func([ idmap[threadid] ])
     
     for el in flatls:
         id = el['id']
+        if 'content' not in el:
+            el['_attachls'] = []
+            continue
         published = el['created_at']
         body = el['content']
         depth = el.get('_depth')
@@ -199,9 +197,9 @@ def write_comments(ells, fl=sys.stdout):
                 except Exception as ex:
                     print(str(ex))
     
-    idls = [ el['id'] for el in flatls ]
+    idls = [ el['id'] for el in flatls if 'content' in el ]
     attachids = [ at['id'] for el in flatls for at in el['_attachls'] ]
-    print('%d comments found: %s' % (len(flatls), ', '.join(idls)))
+    print('%d comments found: %s' % (len(idls), ', '.join(idls)))
     if attachids:
         print('%d attachments found: %s' % (len(attachids), ', '.join(attachids)))
 
@@ -210,7 +208,9 @@ ells = obj.get('descendants')
 
 if basedat:
     obj = json.loads(basedat)
-    ells.insert(0, obj)
+else:
+    obj = { 'id':threadid }
+ells.insert(0, obj)
     
 obj = None
 
