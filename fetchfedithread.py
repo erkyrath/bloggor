@@ -213,7 +213,7 @@ ells.insert(0, obj)
     
 obj = None
 
-if not ells:
+if not [ el for el in ells if 'content' in el ]:
     print('no comments')
     sys.exit()
 
