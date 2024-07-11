@@ -92,22 +92,21 @@ def write_comments(ells, fl=sys.stdout):
 
     flatls = []
 
-    def func(ls, depth=0):
-        ls.sort(key=lambda el:el.get('created_at', 0))
-        for el in ls:
+    def func(el, depth=0):
+        if 'content' in el and 'created_at' in el:
             flatls.append(el)
-            el['_depth'] = depth
-            if '_replies' in el:
-                newdepth = (depth+1) if 'content' in el else depth
-                func(el['_replies'], newdepth)
+        el['_depth'] = depth
+        if '_replies' in el:
+            ls = el['_replies']
+            ls.sort(key=lambda subel:subel.get('created_at', 0))
+            newdepth = (depth+1) if 'content' in el else depth
+            for subel in ls:
+                func(subel, newdepth)
 
-    func([ idmap[threadid] ])
+    func(idmap[threadid])
     
     for el in flatls:
         id = el['id']
-        if 'content' not in el:
-            el['_attachls'] = []
-            continue
         published = el['created_at']
         body = el['content']
         depth = el.get('_depth')
