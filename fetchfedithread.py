@@ -86,7 +86,7 @@ def write_comments(ells, fl=sys.stdout):
         if parid is None:
             continue
         if parid not in idmap:
-            raise Exception('message %s in reply to %s, which is not known' % (el['id'], parid))
+            continue
         par = idmap[parid]
         if '_replies' not in par:
             par['_replies'] = [ el ]
