@@ -64,20 +64,15 @@ def writeescapedashes(fl, text, delim=3):
             ln = '-' + ln
         fl.write(ln+'\n')
 
-def write_comments(obj, fl=sys.stdout):
-    ells = obj.get('descendants')
-    if not ells:
-        print('no comments')
-        return
-
+def write_comments(ells, fl=sys.stdout):
     idmap = {}
     idmap[threadid] = { '_replies':[] }
     
-    for el in obj['descendants']:
+    for el in ells:
         id = el['id']
         idmap[id] = el
 
-    for el in obj['descendants']:
+    for el in ells:
         parid = el['in_reply_to_id']
         if parid not in idmap:
             raise Exception('message %s in reply to %s, which is not known' % (el['id'], parid))
@@ -198,15 +193,20 @@ def write_comments(obj, fl=sys.stdout):
 
 obj = json.loads(dat)
 
+ells = obj.get('descendants')
+if not ells:
+    print('no comments')
+    sys.exit()
+
 if opts.outfile:
     fl = open(opts.outfile, 'w')
-    write_comments(obj, fl)
+    write_comments(ells, fl)
     fl.close()
 elif opts.appendfile:
     fl = open(opts.appendfile, 'a')
-    write_comments(obj, fl)
+    write_comments(ells, fl)
     fl.close()
 else:
-    write_comments(obj)
+    write_comments(ells)
 
 
