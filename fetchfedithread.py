@@ -10,6 +10,9 @@ from html_sanitizer import Sanitizer
 
 popt = optparse.OptionParser()
 
+popt.add_option('--inclusive',
+                action='store_true', dest='inclusive',
+                help='include the named post as well as its descendants')
 popt.add_option('-o', '--out',
                 action='store', dest='outfile',
                 help='write to file')
@@ -42,12 +45,16 @@ if not match:
 
 threadid = match.group(1)
 
-fetchurl = 'https://'+opts.server+'/api/v1/statuses/'+threadid+'/context';
+fetchurl = 'https://'+opts.server+'/api/v1/statuses/'+threadid;
 print(fetchurl)
 
 try:
-    req = urllib.request.urlopen(fetchurl)
+    req = urllib.request.urlopen(fetchurl+'/context')
     dat = req.read()
+    basedat = None
+    if opts.inclusive:
+        req = urllib.request.urlopen(fetchurl)
+        basedat = req.read()
 except Exception as ex:
     print(str(ex))
     sys.exit(-1)
@@ -66,7 +73,9 @@ def writeescapedashes(fl, text, delim=3):
 
 def write_comments(ells, fl=sys.stdout):
     idmap = {}
-    idmap[threadid] = { '_replies':[] }
+
+    if not opts.inclusive:
+        idmap[threadid] = { '_replies':[] }
     
     for el in ells:
         id = el['id']
@@ -74,6 +83,8 @@ def write_comments(ells, fl=sys.stdout):
 
     for el in ells:
         parid = el['in_reply_to_id']
+        if parid is None:
+            continue
         if parid not in idmap:
             raise Exception('message %s in reply to %s, which is not known' % (el['id'], parid))
         par = idmap[parid]
@@ -91,8 +102,11 @@ def write_comments(ells, fl=sys.stdout):
             el['_depth'] = depth
             if '_replies' in el:
                 func(el['_replies'], depth+1)
-    
-    func(idmap[threadid]['_replies'])
+
+    if not opts.inclusive:
+        func(idmap[threadid]['_replies'])
+    else:
+        func([ idmap[threadid] ])
     
     for el in flatls:
         id = el['id']
@@ -192,8 +206,14 @@ def write_comments(ells, fl=sys.stdout):
         print('%d attachments found: %s' % (len(attachids), ', '.join(attachids)))
 
 obj = json.loads(dat)
-
 ells = obj.get('descendants')
+
+if basedat:
+    obj = json.loads(basedat)
+    ells.insert(0, obj)
+    
+obj = None
+
 if not ells:
     print('no comments')
     sys.exit()
