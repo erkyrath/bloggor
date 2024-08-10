@@ -132,6 +132,8 @@ class Context:
                     continue
                 if filename.endswith('.json'):
                     continue
+                if filename.endswith('.notes'):
+                    continue
                 try:
                     if filename.endswith('.html') or filename.endswith('.md') or filename.endswith('.txt'):
                         page = EntryPage(self, dirpath, filename)
