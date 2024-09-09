@@ -244,7 +244,7 @@ def absolutizeurls(text, serverurl):
     return text
 
 def splitatmore(val):
-    """Locate the convention break-here comment. Return the part before it.
+    """Locate the conventional break-here comment. Return the part before it.
     If not found, return None. (This is easier for the template to handle.)
     """
     pos = val.find('<!--more-->')
