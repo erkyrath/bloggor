@@ -436,10 +436,18 @@ class FeedPage(Page):
         entries.reverse()
 
         for entry in entries:
+            body = entry.body
+            val = ls_as_value(entry.metadata.get('infeed'))
+            if val in ('f', 'false', 'n', 'no'):
+                continue
+            if val == 'break':
+                body = splitatmore(body)
+                if not body:
+                    raise RuntimeException('post has infeed:break but no break')
             feed.add_item(
                 title = entry.title,
                 description = entry.excerpt,
-                content = absolutizeurls(entry.body, serverurl=self.ctx.serverurl),
+                content = absolutizeurls(body, serverurl=self.ctx.serverurl),
                 link = self.ctx.serverurl+entry.outuri,
                 author_name = self.ctx.config['ownername'],
                 categories = entry.tags,
@@ -632,4 +640,4 @@ from bloggor.constants import FileType, FeedType, Depend
 from bloggor.constants import eastern_tz
 from bloggor.excepts import RuntimeException
 from bloggor.metafile import MetaFile, ls_as_bool, ls_as_value
-from bloggor.util import tagfilename, parsedate, relativetime, excerpthtml, sortform, absolutizeurls
+from bloggor.util import tagfilename, parsedate, relativetime, excerpthtml, sortform, absolutizeurls, splitatmore
