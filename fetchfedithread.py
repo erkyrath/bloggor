@@ -29,7 +29,7 @@ popt.add_option('--server',
 (opts, args) = popt.parse_args()
 
 if len(args) != 1:
-    print('usage: fetchfedithread.py [ URL ] [ -o outfile ]')
+    print('usage: fetchfedithread.py [ URL ] [ -o/-a outfile ] [ --attach dir ]')
     sys.exit(-1)
 
 if opts.outfile and opts.appendfile:
@@ -170,7 +170,7 @@ def write_comments(ells, fl=sys.stdout):
                 if at.get('preview_url'):
                     fl.write('attach_%s_previewurl: %s\n' % (ix, at['preview_url'],))
                 if at.get('description'):
-                    fl.write('attach_%s_description: %s\n' % (ix, at['description'],))
+                    fl.write('attach_%s_description: %s\n' % (ix, at['description'].replace('\n', ' ').rstrip(),))
                 if at.get('aspect'):
                     fl.write('attach_%s_aspect: %s\n' % (ix, at['aspect'],))
         fl.write('format: html\n')
