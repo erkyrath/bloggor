@@ -159,6 +159,10 @@ if __name__ == '__main__':
     # For testing purposes, you can type
     #     python3 -m bloggor.mdextension test.md
     # ...and get an HTML dump of the markdown output.
+
+    if len(sys.argv) <= 1:
+        print('usage: python3 -m bloggor.mdextension TEST.MD')
+        sys.exit()
     
     # Same list as in context.py...
     mdenv = markdown.Markdown(extensions=[
@@ -176,6 +180,7 @@ if __name__ == '__main__':
         body = mdenv.convert(dat)
         metadata = mdenv.Meta
         if metadata:
-            print('Metadata: %s' % (metadata,))
+            print('metadata: %s' % (metadata,))
+            print()
         print(body)
         
