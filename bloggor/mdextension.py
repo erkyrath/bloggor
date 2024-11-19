@@ -137,7 +137,13 @@ class LocalLinkExtension(Extension):
     def extendMarkdown(self, md):
         md.treeprocessors.register(LocalLinkProcessor(md, self.prefixes), 'locallink', 15)
 
+
 class StrikethroughProcessor(InlineProcessor):
+    PATTERNTEXT = r'~~(.*?)~~'
+    
+    def __init__(self, md=None):
+        InlineProcessor.__init__(self, self.PATTERNTEXT, md)
+        
     def handleMatch(self, m, data):
         el = etree.Element('s')  # <strike> is deprecated, remember
         el.text = m.group(1)
@@ -145,7 +151,6 @@ class StrikethroughProcessor(InlineProcessor):
 
 class StrikethroughExtension(Extension):
     def extendMarkdown(self, md):
-        STRIKE_PATTERN = r'~~(.*?)~~'
-        md.inlinePatterns.register(StrikethroughProcessor(STRIKE_PATTERN, md), 'strike', 49)
+        md.inlinePatterns.register(StrikethroughProcessor(md), 'strike', 49)
 
 from bloggor.util import removeprefixes
