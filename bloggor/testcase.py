@@ -517,5 +517,12 @@ class TestMarkdownExts(unittest.TestCase):
         body, metadata = self.render('Hello ~~there~~.')
         self.assertEqual(body, '<p>Hello <s>there</s>.</p>')
         
+        body, metadata = self.render('---\ntitle: Foo\n---\nHello.')
+        self.assertEqual(body, '<p>Hello.</p>')
+        self.assertEqual(metadata, { 'title': ['Foo'] })
+        
+        body, metadata = self.render('Hello [link].\n[link]: http://localhost/about')
+        self.assertEqual(body, '<p>Hello <a href="/about">link</a>.</p>')
+        
 if __name__ == '__main__':
     unittest.main()
