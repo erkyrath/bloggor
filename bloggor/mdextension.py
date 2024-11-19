@@ -4,6 +4,7 @@ import markdown
 from markdown.extensions import attr_list
 from markdown.extensions import Extension
 from markdown.treeprocessors import Treeprocessor
+from markdown.inlinepatterns import InlineProcessor
 from markdown.blockprocessors import BlockProcessor
 from markdown.postprocessors import Postprocessor
 import xml.etree.ElementTree as etree
@@ -136,5 +137,15 @@ class LocalLinkExtension(Extension):
     def extendMarkdown(self, md):
         md.treeprocessors.register(LocalLinkProcessor(md, self.prefixes), 'locallink', 15)
 
+class StrikethroughProcessor(InlineProcessor):
+    def handleMatch(self, m, data):
+        el = etree.Element('strike')
+        el.text = m.group(1)
+        return el, m.start(0), m.end(0)
+
+class StrikethroughExtension(Extension):
+    def extendMarkdown(self, md):
+        STRIKE_PATTERN = r'~~(.*?)~~'
+        md.inlinePatterns.register(StrikethroughProcessor(STRIKE_PATTERN, md), 'strike', 49)
 
 from bloggor.util import removeprefixes
