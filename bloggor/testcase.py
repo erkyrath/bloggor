@@ -1,6 +1,7 @@
 import unittest
 import datetime
 import io
+import markdown
 
 from .constants import FileType, parse_filetype
 from .constants import Depend, parse_depend
@@ -13,6 +14,7 @@ from .util import absolutizeurls
 from .metafile import MetaFile
 from .metafile import MultiMetaFile
 from .pages import PageSet
+from .mdextension import extension_list
 
 # Run me with:
 #    python3 -m bloggor.testcase
@@ -503,5 +505,17 @@ class TestPageSet(unittest.TestCase):
         self.assertEqual(list(ps), [ pfoo, pbar, pfoobar ])
         self.assertEqual(len(ps), 3)
 
+
+class TestMarkdownExts(unittest.TestCase):
+    def render(self, dat):
+        mdenv = markdown.Markdown(extensions=extension_list())
+        body = mdenv.convert(dat)
+        metadata = mdenv.Meta
+        return body, metadata
+        
+    def test(self):
+        body, metadata = self.render('Hello ~~there~~.')
+        self.assertEqual(body, '<p>Hello <s>there</s>.</p>')
+        
 if __name__ == '__main__':
     unittest.main()
