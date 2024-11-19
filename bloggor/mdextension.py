@@ -241,6 +241,17 @@ class StrikethroughExtension(Extension):
     def extendMarkdown(self, md):
         md.inlinePatterns.register(StrikethroughProcessor(md), 'strike', 49)
 
+def extension_list():
+    # Same list as in context.py...
+    return [
+        'meta', 'attr_list', 'def_list', 'fenced_code', 'tables',
+        StrikethroughExtension(),
+        MoreBreakExtension(),
+        UnwrapExtension(),
+        DictDefExtension(),
+        LocalLinkExtension('http://localhost/'),
+    ]
+
 from bloggor.util import removeprefixes
 
 if __name__ == '__main__':
@@ -252,15 +263,7 @@ if __name__ == '__main__':
         print('usage: python3 -m bloggor.mdextension TEST.MD')
         sys.exit()
     
-    # Same list as in context.py...
-    mdenv = markdown.Markdown(extensions=[
-        'meta', 'attr_list', 'def_list', 'fenced_code', 'tables',
-        StrikethroughExtension(),
-        MoreBreakExtension(),
-        UnwrapExtension(),
-        DictDefExtension(),
-        LocalLinkExtension('http://localhost/'),
-    ])
+    mdenv = markdown.Markdown(extensions=extension_list())
 
     for file in sys.argv[ 1 : ]:
         with open(file) as infl:
