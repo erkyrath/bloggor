@@ -139,7 +139,7 @@ class LocalLinkExtension(Extension):
 
 class StrikethroughProcessor(InlineProcessor):
     def handleMatch(self, m, data):
-        el = etree.Element('strike')
+        el = etree.Element('s')  # <strike> is deprecated, remember
         el.text = m.group(1)
         return el, m.start(0), m.end(0)
 
