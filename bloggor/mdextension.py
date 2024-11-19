@@ -76,6 +76,7 @@ class UnwrapBlockProcessor(BlockProcessor):
                 for i in range(0, block_num + 1):
                     blocks.pop(0)
                 return True
+            
         # No closing marker!  Restore and do nothing
         blocks[0] = original_block
         return False  # equivalent to our test() routine returning False
@@ -134,6 +135,7 @@ class DictDefBlockProcessor(BlockProcessor):
                 for i in range(0, block_num + 1):
                     blocks.pop(0)
                 return True
+            
         # No closing marker! Or no element. Restore and do nothing
         blocks[0] = original_block
         return False  # equivalent to our test() routine returning False
