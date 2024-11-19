@@ -524,6 +524,9 @@ class TestMarkdownExts(unittest.TestCase):
         body, metadata = self.render('Hello [link].\n[link]: http://localhost/about')
         self.assertEqual(body, '<p>Hello <a href="/about">link</a>.</p>')
 
+        body, metadata = self.render('Hello [link].\n[link]: https://eblong.com/about')
+        self.assertEqual(body, '<p>Hello <a href="https://eblong.com/about">link</a>.</p>')
+
         dat = '''{{{
 One.
 Two.
