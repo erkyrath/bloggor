@@ -99,7 +99,7 @@ class UnwrapExtension(Extension):
 
 
 class DictDefBlockProcessor(BlockProcessor):
-    RE_FENCE_START = re.compile(r'^ *[{]{3,}: *((?:\n[^:\n]*:[^\n]*)*)')
+    RE_FENCE_START = re.compile(r'^ *[{]{3,}: *((?:\n[^:\n]+:[^\n]*)*)')
     RE_FENCE_END = re.compile(r'\n *:[}]{3,}\s*$')
 
     def test(self, parent, block):
