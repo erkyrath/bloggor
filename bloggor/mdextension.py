@@ -9,6 +9,18 @@ from markdown.blockprocessors import BlockProcessor
 from markdown.postprocessors import Postprocessor
 import xml.etree.ElementTree as etree
 
+def extension_list():
+    # All the extensions we will use, including the ones from the module.
+    return [
+        'meta', 'attr_list', 'def_list', 'fenced_code', 'tables',
+        StrikethroughExtension(),
+        MoreBreakExtension(),
+        UnwrapExtension(),
+        DictDefExtension(),
+        LocalLinkExtension('http://localhost/'),
+    ]
+
+
 class MoreBreakProcessor(BlockProcessor):
     pattern = re.compile('^[ ]*(-[ ]+)(-[ ]+)-[ ]*', re.MULTILINE)
     
@@ -241,17 +253,7 @@ class StrikethroughExtension(Extension):
     def extendMarkdown(self, md):
         md.inlinePatterns.register(StrikethroughProcessor(md), 'strike', 49)
 
-def extension_list():
-    # Same list as in context.py...
-    return [
-        'meta', 'attr_list', 'def_list', 'fenced_code', 'tables',
-        StrikethroughExtension(),
-        MoreBreakExtension(),
-        UnwrapExtension(),
-        DictDefExtension(),
-        LocalLinkExtension('http://localhost/'),
-    ]
-
+        
 from bloggor.util import removeprefixes
 
 if __name__ == '__main__':
