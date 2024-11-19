@@ -523,6 +523,20 @@ class TestMarkdownExts(unittest.TestCase):
         
         body, metadata = self.render('Hello [link].\n[link]: http://localhost/about')
         self.assertEqual(body, '<p>Hello <a href="/about">link</a>.</p>')
+
+        dat = '''{{{
+One.
+Two.
+}}}'''
+        body, metadata = self.render(dat)
+        self.assertEqual(body, '<div class="PreWrap">\n<p>One.\nTwo.</p>\n</div>')
+        
+        dat = '''{{{ { .Center }
+One.
+Two.
+}}}'''
+        body, metadata = self.render(dat)
+        self.assertEqual(body, '<div class="Center">\n<p>One.\nTwo.</p>\n</div>')
         
 if __name__ == '__main__':
     unittest.main()
