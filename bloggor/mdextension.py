@@ -1,4 +1,4 @@
-
+import sys
 import re
 import markdown
 from markdown.extensions import attr_list
@@ -154,3 +154,28 @@ class StrikethroughExtension(Extension):
         md.inlinePatterns.register(StrikethroughProcessor(md), 'strike', 49)
 
 from bloggor.util import removeprefixes
+
+if __name__ == '__main__':
+    # For testing purposes, you can type
+    #     python3 -m bloggor.mdextension test.md
+    # ...and get an HTML dump of the markdown output.
+    
+    # Same list as in context.py...
+    mdenv = markdown.Markdown(extensions=[
+        'meta', 'attr_list', 'def_list', 'fenced_code', 'tables',
+        StrikethroughExtension(),
+        MoreBreakExtension(),
+        UnwrapExtension(),
+        LocalLinkExtension('http://localhost/'),
+    ])
+
+    for file in sys.argv[ 1 : ]:
+        with open(file) as infl:
+            dat = infl.read()
+        mdenv.reset()
+        body = mdenv.convert(dat)
+        metadata = mdenv.Meta
+        if metadata:
+            print('Metadata: %s' % (metadata,))
+        print(body)
+        
