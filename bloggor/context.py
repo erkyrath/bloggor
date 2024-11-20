@@ -74,6 +74,7 @@ class Context:
             bloggor.mdextension.StrikethroughExtension(),
             bloggor.mdextension.MoreBreakExtension(),
             bloggor.mdextension.UnwrapExtension(),
+            bloggor.mdextension.DictDefInlineExtension(),
             bloggor.mdextension.LocalLinkExtension(self.serverurl),
         ])
 
