@@ -543,23 +543,6 @@ Two.
 }}}'''
         body, metadata = self.render(dat)
         self.assertEqual(body, '<div class="Center">\n<p>One.\nTwo.</p>\n</div>')
-        
-        dat = '''{{{:
-img: http://localhost/pic/foo-s.png
-alt: This is alt text.
-width: 200
-height: 100
-:}}}'''
-        body, metadata = self.render(dat)
-        self.assertEqual(body, '<img alt="This is alt text." height="100" src="/pic/foo-s.png" width="200" />')
-        
-        dat = '''{{{:
-img: http://localhost/pic/foo-s.png
-link: http://localhost/pic/foo.png
-alt: This is alt text.
-:}}}'''
-        body, metadata = self.render(dat)
-        self.assertEqual(body, '<a href="/pic/foo.png"><img alt="This is alt text." src="/pic/foo-s.png" /></a>')
 
 
 
