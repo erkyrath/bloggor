@@ -544,6 +544,22 @@ Two.
         body, metadata = self.render(dat)
         self.assertEqual(body, '<div class="Center">\n<p>One.\nTwo.</p>\n</div>')
 
+        dat = '''{{:
+img: http://localhost/pic/foo.png
+width: 200
+height: 100
+:}}'''
+        body, metadata = self.render(dat)
+        self.assertEqual(body, '<p><img height="100" src="/pic/foo.png" width="200" /></p>')
+
+        dat = '''{{:
+type: img
+img: http://localhost/pic/foo.png
+link: http://localhost/aboutpost
+alt: Some *text*.
+:}}'''
+        body, metadata = self.render(dat)
+        self.assertEqual(body, '<p><a href="/aboutpost"><img alt="Some *text*." src="/pic/foo.png" /></a></p>')
 
 
 if __name__ == '__main__':
