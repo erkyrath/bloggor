@@ -190,7 +190,7 @@ Stuff here.
 }}}
 ```
 
-Markdown has a format for images and image links, but I decided I hate it, so now I use this. (All lines but `img:` are optional.) Note that even though this is multiline construct, it creates one inline image or link.
+Markdown has a format for images and image links, but I decided I hate it, so now I use this. (All lines but `img:` are optional.) Note that even though this is a multiline construct, it creates one inline image or link.
 
 ```
 {{:
