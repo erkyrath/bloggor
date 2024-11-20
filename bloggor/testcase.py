@@ -561,6 +561,17 @@ alt: Some *text*.
         body, metadata = self.render(dat)
         self.assertEqual(body, '<p><a href="/aboutpost"><img alt="Some *text*." src="/pic/foo.png" /></a></p>')
 
+        dat = '''{{{ { .ImageWrap }
+{{:
+img: http://localhost/pic/foo.png
+:}}
+{{:
+img: http://localhost/pic/bar.png
+:}}
+}}}'''
+        body, metadata = self.render(dat)
+        self.assertEqual(body, '<div class="ImageWrap">\n<p><img src="/pic/foo.png" />\n<img src="/pic/bar.png" /></p>\n</div>')
+
 
 if __name__ == '__main__':
     unittest.main()
