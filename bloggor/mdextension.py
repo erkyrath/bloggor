@@ -9,7 +9,7 @@ from markdown.blockprocessors import BlockProcessor
 from markdown.postprocessors import Postprocessor
 import xml.etree.ElementTree as etree
 
-def extension_list():
+def extension_list(serverurl='http://localhost/'):
     # All the extensions we will use, including the ones from the module.
     return [
         'meta', 'attr_list', 'def_list', 'fenced_code', 'tables',
@@ -17,7 +17,7 @@ def extension_list():
         MoreBreakExtension(),
         UnwrapExtension(),
         DictDefExtension(),
-        LocalLinkExtension('http://localhost/'),
+        LocalLinkExtension(serverurl),
     ]
 
 
