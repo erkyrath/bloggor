@@ -16,6 +16,7 @@ def extension_list(serverurl='http://localhost/'):
         StrikethroughExtension(),
         MoreBreakExtension(),
         UnwrapExtension(),
+        DictDefInlineExtension(),
         LocalLinkExtension(serverurl),
     ]
 
@@ -163,7 +164,58 @@ class StrikethroughProcessor(InlineProcessor):
 
 class StrikethroughExtension(Extension):
     def extendMarkdown(self, md):
+        # Just below "*" and "_"
         md.inlinePatterns.register(StrikethroughProcessor(md), 'strike', 49)
+
+        
+class DictDefInlineProcessor(InlineProcessor):
+    PATTERNTEXT = r'\{\{:(.*):\}\}'
+    
+    def __init__(self, md=None):
+        InlineProcessor.__init__(self, self.PATTERNTEXT, md)
+        
+    def handleMatch(self, match, data):
+        map = {}
+        dat = match.group(1)
+        ls = dat.split('\n')
+        ls = [ val for val in ls if val.strip() ]
+        while ls:
+            ln = ls[0]
+            key, delim, val = ln.partition(':')
+            if not delim:
+                break
+            key = key.strip()
+            val = val.strip()
+            if not key and not val:
+                break
+            map[key] = val
+            del ls[0]
+        text = '\n'.join(ls)
+        el = self.create_element(map, text)
+        return el, match.start(0), match.end(0)
+
+    def create_element(self, map, text):
+        typ = map.pop('type', None)
+        if not typ and 'img' in map:
+            typ = 'img'
+        if typ == 'img':
+            imgsrc = map.pop('img', '###')
+            el = etree.Element('img')
+            el.set('src', imgsrc)
+            for key in map:
+                el.set(key, map[key])
+            return el
+        el = etree.Element('span')
+        for key in map:
+            el.set(key, map[key])
+        if text:
+            el.text = text
+        return el
+
+class DictDefInlineExtension(Extension):
+    def extendMarkdown(self, md):
+        # Just above links and images, but below \ and ``
+        md.inlinePatterns.register(DictDefInlineProcessor(md), 'dictdefi', 175)
 
         
 from bloggor.util import removeprefixes
