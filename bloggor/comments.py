@@ -136,6 +136,8 @@ class Comment:
             self.sourcename = 'imported from Blogger'
         elif self.source == 'mastodon':
             self.sourcename = 'from Mastodon'
+        elif self.source == 'bluesky':
+            self.sourcename = 'from Bluesky'
         elif self.source == 'self':
             self.sourcename = 'from ' + ctx.config['ownername']
         else:
