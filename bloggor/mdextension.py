@@ -199,7 +199,16 @@ class DictDefInlineProcessor(InlineProcessor):
         if not typ and 'img' in map:
             typ = 'img'
         if typ == 'img':
-            imgsrc = map.pop('img', '###')
+            imgsrc = map.pop('img', '#???')
+            linksrc = map.pop('link', None)
+            if linksrc:
+                ael = etree.Element('a')
+                ael.set('href', linksrc)
+                el = etree.SubElement(ael, 'img')
+                el.set('src', imgsrc)
+                for key in map:
+                    el.set(key, map[key])
+                return ael
             el = etree.Element('img')
             el.set('src', imgsrc)
             for key in map:
