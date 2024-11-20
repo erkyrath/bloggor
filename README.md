@@ -174,12 +174,32 @@ A block in triple braces will retain line breaks:
 
 ```
 {{{
-Four short lines
+*Five* short lines
 Iambic pace
 It's like haiku
 But for your face
 BURMA SHAVE
 }}}
+```
+
+Or you can create a div with any class (this is more or less the [attr_list][attr_list] extension):
+
+```
+{{{ { .Center }
+Stuff here.
+}}}
+```
+
+Markdown has a format for images and image links, but I decided I hate it, so now I use this. (All lines but `img:` are optional.) Note that even though this is multiline construct, it creates one inline image or link.
+
+```
+{{:
+  img: /pic/bar-s.png
+  link: https://eblong.com/whatever
+  alt: Here's your alt text.
+  width: 200
+  height: 100
+:}}
 ```
 
 Links (including image links) that start with your blog URL will be
