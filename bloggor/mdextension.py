@@ -16,7 +16,6 @@ def extension_list(serverurl='http://localhost/'):
         StrikethroughExtension(),
         MoreBreakExtension(),
         UnwrapExtension(),
-        DictDefExtension(),
         LocalLinkExtension(serverurl),
     ]
 
@@ -109,93 +108,6 @@ class UnwrapBlockProcessor(BlockProcessor):
 class UnwrapExtension(Extension):
     def extendMarkdown(self, md):
         md.parser.blockprocessors.register(UnwrapBlockProcessor(md.parser), 'unwrap', 175)
-
-
-class DictDefBlockProcessor(BlockProcessor):
-    RE_FENCE_START = re.compile(r'^ *[{]{3,}: *((?:\n[^:\n]+:[^\n]*)*)')
-    RE_FENCE_END = re.compile(r'\n *:[}]{3,}\s*$')
-
-    def test(self, parent, block):
-        return self.RE_FENCE_START.match(block)
-
-    def run(self, parent, blocks):
-        original_block = blocks[0]
-        match = self.RE_FENCE_START.search(blocks[0])
-        if not match:
-            return False
-        id, classes, config = '', [], {}
-        blocks[0] = blocks[0][ : match.start() ] + blocks[0][ match.end() : ]
-
-        keyls = match.group(1).split('\n')
-        for pair in keyls:
-            key, delim, val = pair.partition(':')
-            key = key.strip()
-            val = val.strip()
-            if key and delim:
-                config[key] = val
-
-        # Find block with ending fence
-        for block_num, block in enumerate(blocks):
-            if self.RE_FENCE_END.search(block):
-                # remove fence
-                blocks[block_num] = self.RE_FENCE_END.sub('', block)
-                e = self.create_element(config, parent, id, classes)
-                if e is None:
-                    break
-                self.parser.parseBlocks(e, blocks[0:block_num + 1])
-                # remove used blocks
-                for i in range(0, block_num + 1):
-                    blocks.pop(0)
-                return True
-            
-        # No closing marker! Or no element. Restore and do nothing
-        blocks[0] = original_block
-        return False  # equivalent to our test() routine returning False
-
-    def create_element(self, config, parent, id, classes):
-        if not classes:
-            classes = []
-        val = config.pop('class', None)
-        if val:
-            classes.extend(val.split())
-
-        typ = config.pop('type', None)
-        if typ == 'img' or 'img' in config:
-            # An img.
-            imgurl = config.pop('img', None)
-            if not imgurl:
-                return None
-            linkurl = config.pop('link', None)
-            if not linkurl:
-                e = etree.SubElement(parent, 'img')
-                e.set('src', imgurl)
-                self.apply_config(e, id, classes, config)
-                # Sub-blocks of the img will be dropped in tree rendering.
-                return e
-            else:
-                ea = etree.SubElement(parent, 'a')
-                ea.set('href', linkurl)
-                e = etree.SubElement(ea, 'img')
-                e.set('src', imgurl)
-                self.apply_config(e, id, classes, config)
-                return ea
-
-        # Default case: a div.
-        e = etree.SubElement(parent, 'div')
-        self.apply_config(e, id, classes, config)
-        return e
-
-    def apply_config(self, e, id, classes, config):
-        if id:
-            e.set('id', id)
-        if classes:
-            e.set('class', ' '.join(classes))
-        for k, v in config.items():
-            e.set(k, v)
-
-class DictDefExtension(Extension):
-    def extendMarkdown(self, md):
-        md.parser.blockprocessors.register(DictDefBlockProcessor(md.parser), 'dictdef', 174)
 
 
 class LocalLinkProcessor(Treeprocessor):
