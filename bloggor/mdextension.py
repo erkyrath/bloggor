@@ -169,7 +169,7 @@ class StrikethroughExtension(Extension):
 
         
 class DictDefInlineProcessor(InlineProcessor):
-    PATTERNTEXT = r'\{\{:(.*):\}\}'
+    PATTERNTEXT = r'\{\{:(.*?):\}\}'
     
     def __init__(self, md=None):
         InlineProcessor.__init__(self, self.PATTERNTEXT, md)
