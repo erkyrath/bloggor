@@ -72,13 +72,13 @@ def scan_post(tvp, ells, depth=0):
     _, _, fediid = tvp.post.uri.rpartition('/')
     fediurl = 'https://bsky.app/profile/%s/post/%s' % (tvp.post.author.handle, fediid)
     el = {
-        'fediid': fediid,
-        'fediurl': fediurl,
+        'id': fediid,
+        'url': fediurl,
         'display_name': tvp.post.author.display_name,
         'handle': tvp.post.author.handle,
         'published': tvp.post.record.created_at,
-        'depth': depth,
-        'body': tvp.post.record.text,
+        '_depth': depth,
+        'content': tvp.post.record.text,
     }
     ells.append(el)
     for subtvp in tvp.replies:
@@ -94,40 +94,16 @@ def writeescapedashes(fl, text, delim=3):
             ln = '-' + ln
         fl.write(ln+'\n')
 
-def write_comments(ells, fl=sys.stdout):
-    flatls = []
-
-    def func(el, depth=0):
-        if 'content' in el and 'created_at' in el:
-            flatls.append(el)
-        el['_depth'] = depth
-        if '_replies' in el:
-            ls = el['_replies']
-            ls.sort(key=lambda subel:subel.get('created_at', 0))
-            newdepth = (depth+1) if 'content' in el else depth
-            for subel in ls:
-                func(subel, newdepth)
-
-    
-    func(idmap[threadid])
-    
-    for el in flatls:
+def write_comments(ells, fl=sys.stdout):    
+    for el in ells:
         id = el['id']
-        published = el['created_at']
+        published = el['published']
         body = el['content']
         depth = el.get('_depth')
         fediurl = el.get('url')
-        authorname = None
+        authorname = el.get('display_name')
         authoruri = None
-        author = el.get('account')
-        if author:
-            authorname = author.get('display_name')
-            if not authorname:
-                authorname = author.get('username')
-            authoruri = author.get('url')
 
-        body = sanitizer.sanitize(body)
-            
         fl.write('---\n')
         fl.write('fediid: %s\n' % (id,))
         if fediurl:
@@ -139,29 +115,15 @@ def write_comments(ells, fl=sys.stdout):
             fl.write('authorname: %s\n' % (authorname,))
         if authoruri:
             fl.write('authoruri: %s\n' % (authoruri,))
-        if attachls:
-            fl.write('attachcount: %s\n' % (len(attachls),))
-            for at in attachls:
-                ix = at['index']
-                fl.write('attach_%s_url: %s\n' % (ix, at['url'],))
-                fl.write('attach_%s_localfile: %s\n' % (ix, at['localfile'],))
-                if at.get('localpath'):
-                    fl.write('attach_%s_localpath: %s\n' % (ix, at['localpath'],))
-                if at.get('preview_url'):
-                    fl.write('attach_%s_previewurl: %s\n' % (ix, at['preview_url'],))
-                if at.get('description'):
-                    fl.write('attach_%s_description: %s\n' % (ix, at['description'].replace('\n', ' ').rstrip(),))
-                if at.get('aspect'):
-                    fl.write('attach_%s_aspect: %s\n' % (ix, at['aspect'],))
-        fl.write('format: html\n')
-        fl.write('source: mastodon\n')
+        fl.write('format: txt\n')
+        fl.write('source: bluesky\n')
         fl.write('---\n')
         writeescapedashes(fl, body)
         fl.write('\n')
         
     fl.write('---\n')
-    
-    idls = [] ###
+
+    idls = [ el['id'] for el in ells ]
     print('%d comments found: %s' % (len(idls), ', '.join(idls)))
 
 ells = []
@@ -170,8 +132,6 @@ if opts.inclusive:
 else:
     for tvp in thread.thread.replies:
         scan_post(tvp, ells)
-
-sys.exit() ####
 
 if not ells:
     print('no comments')
