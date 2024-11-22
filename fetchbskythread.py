@@ -71,10 +71,12 @@ except Exception as ex:
 def scan_post(tvp, ells, depth=0):
     _, _, fediid = tvp.post.uri.rpartition('/')
     fediurl = 'https://bsky.app/profile/%s/post/%s' % (tvp.post.author.handle, fediid)
+    authorurl = 'https://bsky.app/profile/%s' % (tvp.post.author.handle,)
     el = {
         'id': fediid,
         'url': fediurl,
         'display_name': tvp.post.author.display_name,
+        'authorurl': authorurl,
         'handle': tvp.post.author.handle,
         'published': tvp.post.record.created_at,
         '_depth': depth,
@@ -102,7 +104,7 @@ def write_comments(ells, fl=sys.stdout):
         depth = el.get('_depth')
         fediurl = el.get('url')
         authorname = el.get('display_name')
-        authoruri = None
+        authoruri = el.get('authorurl')
 
         fl.write('---\n')
         fl.write('fediid: %s\n' % (id,))
