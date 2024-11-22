@@ -1,5 +1,16 @@
 #!/usr/bin/env python3
 
+"""
+Fetch a thread of comments from a Mastodon instance, and write them out
+in .comments format.
+
+Usage:
+  fetchfedithread.py URL
+
+URL can be a full Mastodon thread URL (https://INSTANCE/@USER/ID) or just
+the ID part. It must be a post on your instance.
+"""
+
 import sys
 import optparse
 import os, os.path

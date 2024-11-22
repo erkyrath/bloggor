@@ -1,5 +1,26 @@
 #!/usr/bin/env python3
 
+"""
+Fetch a thread of comments from Bluesky, and write them out in .comments
+format.
+
+Usage:
+  fetchbskythread.py URL
+
+URL can be a full thread URL (https://bsky.app/profile/USER/post/ID) or
+just the ID part. It must be a post you made.
+
+The thread-fetch API requires authentication, so this reads your Bluesky
+username and app password from ~/.config/bsky.cfg. This should look like
+
+  [DEFAULT]
+  userid = eblong.com
+  password = xxxx-xxxx-xxxx-xxxx
+
+(If Bluesky ever supports access scopes, this could be reduced to a
+read-only password.)
+"""
+
 import sys
 import optparse
 import os, os.path
