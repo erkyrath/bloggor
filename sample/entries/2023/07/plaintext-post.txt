@@ -1,6 +1,6 @@
 ---
 title: This post is plain text
-tags: examples, text
+tags: examples, text, a tag
 live: yes
 published: 2023-07-11T08:30:00Z
 ---

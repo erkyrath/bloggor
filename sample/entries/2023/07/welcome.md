@@ -1,6 +1,6 @@
 ---
 title: Welcome to my blog!
-tags: blogging, hello, examples, markdown
+tags: blogging, bloggor, hello, examples, markdown
 live: yes
 published: 2023-07-05T12:00:00Z
 ---

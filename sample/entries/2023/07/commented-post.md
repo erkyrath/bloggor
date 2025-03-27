@@ -1,6 +1,6 @@
 ---
 title: This post has baked-in comments
-tags: examples, comments, markdown
+tags: examples, comments, markdown, 2 things
 live: yes
 published: 2023-07-05T20:00:00Z
 ---
