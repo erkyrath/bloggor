@@ -2,6 +2,14 @@
 
 {% block exthead %}
 <style type="text/css">
+.Letter {
+  text-align: right;
+  margin-top: 8px;
+  margin-bottom: 4px;
+  font-size: 0.8em;
+  color: #88D;
+  border-top: 1px solid #CCF;
+}
 .TagTable {
   display: grid;
   grid-template-columns: repeat(auto-fill, 150px);
@@ -20,13 +28,26 @@
 
     <h3 class="Selector">(<a href="/tags-freq">Sort by frequency instead</a>)</h3>
   </div>
+
+  <p>
+  {% for letter, tags in taggroups %}
+    {% if letter %}
+      <a href="#letter_{{ letter }}">&nbsp;{{ letter }}&nbsp;</a>
+    {% endif %}
+  {% endfor %}
+  </p>
   
   <hr>
-  
-  <div class="TagTable">
-    {% for tag, sortform, count in tags %}
-      <div class="Tag"><a href="/tag/{{ tag|tagfilename|urlencode }}">{{ tag }}</a> ({{ count }})</div>
-    {% endfor %}
-  </div>
+
+  {% for letter, tags in taggroups %}
+    {% if letter %}
+      <div id="letter_{{ letter }}" class="Letter">{{ letter }}</div>
+    {% endif %}
+    <div class="TagTable">
+      {% for tag, sortform, count in tags %}
+        <div class="Tag"><a href="/tag/{{ tag|tagfilename|urlencode }}">{{ tag }}</a> ({{ count }})</div>
+      {% endfor %}
+    </div>
+  {% endfor %}
 
 {% endblock %}

@@ -337,12 +337,23 @@ class TagListPage(Page):
     def build(self):
         tags = [ (tag, sortform(tag), len(ls)) for tag, ls in self.ctx.entriesbytag.items() ]
         tags.sort(key=lambda tup:tup[1])
+
+        groups = []
+        pair = None
+        for tup in tags:
+            ch = tup[1][0].upper()
+            if ch < 'A' or ch > 'Z':
+                ch = ''
+            if not pair or pair[0] != ch:
+                pair = (ch, [])
+                groups.append(pair)
+            pair[1].append(tup)
         
         fl = self.openwrite()
         template = self.jenv.get_template('tags.html')
         fl.write(template.render(
             title='All Tags (Alphabetical)',
-            tags=tags,
+            taggroups=groups,
             sortby='alpha',
             recentfew=self.ctx.recentfew))
         fl.close()
