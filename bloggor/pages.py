@@ -361,7 +361,7 @@ class TagListFreqPage(Page):
         tags.sort(key=lambda tup:(-tup[2], tup[1]))
         
         fl = self.openwrite()
-        template = self.jenv.get_template('tags.html')
+        template = self.jenv.get_template('tagsfreq.html')
         fl.write(template.render(
             title='All Tags (by Frequency)',
             tags=tags,
