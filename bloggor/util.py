@@ -44,7 +44,7 @@ def sortform(val):
     if val.startswith('a '):
         return val[2:]
     if val.startswith('an '):
-        return val[2:]    
+        return val[3:]
     return val
 
 
