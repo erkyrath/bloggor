@@ -104,8 +104,9 @@ def scan_post(tvp, ells, depth=0):
         'content': tvp.post.record.text,
     }
     ells.append(el)
-    for subtvp in tvp.replies:
-        scan_post(subtvp, ells, depth+1)
+    if tvp.replies:
+        for subtvp in tvp.replies:
+            scan_post(subtvp, ells, depth+1)
     
 pat_dashes = re.compile(r'^(---+)\s*$')
 
