@@ -6,6 +6,7 @@ from markdown.extensions import Extension
 from markdown.treeprocessors import Treeprocessor
 from markdown.inlinepatterns import InlineProcessor
 from markdown.blockprocessors import BlockProcessor
+from markdown.preprocessors import Preprocessor
 from markdown.postprocessors import Postprocessor
 import xml.etree.ElementTree as etree
 
@@ -13,12 +14,24 @@ def extension_list(serverurl='http://localhost/'):
     # All the extensions we will use, including the ones from the module.
     return [
         'meta', 'attr_list', 'def_list', 'fenced_code', 'tables',
+        CommentExtension(),
         StrikethroughExtension(),
         MoreBreakExtension(),
         UnwrapExtension(),
         DictDefInlineExtension(),
         LocalLinkExtension(serverurl),
     ]
+
+
+class CommentPreProcessor(Preprocessor):
+    pattern = re.compile('^;;')
+    
+    def run(self, lines):
+        return [ ln for ln in lines if not CommentPreProcessor.pattern.match(ln) ]
+    
+class CommentExtension(Extension):
+    def extendMarkdown(self, md):
+        md.preprocessors.register(CommentPreProcessor(md.parser), 'comment', 1)
 
 
 class MoreBreakProcessor(BlockProcessor):
