@@ -69,7 +69,7 @@ class Context:
         self.jenv.globals['fediserver'] = self.config['fediserver']
         self.jenv.globals['fediuser'] = self.config['fediuser']
 
-        extlist = extension_list(serverurl=self.serverurl)
+        extlist = bloggor.mdextension.extension_list(serverurl=self.serverurl)
         self.mdenv = markdown.Markdown(extensions=extlist)
 
     def readconfig(self):
