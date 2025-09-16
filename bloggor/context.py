@@ -69,14 +69,8 @@ class Context:
         self.jenv.globals['fediserver'] = self.config['fediserver']
         self.jenv.globals['fediuser'] = self.config['fediuser']
 
-        self.mdenv = markdown.Markdown(extensions=[
-            'meta', 'attr_list', 'def_list', 'fenced_code', 'tables',
-            bloggor.mdextension.StrikethroughExtension(),
-            bloggor.mdextension.MoreBreakExtension(),
-            bloggor.mdextension.UnwrapExtension(),
-            bloggor.mdextension.DictDefInlineExtension(),
-            bloggor.mdextension.LocalLinkExtension(self.serverurl),
-        ])
+        extlist = extension_list(serverurl=self.serverurl)
+        self.mdenv = markdown.Markdown(extensions=extlist)
 
     def readconfig(self):
         configpath = self.opts.configfile
