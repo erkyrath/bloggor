@@ -541,7 +541,11 @@ class EntryPage(Page):
         self.body = body
         self.metadata = metadata
 
-        self.excerpt = excerpthtml(body)
+        ls = metadata.get('excerpt', None)
+        if ls:
+            self.excerpt = ' '.join(ls)
+        else:
+            self.excerpt = excerpthtml(body)
 
         self.title = None
         ls = metadata.get('title', None)
