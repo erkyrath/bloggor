@@ -31,11 +31,6 @@ class SongEntryPage(Page):
         self.tags = None
         self.index = None
         self.fedipostid = None
-        
-        self.publishedraw = None
-        self.published = None
-        self.updatedraw = None
-        self.updated = None
 
         self.backdependpages = []
 
@@ -107,50 +102,7 @@ class SongEntryPage(Page):
             raise RuntimeException(self.path+': Live not valid: '+str(ex))
 
         if not self.live:
-            self.longpublished = 'DRAFT'
-            self.longupdated = None
             return
-
-        try:
-            val = ls_as_value(metadata.get('published'))
-        except ValueError as ex:
-            raise RuntimeException(self.path+': Invalid published date: '+str(ex))
-        if val is None:
-            raise RuntimeException(self.path+': No published date')
-        try:
-            self.publishedraw = parsedate(val)
-            self.published = datetime.datetime.fromisoformat(self.publishedraw)
-        except ValueError:
-            raise RuntimeException(self.path+': Invalid published date: '+val)
-
-        try:
-            val = ls_as_value(metadata.get('updated'))
-        except ValueError as ex:
-            raise RuntimeException(self.path+': Invalid updated date: '+str(ex))
-        if val is not None:
-            try:
-                self.updatedraw = parsedate(val)
-                self.updated = datetime.datetime.fromisoformat(self.updatedraw)
-            except ValueError:
-                raise RuntimeException(self.path+': Invalid updated date: '+val)
-        if self.updated is None or self.updated < self.published:
-            self.updatedraw = self.publishedraw
-            self.updated = self.published
-
-        publocal = self.published.astimezone(eastern_tz)
-        self.longpublished = publocal.strftime('%A, %B %d, %Y').replace(' 0', ' ')
-        self.year = publocal.year
-        self.month = publocal.month
-        self.monthname = publocal.strftime('%B %Y')
-        self.shortdate = publocal.strftime('%Y-%m-%d')
-        self.shortmonth = publocal.strftime('%Y-%m')
-
-        if self.updated - self.published < datetime.timedelta(minutes=15):
-            self.longupdated = None
-        else:
-            self.longupdated = relativetime(self.updated, self.published)
-
-        # shortdate doesn't always match outdir, so we don't check that.
 
     def build(self):
         preventry = None
@@ -170,7 +122,6 @@ class SongEntryPage(Page):
         fl.close()
 
 from bloggor.constants import FileType
-from bloggor.constants import eastern_tz
 from bloggor.excepts import RuntimeException
 from bloggor.metafile import MetaFile, ls_as_bool, ls_as_value
-from bloggor.util import parsedate, relativetime, excerpthtml
+from bloggor.util import excerpthtml
