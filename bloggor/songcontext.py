@@ -72,6 +72,7 @@ class SongContext:
             'blogsubtitle': 'Some words',
             'ownername': 'Owner',
             'serverurl': 'https://blog.example.com/',
+            'entdir': 'ent',
             'fediuser': 'username',
             'fediserver': 'mastodon.example.com',
         }

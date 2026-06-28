@@ -39,7 +39,7 @@ class SongEntryPage(Page):
         else:
             raise RuntimeException(self.path+': Unrecognized entry format: ' + filename)
 
-        self.outpath = os.path.relpath(os.path.join(self.dirpath, outfile), start=ctx.entriesdir)
+        self.outpath = os.path.relpath(os.path.join(self.dirpath, ctx.config['entdir'], outfile), start=ctx.entriesdir)
         if self.outpath.startswith('..') or self.outpath.startswith('/'):
             raise RuntimeException(self.path+': Bad outpath: ' + self.outpath)
 
