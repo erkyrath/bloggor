@@ -87,6 +87,11 @@ class CollecEntryPage(Page):
         if ls:
             self.title = ' '.join(ls)
 
+        self.alphatitle = auto_alpha_title(self.title)
+        ls = metadata.get('alphatitle', None)
+        if ls:
+            self.alphatitle = ' '.join(ls)
+
         self.author = None
         ls = metadata.get('author', None)
         if ls:

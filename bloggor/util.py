@@ -199,6 +199,20 @@ def xofypages(val, total):
         return res+' pages'
 
 
+def auto_alpha_title(val):
+    if val is None:
+        return None
+    
+    val = val.lower()
+    if val.startswith('the '):
+        return val[ 4 : ]
+    if val.startswith('a '):
+        return val[ 2 : ]
+    if val.startswith('an '):
+        return val[ 3 : ]
+    return val
+    
+
 pat_urlhost = re.compile('^https?://([^/]*)')
 
 def urltohost(val):

@@ -552,6 +552,11 @@ class EntryPage(Page):
         if ls:
             self.title = ' '.join(ls)
 
+        self.alphatitle = auto_alpha_title(self.title)
+        ls = metadata.get('alphatitle', None)
+        if ls:
+            self.alphatitle = ' '.join(ls)
+
         self.tags = []
         ls = metadata.get('tags', None)
         if ls:
@@ -655,4 +660,4 @@ from bloggor.constants import FileType, FeedType, Depend
 from bloggor.constants import eastern_tz
 from bloggor.excepts import RuntimeException
 from bloggor.metafile import MetaFile, ls_as_bool, ls_as_value
-from bloggor.util import tagfilename, parsedate, relativetime, excerpthtml, sortform, absolutizeurls, splitatmore
+from bloggor.util import tagfilename, parsedate, relativetime, excerpthtml, sortform, absolutizeurls, splitatmore, auto_alpha_title

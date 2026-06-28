@@ -170,7 +170,7 @@ class CollecContext:
         for page in self.entries:
             self.liveentries.append(page)
                 
-        self.liveentries.sort(key=lambda entry:(entry.title,))
+        self.liveentries.sort(key=lambda entry:(entry.alphatitle,))
         
         for ix, page in enumerate(self.liveentries):
             page.index = ix

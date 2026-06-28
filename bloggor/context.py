@@ -209,7 +209,7 @@ class Context:
 
         self.draftentries.sort(key=lambda entry:entry.outuri)
                 
-        self.liveentries.sort(key=lambda entry:(entry.published, entry.title))
+        self.liveentries.sort(key=lambda entry:(entry.published, entry.alphatitle))
         for ix, page in enumerate(self.liveentries):
             page.index = ix
             if ix > 0:
