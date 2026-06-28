@@ -2,6 +2,23 @@ import os, os.path
 
 from bloggor.pages import Page
 
+class SongFrontPage(Page):
+    def __init__(self, ctx):
+        Page.__init__(self, ctx)
+        self.outpath = 'index.html'
+        self.frequent = True
+        self.backdependpages = [ (page, Depend.ALL) for page in ctx.liveentries ]
+        self.complete()
+
+    def build(self):
+        fl = self.openwrite()
+        template = self.jenv.get_template('front.html')
+        fl.write(template.render(
+            title=None,
+            entries=self.ctx.liveentries))
+        fl.close()
+
+
 class SongEntryPage(Page):
     def __init__(self, ctx, dirpath, filename):
         Page.__init__(self, ctx)
@@ -26,7 +43,6 @@ class SongEntryPage(Page):
         if self.outpath.startswith('..') or self.outpath.startswith('/'):
             raise RuntimeException(self.path+': Bad outpath: ' + self.outpath)
 
-        self.live = False
         self.title = None
         self.tags = None
         self.index = None
@@ -37,8 +53,7 @@ class SongEntryPage(Page):
         self.complete()
 
     def __repr__(self):
-        val = '' if self.live else ' DRAFT'
-        return '<%s%s "%s">' % (self.__class__.__name__, val, self.outuri)
+        return '<%s "%s">' % (self.__class__.__name__, self.outuri)
 
     def read(self):
         stat = os.stat(self.path)
@@ -95,33 +110,16 @@ class SongEntryPage(Page):
             self.fedipostid = ls_as_value(metadata.get('fedipostid'))
         except ValueError as ex:
             raise RuntimeException(self.path+': Fedipostid not valid: '+str(ex))
-        
-        try:
-            self.live = ls_as_bool(metadata.get('live'))
-        except ValueError as ex:
-            raise RuntimeException(self.path+': Live not valid: '+str(ex))
-
-        if not self.live:
-            return
 
     def build(self):
-        preventry = None
-        nextentry = None
-        if self.live and self.index > 0:
-            preventry = self.ctx.liveentries[self.index-1]
-        if self.live and self.index < len(self.ctx.liveentries)-1:
-            nextentry = self.ctx.liveentries[self.index+1]
-
         fl = self.openwrite()
         template = self.jenv.get_template('entry.html')
         fl.write(template.render(
             entry=self,
-            title=self.title,
-            nextentry=nextentry,
-            preventry=preventry))
+            title=self.title))
         fl.close()
 
-from bloggor.constants import FileType
+from bloggor.constants import FileType, Depend
 from bloggor.excepts import RuntimeException
 from bloggor.metafile import MetaFile, ls_as_bool, ls_as_value
 from bloggor.util import excerpthtml

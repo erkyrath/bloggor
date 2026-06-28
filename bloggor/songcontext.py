@@ -11,7 +11,6 @@ from bloggor.util import MultiDict
 from bloggor.util import parsespecs, parsedate, parseinterval
 from bloggor.util import xofypages
 from bloggor.util import urltohost
-from bloggor.pages import FrontPage
 from bloggor.pages import GenTemplatePage, StaticPage
 from bloggor.pages import TagListPage, TagListFreqPage, TagPage
 from bloggor.pages import HistoryPage
@@ -19,7 +18,7 @@ from bloggor.pages import PageSet
 import bloggor.jextension
 import bloggor.mdextension
 
-from bloggor.songpages import SongEntryPage
+from bloggor.songpages import SongEntryPage, SongFrontPage
 
 class SongContext:
     def __init__(self, opts):
@@ -38,15 +37,9 @@ class SongContext:
         self.entriesbyuri = {}
 
         self.liveentries = []
-        self.draftentries = []
+        self.recentfew = []  # always empty
         
-        # These are only live entries.
         self.entriesbytag = MultiDict()
-        self.entriesbyyear = MultiDict()
-        self.entriesbymonth = MultiDict()
-        self.recentyears = []
-        self.recententries = []
-        self.recentfew = []
         
         self.jenv = Environment(
             loader = FileSystemLoader(os.path.join(self.opts.srcdir, 'templates')),
@@ -176,14 +169,10 @@ class SongContext:
             return
 
         for page in self.entries:
-            if page.live:
-                self.liveentries.append(page)
-            else:
-                self.draftentries.append(page)
-
-        self.draftentries.sort(key=lambda entry:entry.outuri)
+            self.liveentries.append(page)
                 
-        self.liveentries.sort(key=lambda entry:(entry.published, entry.title))
+        self.liveentries.sort(key=lambda entry:(entry.title,))
+        
         for ix, page in enumerate(self.liveentries):
             page.index = ix
             if ix > 0:
@@ -191,24 +180,12 @@ class SongContext:
             if ix < len(self.liveentries)-1:
                 self.liveentries[ix+1].backdependpages.append( (page, Depend.TITLE|Depend.CREATED) )
 
-        self.recentfew = self.liveentries[ -4 : ]
-        self.recentfew.reverse()
-
-        self.recententries = self.liveentries[ -10 : ]
-        self.recententries.reverse()
-
         for entry in self.liveentries:
-            self.entriesbyyear.add(entry.year, entry)
-            self.entriesbymonth.add(entry.shortmonth, entry)
             for tag in entry.tags:
                 self.entriesbytag.add(tag, entry)
-
-        ls = list(self.entriesbyyear.keys())
-        ls.sort(reverse=True)
-        self.recentyears = ls[ : 5 ]
         
     def addnonsrc(self):
-        page = FrontPage(self)
+        page = SongFrontPage(self)
         self.pages.append(page)
 
         page = GenTemplatePage(self, 'menu.html', 'menu.html')
@@ -306,5 +283,3 @@ class SongContext:
             for page in pagelist:
                 page.commit()
 
-        for page in self.draftentries:
-            print('Draft: %s%s' % (self.serverurl, page.outuri,))
