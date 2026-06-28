@@ -87,6 +87,11 @@ class CollecEntryPage(Page):
         if ls:
             self.title = ' '.join(ls)
 
+        self.author = None
+        ls = metadata.get('author', None)
+        if ls:
+            self.author = ' '.join(ls)
+
         self.tags = []
         ls = metadata.get('tags', None)
         if ls:
@@ -122,4 +127,4 @@ class CollecEntryPage(Page):
 from bloggor.constants import FileType, Depend
 from bloggor.excepts import RuntimeException
 from bloggor.metafile import MetaFile, ls_as_bool, ls_as_value
-from bloggor.util import excerpthtml
+from bloggor.util import excerpthtml, auto_alpha_title
