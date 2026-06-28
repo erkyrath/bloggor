@@ -18,7 +18,7 @@ from bloggor.pages import PageSet
 import bloggor.jextension
 import bloggor.mdextension
 
-from bloggor.songpages import CollecEntryPage, CollecFrontPage
+from bloggor.collecpages import CollecEntryPage, CollecFrontPage
 
 class CollecContext:
     def __init__(self, opts):
