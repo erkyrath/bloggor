@@ -18,9 +18,9 @@ from bloggor.pages import PageSet
 import bloggor.jextension
 import bloggor.mdextension
 
-from bloggor.songpages import SongEntryPage, SongFrontPage
+from bloggor.songpages import CollecEntryPage, CollecFrontPage
 
-class SongContext:
+class CollecContext:
     def __init__(self, opts):
         self.opts = opts
         
@@ -123,7 +123,7 @@ class SongContext:
                     continue
                 try:
                     if filename.endswith('.html') or filename.endswith('.md') or filename.endswith('.txt'):
-                        page = SongEntryPage(self, dirpath, filename)
+                        page = CollecEntryPage(self, dirpath, filename)
                         self.pages.append(page)
                         self.entries.append(page)
                         self.entriesbyuri[page.outuri] = page
@@ -186,7 +186,7 @@ class SongContext:
                 self.entriesbytag.add(tag, entry)
         
     def addnonsrc(self):
-        page = SongFrontPage(self)
+        page = CollecFrontPage(self)
         self.pages.append(page)
 
         page = GenTemplatePage(self, 'menu.html', 'menu.html')

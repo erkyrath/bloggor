@@ -2,7 +2,7 @@ import os, os.path
 
 from bloggor.pages import Page
 
-class SongFrontPage(Page):
+class CollecFrontPage(Page):
     def __init__(self, ctx):
         Page.__init__(self, ctx)
         self.outpath = 'index.html'
@@ -19,7 +19,7 @@ class SongFrontPage(Page):
         fl.close()
 
 
-class SongEntryPage(Page):
+class CollecEntryPage(Page):
     def __init__(self, ctx, dirpath, filename):
         Page.__init__(self, ctx)
         self.dirpath = dirpath
