@@ -52,12 +52,10 @@ class CollecContext:
         )
         self.jenv.globals['blogctx'] = self
         self.jenv.globals['serverurl'] = self.serverurl
-        self.jenv.globals['servername'] = urltohost(self.serverurl)
+        self.jenv.globals['serveruripath'] = self.config['serveruripath']
         self.jenv.globals['blogtitle'] = self.config['blogtitle']
         self.jenv.globals['blogsubtitle'] = self.config['blogsubtitle']
         self.jenv.globals['ownername'] = self.config['ownername']
-        self.jenv.globals['fediserver'] = self.config['fediserver']
-        self.jenv.globals['fediuser'] = self.config['fediuser']
 
         extlist = bloggor.mdextension.extension_list(serverurl=self.serverurl)
         self.mdenv = markdown.Markdown(extensions=extlist)
@@ -68,13 +66,12 @@ class CollecContext:
             configpath = os.path.join(self.opts.srcdir, 'bloggor.cfg')
 
         defaults = {
+            'serveruripath': '',
             'blogtitle': 'Blog',
             'blogsubtitle': 'Some words',
             'ownername': 'Owner',
             'serverurl': 'https://blog.example.com/',
             'entdir': 'ent',
-            'fediuser': 'username',
-            'fediserver': 'mastodon.example.com',
         }
         config = configparser.ConfigParser(defaults=defaults)
 
