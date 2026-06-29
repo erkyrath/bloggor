@@ -22,7 +22,52 @@ from bloggor.comments import CommentThread
 import bloggor.jextension
 import bloggor.mdextension
 
-class Context:
+class ContextBase:
+    @staticmethod
+    def construct(opts):
+        configpath = opts.configfile
+        if not configpath:
+            configpath = os.path.join(opts.srcdir, 'bloggor.cfg')
+        preconfig = configparser.ConfigParser({ 'module':'blog' })
+        preconfig.read(configpath)
+        if 'bloggor' in preconfig:
+            modname = preconfig['bloggor']['module']
+        else:
+            modname = preconfig['DEFAULT']['module']
+        print('### modname', modname)
+
+        if modname == 'blog':
+            cla = BlogContext
+        elif modname == 'collection':
+            from bloggor.colleccontext import CollecContext
+            cla = CollecContext
+        
+        ctx = cla(opts)
+        return ctx
+
+    def readconfig(self):
+        configpath = self.opts.configfile
+        if not configpath:
+            configpath = os.path.join(self.opts.srcdir, 'bloggor.cfg')
+
+        config = configparser.ConfigParser(defaults=self.config_defaults)
+
+        config.read(configpath)
+        if 'bloggor' in config:
+            return config['bloggor']
+        else:
+            return config['DEFAULT']
+
+class BlogContext(ContextBase):
+    config_defaults = {
+        'blogtitle': 'Blog',
+        'blogsubtitle': 'Some words',
+        'ownername': 'Owner',
+        'serverurl': 'https://blog.example.com/',
+        'fediuser': 'username',
+        'fediserver': 'mastodon.example.com',
+    }
+
     def __init__(self, opts):
         self.opts = opts
         
@@ -71,27 +116,6 @@ class Context:
 
         extlist = bloggor.mdextension.extension_list(serverurl=self.serverurl)
         self.mdenv = markdown.Markdown(extensions=extlist)
-
-    def readconfig(self):
-        configpath = self.opts.configfile
-        if not configpath:
-            configpath = os.path.join(self.opts.srcdir, 'bloggor.cfg')
-
-        defaults = {
-            'blogtitle': 'Blog',
-            'blogsubtitle': 'Some words',
-            'ownername': 'Owner',
-            'serverurl': 'https://blog.example.com/',
-            'fediuser': 'username',
-            'fediserver': 'mastodon.example.com',
-        }
-        config = configparser.ConfigParser(defaults=defaults)
-
-        config.read(configpath)
-        if 'bloggor' in config:
-            return config['bloggor']
-        else:
-            return config['DEFAULT']
 
     def run(self, pagespecs=None):
         self.errors = []

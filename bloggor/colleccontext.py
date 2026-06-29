@@ -15,12 +15,22 @@ from bloggor.pages import GenTemplatePage, StaticPage
 from bloggor.pages import TagListPage, TagListFreqPage, TagPage
 from bloggor.pages import HistoryPage
 from bloggor.pages import PageSet
+from bloggor.context import ContextBase
 import bloggor.jextension
 import bloggor.mdextension
 
 from bloggor.collecpages import CollecEntryPage, CollecFrontPage
 
-class CollecContext:
+class CollecContext(ContextBase):
+    config_defaults = {
+        'serveruripath': '',
+        'blogtitle': 'Blog',
+        'blogsubtitle': 'Some words',
+        'ownername': 'Owner',
+        'serverurl': 'https://blog.example.com/',
+        'entdir': 'ent',
+    }
+        
     def __init__(self, opts):
         self.opts = opts
         
