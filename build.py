@@ -44,8 +44,7 @@ popt.add_option('--notemp',
 
 (opts, args) = popt.parse_args()
 
-
-ctx = bloggor.context.Context(opts)
+ctx = bloggor.context.ContextBase.construct(opts)
 
 tup = datetime.datetime.now(datetime.timezone.utc)
 val, _, _ = tup.isoformat().partition('.')

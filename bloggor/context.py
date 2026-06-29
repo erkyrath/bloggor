@@ -34,7 +34,6 @@ class ContextBase:
             modname = preconfig['bloggor']['module']
         else:
             modname = preconfig['DEFAULT']['module']
-        print('### modname', modname)
 
         if modname == 'blog':
             cla = BlogContext
