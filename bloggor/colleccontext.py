@@ -182,13 +182,6 @@ class CollecContext(ContextBase):
                 
         self.liveentries.sort(key=lambda entry:(entry.alphatitle,))
         
-        for ix, page in enumerate(self.liveentries):
-            page.index = ix
-            if ix > 0:
-                self.liveentries[ix-1].backdependpages.append( (page, Depend.TITLE|Depend.CREATED) )
-            if ix < len(self.liveentries)-1:
-                self.liveentries[ix+1].backdependpages.append( (page, Depend.TITLE|Depend.CREATED) )
-
         for entry in self.liveentries:
             for tag in entry.tags:
                 self.entriesbytag.add(tag, entry)
