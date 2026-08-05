@@ -382,9 +382,10 @@ class TagListFreqPage(Page):
 
 
 class TagPage(Page):
-    def __init__(self, ctx, tag, pagels):
+    def __init__(self, ctx, tag, pagels, reverseorder=True):
         Page.__init__(self, ctx)
         self.tag = tag
+        self.reverseorder = reverseorder
         self.outpath = os.path.join('tag', tagfilename(tag)+'.html')
         self.backdependpages = [ (page, Depend.TAGS|Depend.PUBDATE|Depend.TITLE) for page in pagels ]
         self.complete()
@@ -394,7 +395,8 @@ class TagPage(Page):
 
     def build(self):
         entries = self.ctx.entriesbytag[self.tag]
-        entries.reverse()
+        if self.reverseorder:
+            entries.reverse()
         oneentry = (len(entries) == 1)
         
         fl = self.openwrite()

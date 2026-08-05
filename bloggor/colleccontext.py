@@ -200,7 +200,7 @@ class CollecContext(ContextBase):
         self.pages.append(page)
 
         for tag, ls in self.entriesbytag.items():
-            page = TagPage(self, tag, ls)
+            page = TagPage(self, tag, ls, reverseorder=False)
             self.pages.append(page)
 
 
